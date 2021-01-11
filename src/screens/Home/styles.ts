@@ -6,6 +6,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    linkWrapper: {
+        padding: 10
+    },
+    link: {
+        color: 'blue',
+        textDecorationLine: 'underline'
     }
 });
 
