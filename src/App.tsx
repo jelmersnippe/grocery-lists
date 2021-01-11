@@ -1,14 +1,14 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import Home from './src/screens/Home';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import AuthStack from './navigators/AuthStack';
 
 const App = () => {
     return (
         <NavigationContainer>
             <SafeAreaView style={styles.appContainer}>
-                <Home/>
+                <AuthStack />
             </SafeAreaView>
         </NavigationContainer>
     );
