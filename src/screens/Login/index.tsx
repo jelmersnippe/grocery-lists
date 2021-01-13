@@ -17,13 +17,13 @@ const Login: FunctionComponent<Props> = ({navigation}) => {
             } catch (e) {
                 setError(e.code);
             }
+        } else {
+            setError('Hey! You missed a spot..');
         }
     };
 
     return (
         <View style={styles.container}>
-            <Text>Login</Text>
-            {error && <Text>Error: {error}</Text>}
             <TextInput
                 style={styles.input}
                 value={emailInput}
@@ -46,6 +46,13 @@ const Login: FunctionComponent<Props> = ({navigation}) => {
                 ref={passwordRef}
                 autoCapitalize={'none'}
             />
+            {error && <Text style={styles.error}>Error: {error}</Text>}
+            <TouchableOpacity
+                style={[styles.input, styles.buttonContainer]}
+                onPress={() => login(emailInput, passwordInput)}
+            >
+                <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('CreateAccount')}

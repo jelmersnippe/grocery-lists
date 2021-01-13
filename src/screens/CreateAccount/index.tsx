@@ -14,10 +14,9 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const [error, setError] = useState<string | null>(null);
 
     const login = async (email: string, password: string) => {
-        if (!!emailInput && !!passwordInput) {
+        if (!!displayNameInput || !!emailInput && !!passwordInput) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
-                console.log(result);
                 await auth().currentUser?.updateProfile({displayName: displayNameInput});
                 await firestore().collection('users').doc(result.user.uid).set({
                     name: displayNameInput
@@ -25,13 +24,13 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             } catch (e) {
                 setError(e.code);
             }
+        } else {
+            setError('Hey! You missed a spot..');
         }
     };
 
     return (
         <View style={styles.container}>
-            <Text>Create Account</Text>
-            {error && <Text>Error: {error}</Text>}
             <TextInput
                 style={styles.input}
                 value={displayNameInput}
@@ -67,6 +66,13 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 autoCapitalize={'none'}
                 ref={passwordRef}
             />
+            {error && <Text style={styles.error}>Error: {error}</Text>}
+            <TouchableOpacity
+                style={[styles.input, styles.buttonContainer]}
+                onPress={() => login(emailInput, passwordInput)}
+            >
+                <Text style={styles.buttonText}>Create Account</Text>
+            </TouchableOpacity>
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('Login')}

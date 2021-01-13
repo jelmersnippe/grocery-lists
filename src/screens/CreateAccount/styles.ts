@@ -20,6 +20,17 @@ const styles = StyleSheet.create({
     link: {
         color: 'blue',
         textDecorationLine: 'underline'
+    },
+    buttonContainer: {
+        backgroundColor: 'black',
+        alignItems: 'center'
+    },
+    buttonText: {
+        color: 'white'
+    },
+    error: {
+        color: 'tomato',
+        fontWeight: 'bold'
     }
 });
 
