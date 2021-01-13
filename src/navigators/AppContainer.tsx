@@ -4,8 +4,8 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import auth from '@react-native-firebase/auth';
-import {RESET_USER, SET_USER} from '../reducers/userReducer';
 import {RootState} from '../reducers';
+import {resetUser, setUser} from '../reducers/user/actions';
 
 const AppContainer = () => {
     const dispatch = useDispatch();
@@ -14,18 +14,16 @@ const AppContainer = () => {
     useEffect(() => {
         return auth().onAuthStateChanged((user) => {
             if (!user) {
-                dispatch({type: RESET_USER});
+                dispatch(resetUser());
             } else {
-                dispatch({
-                    type: SET_USER, payload: {
-                        displayName: user?.displayName,
-                        email: user?.email,
-                        uid: user?.uid
-                    }
-                });
+                dispatch(setUser({
+                    displayName: user.displayName ?? undefined,
+                    email: user.email ?? undefined,
+                    uid: user.uid
+                }));
             }
         });
-    }, [dispatch]);
+    }, []);
 
     return (
         <SafeAreaView style={styles.appContainer}>
