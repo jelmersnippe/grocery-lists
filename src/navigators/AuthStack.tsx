@@ -3,7 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../screens/Login';
 import CreateAccount from '../screens/CreateAccount';
 
-const Stack = createStackNavigator();
+export type AuthStackParamList = {
+    Login: undefined;
+    CreateAccount: undefined;
+}
+
+const Stack = createStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
     return (

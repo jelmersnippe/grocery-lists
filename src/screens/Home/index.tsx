@@ -5,7 +5,7 @@ import styles from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../config/store';
+import {RootState} from '../../reducers';
 
 const Home: FunctionComponent<Props> = ({}) => {
     const [username, setUsername] = useState('');

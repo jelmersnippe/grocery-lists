@@ -5,12 +5,11 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {RESET_USER, SET_USER} from '../reducers/userReducer';
-import {RootState} from '../config/store';
+import {RootState} from '../reducers';
 
 const AppContainer = () => {
     const dispatch = useDispatch();
     const userState = useSelector((rootState: RootState) => rootState.user);
-    console.log(userState);
 
     useEffect(() => {
         return auth().onAuthStateChanged((user) => {

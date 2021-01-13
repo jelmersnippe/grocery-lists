@@ -1,4 +1,4 @@
-export type User = {
+export type UserState = {
     displayName?: string;
     email?: string;
     uid?: string;
@@ -9,7 +9,7 @@ export const RESET_USER = 'RESET_USER';
 
 interface SetUserAction {
     type: typeof SET_USER
-    payload: User
+    payload: UserState
 }
 
 interface ResetUserAction {
@@ -18,9 +18,9 @@ interface ResetUserAction {
 
 export type UserActionTypes = SetUserAction | ResetUserAction
 
-const initialState: User = {};
+const initialState: UserState = {};
 
-const userReducer = (state = initialState, action: UserActionTypes) => {
+const userReducer = (state = initialState, action: UserActionTypes): UserState => {
     switch (action.type) {
         case SET_USER:
             return {
