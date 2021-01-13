@@ -3,6 +3,7 @@ import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -18,6 +19,9 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
                 console.log(result);
                 await auth().currentUser?.updateProfile({displayName: displayNameInput});
+                await firestore().collection('users').doc(result.user.uid).set({
+                    name: displayNameInput
+                });
             } catch (e) {
                 setError(e.code);
             }
