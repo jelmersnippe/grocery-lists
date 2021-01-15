@@ -1,10 +1,11 @@
-import React, {FunctionComponent, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
+import Button from '../../components/Button';
 
-const Login: FunctionComponent<Props> = ({navigation}) => {
+const Login = ({navigation}: Props): JSX.Element => {
     const passwordRef = useRef<TextInput>(null);
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
@@ -47,12 +48,11 @@ const Login: FunctionComponent<Props> = ({navigation}) => {
                 autoCapitalize={'none'}
             />
             {error && <Text style={styles.error}>Error: {error}</Text>}
-            <TouchableOpacity
-                style={[styles.input, styles.buttonContainer]}
+            <Button
                 onPress={() => login(emailInput, passwordInput)}
-            >
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+                text={'Login'}
+                containerStyle={styles.input}
+            />
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('CreateAccount')}

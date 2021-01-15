@@ -4,6 +4,7 @@ import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import Button from '../../components/Button';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -13,7 +14,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    const login = async (email: string, password: string) => {
+    const createAccount = async (email: string, password: string) => {
         if (!!displayNameInput || !!emailInput && !!passwordInput) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
@@ -60,19 +61,18 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 onChangeText={setPasswordInput}
                 secureTextEntry={true}
                 placeholder={'Password'}
-                onSubmitEditing={() => login(emailInput, passwordInput)}
+                onSubmitEditing={() => createAccount(emailInput, passwordInput)}
                 returnKeyType={'go'}
                 keyboardType={'default'}
                 autoCapitalize={'none'}
                 ref={passwordRef}
             />
             {error && <Text style={styles.error}>Error: {error}</Text>}
-            <TouchableOpacity
-                style={[styles.input, styles.buttonContainer]}
-                onPress={() => login(emailInput, passwordInput)}
-            >
-                <Text style={styles.buttonText}>Create Account</Text>
-            </TouchableOpacity>
+            <Button
+                onPress={() => createAccount(emailInput, passwordInput)}
+                text={'Create Account'}
+                containerStyle={styles.input}
+            />
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('Login')}
