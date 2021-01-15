@@ -1,10 +1,11 @@
 import React, {FunctionComponent, useEffect} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import firestoreListActions from '../../firestore/listActions';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
@@ -20,8 +21,10 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 <TouchableOpacity
                     key={key}
                     onPress={() => navigation.navigate('ListDetails', {id: key})}
+                    style={styles.listItem}
                 >
-                    <Text>{value.name}</Text>
+                    <Text style={styles.listItemName}>{value.name}</Text>
+                    <Icon style={styles.listItemIcon} name={'caret-forward'} size={24} color={'black'} />
                 </TouchableOpacity>
             );
         }
@@ -32,7 +35,13 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>ListOverview</Text>
-            {renderLists()}
+            <ScrollView
+                alwaysBounceVertical={false}
+                showsVerticalScrollIndicator={false}
+                style={styles.listContainer}
+            >
+                {renderLists()}
+            </ScrollView>
         </View>
     );
 };
