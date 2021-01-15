@@ -2,24 +2,15 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
-import {FirestoreList} from '../../firestore/types';
-import firestore from '@react-native-firebase/firestore';
-import {addList} from '../../reducers/lists/actions';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
+import firestoreListActions from '../../firestore/listActions';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
-    const dispatch = useDispatch();
     const lists = useSelector((rootState: RootState) => rootState.lists);
 
     useEffect(() => {
-        return firestore().collection('lists').onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((documentSnapshot) => {
-                const data = documentSnapshot.data() as FirestoreList;
-                const id = documentSnapshot.id;
-                dispatch(addList({id: id, list: data}));
-            });
-        });
+        return firestoreListActions.subscribeToUpdates();
     }, []);
 
     const renderLists = (): Array<JSX.Element> => {

@@ -2,24 +2,15 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
-import {FirestoreGroup} from '../../firestore/types';
-import firestore from '@react-native-firebase/firestore';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {addGroup} from '../../reducers/groups/actions';
+import firestoreGroupActions from '../../firestore/groupActions';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
-    const dispatch = useDispatch();
     const groups = useSelector((rootState: RootState) => rootState.groups);
 
     useEffect(() => {
-        return firestore().collection('groups').onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((documentSnapshot) => {
-                const data = documentSnapshot.data() as FirestoreGroup;
-                const id = documentSnapshot.id;
-                dispatch(addGroup({id: id, group: data}));
-            });
-        });
+        return firestoreGroupActions.subscribeToUpdates();
     }, []);
 
     const renderGroups = (): Array<JSX.Element> => {
