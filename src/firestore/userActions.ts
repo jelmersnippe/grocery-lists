@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {FirestoreUser} from './types';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
 
@@ -37,10 +37,27 @@ const update = async (uid: string, user: Partial<FirestoreUser>): Promise<void> 
         .catch((error: ReactNativeFirebase.NativeFirebaseError) => console.log('Error updating user', error.code));
 };
 
+const getUsersFromDocumentRefs = async (documentRefs: Array<FirebaseFirestoreTypes.DocumentReference>): Promise<Array<FirestoreUser>> => {
+    const users: Array<FirestoreUser> = [];
+
+    for (const user of documentRefs) {
+        await user.get()
+            .then((documentSnapshot) => {
+                const userData = documentSnapshot.data() as FirestoreUser;
+                if (userData) {
+                    users.push(userData);
+                }
+            });
+    }
+
+    return users;
+};
+
 const firestoreUserActions = {
     getByUid,
     create,
-    update
+    update,
+    getUsersFromDocumentRefs
 };
 
 export default firestoreUserActions;

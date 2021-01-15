@@ -5,7 +5,9 @@ import GroupOverview from '../screens/GroupOverview';
 
 export type GroupStackParamList = {
     GroupOverview: undefined;
-    GroupDetails: undefined;
+    GroupDetails: {
+        id: string
+    };
 }
 
 const Stack = createStackNavigator<GroupStackParamList>();
