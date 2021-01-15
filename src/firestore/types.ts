@@ -15,4 +15,5 @@ export type FirestoreUser = {
 
 export type FirestoreGroup = {
     name: string;
+    users: Array<FirebaseFirestoreTypes.DocumentReference>;
 }

@@ -5,7 +5,10 @@ export const RESET_GROUPS = 'RESET_GROUPS';
 
 export interface AddGroupAction {
     type: typeof ADD_GROUP
-    payload: FirestoreGroup
+    payload: {
+        id: string,
+        group: FirestoreGroup
+    }
 }
 
 export interface ResetGroupsAction {
