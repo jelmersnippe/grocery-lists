@@ -8,17 +8,19 @@ import {FirestoreUser} from '../../firestore/types';
 import firestoreUserActions from '../../firestore/userActions';
 
 const GroupDetails: FunctionComponent<Props> = ({route}) => {
-    const [users, setUsers] = useState<Array<FirestoreUser>>([]);
+    const [groupUsers, setGroupUsers] = useState<Array<FirestoreUser>>([]);
     const {id} = route.params;
-    const group = useSelector((rootState: RootState) => rootState.groups[id]);
+    const selectedGroup = useSelector((rootState: RootState) => rootState.groups.hasOwnProperty(id) ? rootState.groups[id] : undefined);
 
     useEffect(() => {
         (async () => {
-            setUsers(await firestoreUserActions.getUsersFromDocumentRefs(group.users));
+            if (selectedGroup?.users) {
+                setGroupUsers(await firestoreUserActions.getUsersFromDocumentRefs(selectedGroup.users));
+            }
         })();
-    }, [group.users]);
+    }, [selectedGroup]);
 
-    const renderDetails = (): JSX.Element => (
+    const renderDetails = (users: Array<FirestoreUser>): JSX.Element => (
         <View>
             <Text>Users:</Text>
             {
@@ -30,10 +32,12 @@ const GroupDetails: FunctionComponent<Props> = ({route}) => {
     );
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{group.name}</Text>
-            {renderDetails()}
-        </View>
+        selectedGroup ?
+            <View style={styles.container}>
+                <Text style={styles.title}>{selectedGroup.name}</Text>
+                {renderDetails(groupUsers)}
+            </View>
+            : <Text>Group not found</Text>
     );
 };
 

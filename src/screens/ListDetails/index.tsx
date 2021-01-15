@@ -4,18 +4,19 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
+import {FirestoreList} from '../../firestore/types';
 
 const ListDetails: FunctionComponent<Props> = ({route}) => {
     const {id} = route.params;
-    const list = useSelector((rootState: RootState) => rootState.lists[id]);
+    const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
 
-    const renderDetails = (): JSX.Element => {
+    const renderDetails = (list: FirestoreList): JSX.Element => {
         return (
             <View>
                 <Text>{list.name}</Text>
                 <View>
-                    {list.items.map((item) => (
-                        <Text>{`${item.quantity}x ${item.name}`}</Text>
+                    {list.items.map((item, index) => (
+                        <Text key={index}>{`${item.quantity}x ${item.name}`}</Text>
                     ))}
                 </View>
             </View>
@@ -23,11 +24,12 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>ListDetails</Text>
-            <Text>Id: {id}</Text>
-            {list && renderDetails()}
-        </View>
+        selectedList ?
+            <View style={styles.container}>
+                <Text style={styles.title}>{selectedList.name}</Text>
+                {renderDetails(selectedList)}
+            </View>
+            : <Text>List not found</Text>
     );
 };
 
