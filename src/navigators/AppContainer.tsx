@@ -20,8 +20,7 @@ const AppContainer = () => {
                     email: user.email ?? undefined,
                     uid: user.uid
                 }));
-            }
-            else if (!user && userState) {
+            } else if (!user && userState) {
                 dispatch(resetUser());
             }
         });

@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {View, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 

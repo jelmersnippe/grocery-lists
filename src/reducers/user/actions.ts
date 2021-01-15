@@ -1,5 +1,5 @@
 import {UserState} from './reducer';
-import {ResetUserAction, SetUserAction, SET_USER, RESET_USER} from './types';
+import {RESET_USER, ResetUserAction, SET_USER, SetUserAction} from './types';
 
 export type UserActionTypes = SetUserAction | ResetUserAction
 

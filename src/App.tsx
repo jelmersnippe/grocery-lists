@@ -1,8 +1,8 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
-import {store, persistor} from './config/store';
+import {persistor, store} from './config/store';
 import AppContainer from './navigators/AppContainer';
 import {PersistGate} from 'redux-persist/integration/react';
 
@@ -11,7 +11,7 @@ const App = () => {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <NavigationContainer>
-                    <AppContainer />
+                    <AppContainer/>
                 </NavigationContainer>
             </PersistGate>
         </Provider>

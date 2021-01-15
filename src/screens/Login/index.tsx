@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';

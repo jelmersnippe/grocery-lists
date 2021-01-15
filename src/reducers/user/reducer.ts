@@ -1,5 +1,5 @@
 import {UserActionTypes} from './actions';
-import {SET_USER, RESET_USER} from './types';
+import {RESET_USER, SET_USER} from './types';
 
 export type UserState = {
     displayName?: string;

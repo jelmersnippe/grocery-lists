@@ -5,7 +5,7 @@ export const RESET_LISTS = 'RESET_LISTS';
 
 export interface AddListAction {
     type: typeof ADD_LIST
-    payload: {id: string, list: FirestoreList}
+    payload: { id: string, list: FirestoreList }
 }
 
 export interface ResetListsAction {

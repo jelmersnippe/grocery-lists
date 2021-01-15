@@ -2,7 +2,8 @@ import React from 'react';
 import {
     createDrawerNavigator,
     DrawerContentComponentProps,
-    DrawerContentScrollView, DrawerItem,
+    DrawerContentScrollView,
+    DrawerItem,
     DrawerItemList
 } from '@react-navigation/drawer';
 import AppTabs from './AppTabs';
@@ -37,8 +38,8 @@ const DrawerMenu = () => {
             drawerType={'slide'}
             drawerContent={(props) => <DrawerMenuItems {...props} />}
         >
-            <Drawer.Screen name='App' component={AppTabs} />
-            <Drawer.Screen name='Profile' component={Profile} />
+            <Drawer.Screen name='App' component={AppTabs}/>
+            <Drawer.Screen name='Profile' component={Profile}/>
         </Drawer.Navigator>
     );
 };
