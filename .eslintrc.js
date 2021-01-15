@@ -7,6 +7,7 @@ module.exports = {
         'indent': ['error', 4, {'SwitchCase': 1}],
         'comma-dangle': ['error', 'never'],
         'quotes': ['error', 'single'],
-        'semi': ['error', 'always']
+        'semi': ['error', 'always'],
+        'jsx-quotes': ['error', 'prefer-single']
     },
 };

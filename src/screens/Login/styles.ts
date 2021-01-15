@@ -21,13 +21,6 @@ const styles = StyleSheet.create({
         color: 'blue',
         textDecorationLine: 'underline'
     },
-    buttonContainer: {
-        backgroundColor: 'black',
-        alignItems: 'center'
-    },
-    buttonText: {
-        color: 'white'
-    },
     error: {
         color: 'tomato',
         fontWeight: 'bold'

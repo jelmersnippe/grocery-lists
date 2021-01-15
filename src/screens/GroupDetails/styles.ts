@@ -7,12 +7,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    linkWrapper: {
-        padding: 10
-    },
-    link: {
-        color: 'blue',
-        textDecorationLine: 'underline'
+    title: {
+        fontSize: 36,
+        fontWeight: 'bold'
     }
 });
 
