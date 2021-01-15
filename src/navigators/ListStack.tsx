@@ -8,7 +8,9 @@ import ListOverview from '../screens/ListOverview';
 
 export type ListStackParamList = {
     ListOverview: undefined;
-    ListDetails: undefined;
+    ListDetails: {
+        id: string;
+    };
 }
 
 const Stack = createStackNavigator<ListStackParamList>();
