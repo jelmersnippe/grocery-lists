@@ -2,7 +2,7 @@ import {
     ADD_LIST,
     ADD_LIST_ITEM,
     AddListAction,
-    AddListItemAction,
+    AddListItemAction, List, ListItem,
     REMOVE_LIST,
     REMOVE_LIST_ITEM,
     RemoveListAction,
@@ -10,11 +10,10 @@ import {
     RESET_LISTS,
     ResetListsAction
 } from './types';
-import {FirestoreList, FirestoreListItem} from '../../firestore/types';
 
 export type ListsActionTypes = AddListAction | RemoveListAction | AddListItemAction | RemoveListItemAction | ResetListsAction
 
-const add = (payload: { id: string, list: FirestoreList }): ListsActionTypes => {
+const add = (payload: { id: string, list: List }): ListsActionTypes => {
     return {
         type: ADD_LIST,
         payload: payload
@@ -28,7 +27,7 @@ const remove = (id: string): ListsActionTypes => {
     };
 };
 
-const addItem = (payload: { listId: string, listItem: { id: string, data: FirestoreListItem } }): ListsActionTypes => {
+const addItem = (payload: { listId: string, listItem: { id: string, data: ListItem } }): ListsActionTypes => {
     return {
         type: ADD_LIST_ITEM,
         payload: payload

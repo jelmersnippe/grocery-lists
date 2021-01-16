@@ -1,14 +1,23 @@
-import {FirestoreList, FirestoreListItem} from '../../firestore/types';
-
 export const ADD_LIST = 'ADD_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
 export const ADD_LIST_ITEM = 'ADD_LIST_ITEM';
 export const REMOVE_LIST_ITEM = 'REMOVE_LIST_ITEM';
 export const RESET_LISTS = 'RESET_LISTS';
 
+export interface List {
+    name: string;
+    creatorUid: string;
+    items?: { [key: string]: ListItem }
+}
+
+export interface ListItem {
+    name: string;
+    quantity: number;
+}
+
 export interface AddListAction {
     type: typeof ADD_LIST
-    payload: { id: string, list: FirestoreList }
+    payload: { id: string, list: List }
 }
 
 export interface RemoveListAction {
@@ -18,7 +27,7 @@ export interface RemoveListAction {
 
 export interface AddListItemAction {
     type: typeof ADD_LIST_ITEM;
-    payload: {listId: string, listItem: { id: string, data: FirestoreListItem }}
+    payload: {listId: string, listItem: { id: string, data: ListItem }}
 }
 
 export interface RemoveListItemAction {

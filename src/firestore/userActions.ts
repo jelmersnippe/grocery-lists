@@ -1,14 +1,26 @@
 import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {FirestoreUser} from './types';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
+import {store} from '../config/store';
+import {addCachedUser} from '../reducers/userCache/actions';
 
+// TODO: Make a TTL mechanism / implement some way to refresh user data
 const getByUid = async (uid: string): Promise<FirestoreUser | undefined> => {
+    const userCache = store.getState().userCache;
+    const cachedUser = userCache.hasOwnProperty(uid) ? userCache[uid] : undefined;
+
+    if (cachedUser) {
+        return cachedUser;
+    }
+
     return await firestore().collection('users')
         .doc(uid)
         .get()
         .then(documentSnapshot => {
             if (documentSnapshot.exists) {
-                return documentSnapshot.data() as FirestoreUser;
+                const userData = documentSnapshot.data() as FirestoreUser;
+                store.dispatch(addCachedUser({id: uid, user: userData, timestamp: new Date()}));
+                return userData;
             } else {
                 return undefined;
             }

@@ -2,18 +2,25 @@ import firestore from '@react-native-firebase/firestore';
 import {FirestoreList, FirestoreListItem} from './types';
 import lists from '../reducers/lists/actions';
 import {store} from '../config/store';
+import {List, ListItem} from '../reducers/lists/types';
 
 const subscribeToListUpdates = (): () => void => {
     return firestore().collection('lists').onSnapshot((querySnapshot) => {
         querySnapshot.docChanges().forEach(async (documentChange) => {
-            const id = documentChange.doc.id;
+            const listId = documentChange.doc.id;
+
             switch (documentChange.type) {
                 case 'removed':
-                    store.dispatch(lists.remove(id));
+                    store.dispatch(lists.remove(listId));
                     break;
                 default:
-                    const list = {...documentChange.doc.data()} as FirestoreList;
-                    store.dispatch(lists.add({id, list}));
+                    const documentData = documentChange.doc.data() as FirestoreList;
+                    const creatorUid = documentData.creator.id;
+                    const listData: List = {
+                        name: documentData.name,
+                        creatorUid: creatorUid
+                    };
+                    store.dispatch(lists.add({id: listId, list: listData}));
                     break;
             }
         });
@@ -23,14 +30,18 @@ const subscribeToListUpdates = (): () => void => {
 const subscribeToItemUpdates = (listId: string): () => void => {
     return firestore().collection(`lists/${listId}/items`).onSnapshot((querySnapshot) => {
         querySnapshot.docChanges().forEach((documentChange) => {
-            const id = documentChange.doc.id;
+            const listItemId = documentChange.doc.id;
             switch (documentChange.type) {
                 case 'removed':
-                    store.dispatch(lists.removeItem({listId, listItemId: id}));
+                    store.dispatch(lists.removeItem({listId, listItemId}));
                     break;
                 default:
-                    const data = documentChange.doc.data() as FirestoreListItem;
-                    const listItem = {id, data};
+                    const documentData = documentChange.doc.data() as FirestoreListItem;
+                    const listItemData: ListItem = {
+                        name: documentData.name,
+                        quantity: documentData.quantity
+                    };
+                    const listItem = {id: listItemId, data: listItemData};
                     store.dispatch(lists.addItem({listId, listItem}));
                     break;
             }

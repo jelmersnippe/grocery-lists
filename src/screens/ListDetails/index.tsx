@@ -4,26 +4,43 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {FirestoreList} from '../../firestore/types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firestoreListActions from '../../firestore/listActions';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
+import {List} from '../../reducers/lists/types';
+import firestoreUserActions from '../../firestore/userActions';
+import {FirestoreUser} from '../../firestore/types';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
     const {id} = route.params;
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
+    const [creator, setCreator] = useState<FirestoreUser | undefined>(undefined);
+
     const [inputQty, setInputQty] = useState(0);
     const [inputName, setInputName] = useState('');
     const inputNameRef = useRef<TextInput>(null);
 
     useEffect(() => {
-        if (selectedList) {
-            navigation.setOptions({title: selectedList.name});
+        const listName = selectedList?.name;
+        if (listName) {
+            navigation.setOptions({title: listName});
         }
-    }, [selectedList]);
+    }, [selectedList?.name]);
+
+    useEffect(() => {
+        const creatorUid = selectedList?.creatorUid;
+        if (creatorUid) {
+            (async () => {
+                const creatorUser = await firestoreUserActions.getByUid(creatorUid);
+                if (creatorUser) {
+                    setCreator(creatorUser);
+                }
+            })();
+        }
+    }, [selectedList?.creatorUid]);
 
     useEffect(() => {
         return firestoreListActions.subscribeToItemUpdates(id);
@@ -36,7 +53,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         }
     };
 
-    const renderDetails = (list: FirestoreList): Array<JSX.Element> => {
+    const renderDetails = (list: List): Array<JSX.Element> => {
         const listItems: Array<JSX.Element> = [];
 
         if (list?.items) {
@@ -62,8 +79,11 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     return (
         selectedList ?
             <View style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
+                <View style={styles.header}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
+                        {creator && <Text>Creator: {creator.name}</Text>}
+                    </View>
                     <TouchableOpacity onPress={() => {
                         dispatch(setOverlay({
                             title: `Delete '${selectedList.name}'`,

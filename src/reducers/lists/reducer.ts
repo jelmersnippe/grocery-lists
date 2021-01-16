@@ -1,9 +1,8 @@
-import {FirestoreList} from '../../firestore/types';
-import {ADD_LIST, ADD_LIST_ITEM, REMOVE_LIST, REMOVE_LIST_ITEM, RESET_LISTS} from './types';
+import {List, ADD_LIST, ADD_LIST_ITEM, REMOVE_LIST, REMOVE_LIST_ITEM, RESET_LISTS} from './types';
 import {ListsActionTypes} from './actions';
 import update from 'immutability-helper';
 
-export type ListsState = { [key: string]: FirestoreList };
+export type ListsState = { [key: string]: List };
 
 const initialState: ListsState = {};
 

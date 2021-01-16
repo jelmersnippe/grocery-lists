@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column'
     },
-    titleContainer: {
+    header: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -15,10 +15,12 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: 'black'
     },
+    titleContainer: {
+        width: '80%'
+    },
     title: {
         fontSize: 36,
-        fontWeight: 'bold',
-        width: '80%'
+        fontWeight: 'bold'
     },
     item: {
         flexDirection: 'row',
