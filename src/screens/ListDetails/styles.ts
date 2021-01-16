@@ -20,25 +20,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         width: '80%'
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 15,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black'
-    },
-    headerQuantity: {
-        fontSize: 16,
-        paddingVertical: 10,
-        borderRightWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black',
-        width: '12.5%',
-        marginRight: 10
-    },
-    headerName: {
-        fontSize: 16,
-        paddingVertical: 10
-    },
     item: {
         flexDirection: 'row',
         alignItems: 'flex-end',

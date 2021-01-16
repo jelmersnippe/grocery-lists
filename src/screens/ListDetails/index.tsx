@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import firestoreListActions from '../../firestore/listActions';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import QtyInput from '../../components/QtyInput';
+import FullSizeLoader from '../../components/FullSizeLoader';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -99,10 +100,6 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <Icon name={'trash'} size={30} color={'tomato'}/>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.header}>
-                    <Text style={styles.headerQuantity}>Qty.</Text>
-                    <Text style={styles.headerName}>Item name</Text>
-                </View>
                 <ScrollView
                     alwaysBounceVertical={false}
                     showsVerticalScrollIndicator={false}
@@ -129,7 +126,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     </View>
                 </View>
             </View>
-            : <Text>List not found</Text>
+            : <FullSizeLoader size={100} color={'black'}/>
     );
 };
 

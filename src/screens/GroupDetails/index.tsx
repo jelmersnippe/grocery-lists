@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {FirestoreUser} from '../../firestore/types';
 import firestoreUserActions from '../../firestore/userActions';
+import FullSizeLoader from '../../components/FullSizeLoader';
 
 const GroupDetails: FunctionComponent<Props> = ({route}) => {
     const [groupUsers, setGroupUsers] = useState<Array<FirestoreUser>>([]);
@@ -37,7 +38,7 @@ const GroupDetails: FunctionComponent<Props> = ({route}) => {
                 <Text style={styles.title}>{selectedGroup.name}</Text>
                 {renderDetails(groupUsers)}
             </View>
-            : <Text>Group not found</Text>
+            : <FullSizeLoader size={100} color={'black'}/>
     );
 };
 
