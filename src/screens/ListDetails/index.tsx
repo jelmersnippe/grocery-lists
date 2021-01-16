@@ -7,8 +7,10 @@ import {RootState} from '../../reducers';
 import {FirestoreList} from '../../firestore/types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firestoreListActions from '../../firestore/listActions';
+import {OverlayActions, useOverlayData} from '@jelmersnippe/flexible-overlays';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
+    const {dispatch} = useOverlayData();
     const {id} = route.params;
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
 
@@ -54,8 +56,40 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <Icon name={'pencil'} size={30} color={'black'}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        firestoreListActions.removeList(id);
-                        navigation.popToTop();
+                        dispatch({
+                            type: OverlayActions.SET,
+                            payload: {
+                                title: `Delete '${selectedList.name}'`,
+                                text: 'Are you sure you want to delete this list?',
+                                buttons: [
+                                    {
+                                        text: 'Cancel',
+                                        textStyle: {
+                                            color: 'black'
+                                        },
+                                        style: {
+                                            borderColor: 'black'
+                                        }
+                                    },
+                                    {
+                                        text: 'Delete',
+                                        onPress: () => {
+                                            firestoreListActions.removeList(id);
+                                            navigation.popToTop();
+                                        },
+                                        textStyle: {
+                                            color: 'red'
+                                        },
+                                        style: {
+                                            borderColor: 'red'
+                                        }
+                                    }
+                                ],
+                                buttonStyle: {
+                                    marginHorizontal: 10
+                                }
+                            }
+                        });
                     }}>
                         <Icon name={'trash'} size={30} color={'tomato'}/>
                     </TouchableOpacity>
