@@ -1,10 +1,11 @@
 import React, {FunctionComponent} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {AppTabsParamList} from './AppTabs';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import ListDetails from '../screens/ListDetails';
 import ListOverview from '../screens/ListOverview';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export type ListStackParamList = {
     ListOverview: undefined;
@@ -26,8 +27,9 @@ const ListStack: FunctionComponent<Props> = ({navigation}) => {
                 headerRight: (_) => (
                     <TouchableOpacity
                         onPress={() => navigation.toggleDrawer()}
+                        style={{padding: 5, marginRight: 10}}
                     >
-                        <Text>Menu</Text>
+                        <Icon name={'settings-outline'} size={30}/>
                     </TouchableOpacity>
                 )
             }}
