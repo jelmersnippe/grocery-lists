@@ -5,6 +5,8 @@ import styles from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Button from '../../components/Button';
+import {useDispatch} from 'react-redux';
+import {setUser} from '../../reducers/user/actions';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -13,15 +15,16 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const dispatch = useDispatch();
 
     const createAccount = async (email: string, password: string) => {
-        if (!!displayNameInput || !!emailInput && !!passwordInput) {
+        if (!!displayNameInput && !!emailInput && !!passwordInput) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
-                await auth().currentUser?.updateProfile({displayName: displayNameInput});
                 await firestore().collection('users').doc(result.user.uid).set({
                     name: displayNameInput
                 });
+                dispatch(setUser({uid: result.user.uid}));
             } catch (e) {
                 setError(e.code);
             }
