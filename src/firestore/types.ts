@@ -9,6 +9,7 @@ export type FirestoreList = {
 export type FirestoreListItem = {
     name: string;
     quantity: number;
+    updatedAt: number;
 }
 
 export type FirestoreUser = {

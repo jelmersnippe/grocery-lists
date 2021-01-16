@@ -3,6 +3,7 @@ import {FirestoreList, FirestoreListItem} from './types';
 import lists from '../reducers/lists/actions';
 import {store} from '../config/store';
 import {List, ListItem} from '../reducers/lists/types';
+import moment from 'moment';
 
 const subscribeToListUpdates = (): () => void => {
     return firestore().collection('lists').onSnapshot((querySnapshot) => {
@@ -39,7 +40,8 @@ const subscribeToItemUpdates = (listId: string): () => void => {
                     const documentData = documentChange.doc.data() as FirestoreListItem;
                     const listItemData: ListItem = {
                         name: documentData.name,
-                        quantity: documentData.quantity
+                        quantity: documentData.quantity,
+                        updatedAt: new Date(documentData.updatedAt)
                     };
                     const listItem = {id: listItemId, data: listItemData};
                     store.dispatch(lists.addItem({listId, listItem}));
@@ -83,13 +85,16 @@ const removeList = async (listId: string): Promise<void> => {
     return batch.commit();
 };
 
-const addListItem = async (listId: string, item: FirestoreListItem): Promise<string | undefined> => {
+const addListItem = async (listId: string, item: ListItem): Promise<string | undefined> => {
     if (item.quantity <= 0 || item.name === '') {
         return undefined;
     }
 
     try {
-        const createdListItem = await firestore().collection(`lists/${listId}/items`).add(item);
+        const createdListItem = await firestore().collection(`lists/${listId}/items`).add({
+            ...item,
+            updatedAt: moment(item.updatedAt).valueOf()
+        });
         return createdListItem.id;
     } catch (error) {
         console.log('error',error);

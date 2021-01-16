@@ -12,6 +12,7 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import {List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
 import {FirestoreUser} from '../../firestore/types';
+import moment from 'moment';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -47,7 +48,11 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     }, []);
 
     const addItem = async () => {
-        const createdItem = await firestoreListActions.addListItem(id, {name: inputName, quantity: inputQty});
+        const createdItem = await firestoreListActions.addListItem(id, {
+            name: inputName,
+            quantity: inputQty,
+            updatedAt: new Date()
+        });
         if (createdItem) {
             setInputName('');
         }
@@ -55,17 +60,24 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
 
     const renderDetails = (list: List): Array<JSX.Element> => {
         const listItems: Array<JSX.Element> = [];
+        const items = list?.items;
 
-        if (list?.items) {
-            for (const [key, value] of Object.entries(list.items)) {
+        if (items) {
+            const sortedItems = Object.keys(items)
+                .map((key) => ({
+                    ...items[key],
+                    uid: key
+                }))
+                .sort((a, b) => moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf());
+            for (const item of sortedItems) {
                 listItems.push(
-                    <View key={key} style={styles.item}>
+                    <View key={item.uid} style={styles.item}>
                         <View style={styles.itemQuantity}>
-                            <Text style={styles.itemQuantityText}>{value.quantity}</Text>
+                            <Text style={styles.itemQuantityText}>{item.quantity}</Text>
                             <Icon name={'close'} size={18} color={'black'}/>
                         </View>
-                        <Text style={styles.itemName}>{value.name}</Text>
-                        <TouchableOpacity onPress={() => firestoreListActions.removeListItem(id, key)}>
+                        <Text style={styles.itemName}>{item.name}</Text>
+                        <TouchableOpacity onPress={() => firestoreListActions.removeListItem(id, item.uid)}>
                             <Icon name={'trash'} size={26} color={'tomato'}/>
                         </TouchableOpacity>
                     </View>

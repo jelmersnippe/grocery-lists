@@ -13,6 +13,7 @@ export interface List {
 export interface ListItem {
     name: string;
     quantity: number;
+    updatedAt: Date;
 }
 
 export interface AddListAction {
