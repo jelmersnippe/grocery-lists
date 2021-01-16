@@ -8,10 +8,12 @@ import firestoreListActions from '../../firestore/listActions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/InputModal';
+import {useTranslation} from 'react-i18next';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
     const {dispatch} = useOverlayData();
+    const {t} = useTranslation('lists');
 
     useEffect(() => {
         return firestoreListActions.subscribeToListUpdates();
@@ -50,7 +52,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
 
     const openInputModal = () => {
         dispatch(setOverlay({
-            title: 'New list',
+            title: t('newList'),
             content: <InputModal
                 onSubmit={async (input: string) => createNewList(input)}
             />,
@@ -63,7 +65,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>ListOverview</Text>
+                <Text style={styles.title}>{t('title')}</Text>
                 <TouchableOpacity
                     onPress={() => openInputModal()}
                 >

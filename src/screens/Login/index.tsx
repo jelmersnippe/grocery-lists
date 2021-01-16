@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth';
 import Button from '../../components/Button';
 import {setUser} from '../../reducers/user/actions';
 import {useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 const Login = ({navigation}: Props): JSX.Element => {
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Login = ({navigation}: Props): JSX.Element => {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const {t} = useTranslation('auth');
 
     const login = async (email: string, password: string) => {
         if (!!emailInput && !!passwordInput) {
@@ -37,7 +39,7 @@ const Login = ({navigation}: Props): JSX.Element => {
                 style={styles.input}
                 value={emailInput}
                 onChangeText={setEmailInput}
-                placeholder={'Username'}
+                placeholder={t('email')}
                 onSubmitEditing={() => passwordRef.current?.focus()}
                 returnKeyType={'next'}
                 blurOnSubmit={false}
@@ -49,7 +51,7 @@ const Login = ({navigation}: Props): JSX.Element => {
                 value={passwordInput}
                 onChangeText={setPasswordInput}
                 secureTextEntry={true}
-                placeholder={'Password'}
+                placeholder={t('password')}
                 onSubmitEditing={() => login(emailInput, passwordInput)}
                 returnKeyType={'go'}
                 ref={passwordRef}
@@ -58,14 +60,14 @@ const Login = ({navigation}: Props): JSX.Element => {
             {error && <Text style={styles.error}>Error: {error}</Text>}
             <Button
                 onPress={() => login(emailInput, passwordInput)}
-                text={'Login'}
+                text={t('login')}
                 containerStyle={styles.input}
             />
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('CreateAccount')}
             >
-                <Text style={styles.link}>Create account instead</Text>
+                <Text style={styles.link}>{t('toCreateAccount')}</Text>
             </TouchableOpacity>
         </View>
     );

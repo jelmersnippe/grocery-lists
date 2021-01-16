@@ -7,6 +7,7 @@ import firestore from '@react-native-firebase/firestore';
 import Button from '../../components/Button';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../reducers/user/actions';
+import {useTranslation} from 'react-i18next';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -15,6 +16,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const {t} = useTranslation('auth');
     const dispatch = useDispatch();
 
     const createAccount = async (email: string, password: string) => {
@@ -39,7 +41,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 style={styles.input}
                 value={displayNameInput}
                 onChangeText={setDisplayNameInput}
-                placeholder={'Display name'}
+                placeholder={t('displayName')}
                 onSubmitEditing={() => emailRef.current?.focus()}
                 returnKeyType={'next'}
                 blurOnSubmit={false}
@@ -50,7 +52,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 style={styles.input}
                 value={emailInput}
                 onChangeText={setEmailInput}
-                placeholder={'Username'}
+                placeholder={t('email')}
                 onSubmitEditing={() => passwordRef.current?.focus()}
                 returnKeyType={'next'}
                 blurOnSubmit={false}
@@ -63,7 +65,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 value={passwordInput}
                 onChangeText={setPasswordInput}
                 secureTextEntry={true}
-                placeholder={'Password'}
+                placeholder={t('password')}
                 onSubmitEditing={() => createAccount(emailInput, passwordInput)}
                 returnKeyType={'go'}
                 keyboardType={'default'}
@@ -73,14 +75,14 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             {error && <Text style={styles.error}>Error: {error}</Text>}
             <Button
                 onPress={() => createAccount(emailInput, passwordInput)}
-                text={'Create Account'}
+                text={t('createAccount')}
                 containerStyle={styles.input}
             />
             <TouchableOpacity
                 style={styles.linkWrapper}
                 onPress={() => navigation.navigate('Login')}
             >
-                <Text style={styles.link}>Login instead</Text>
+                <Text style={styles.link}>{t('toLogin')}</Text>
             </TouchableOpacity>
         </View>
     );

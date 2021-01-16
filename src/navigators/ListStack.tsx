@@ -6,6 +6,7 @@ import {DrawerNavigationProp} from '@react-navigation/drawer';
 import ListDetails from '../screens/ListDetails';
 import ListOverview from '../screens/ListOverview';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useTranslation} from 'react-i18next';
 
 export type ListStackParamList = {
     ListOverview: undefined;
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const ListStack: FunctionComponent<Props> = ({navigation}) => {
+    const {t} = useTranslation('navigation');
+
     return (
         <Stack.Navigator
             screenOptions={{
@@ -34,8 +37,17 @@ const ListStack: FunctionComponent<Props> = ({navigation}) => {
                 )
             }}
         >
-            <Stack.Screen name='ListOverview' component={ListOverview}/>
-            <Stack.Screen name='ListDetails' component={ListDetails}/>
+            <Stack.Screen
+                name='ListOverview'
+                component={ListOverview}
+                options={{
+                    headerTitle: t('ListOverview')
+                }}
+            />
+            <Stack.Screen
+                name='ListDetails'
+                component={ListDetails}
+            />
         </Stack.Navigator>
     );
 };

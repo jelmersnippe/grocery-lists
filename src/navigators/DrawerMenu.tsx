@@ -11,6 +11,7 @@ import Profile from '../screens/Profile';
 import auth from '@react-native-firebase/auth';
 import {resetUser} from '../reducers/user/actions';
 import {store} from '../config/store';
+import {useTranslation} from 'react-i18next';
 
 export type DrawerMenuParamList = {
     App: undefined;
@@ -20,11 +21,13 @@ export type DrawerMenuParamList = {
 const Drawer = createDrawerNavigator<DrawerMenuParamList>();
 
 const DrawerMenuItems = (props: DrawerContentComponentProps) => {
+    const {t} = useTranslation('navigation');
+
     return (
         <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
             <DrawerItem
-                label='Logout'
+                label={t('Logout')}
                 onPress={async () => {
                     await auth().signOut();
                     store.dispatch(resetUser());
@@ -35,14 +38,24 @@ const DrawerMenuItems = (props: DrawerContentComponentProps) => {
 };
 
 const DrawerMenu = () => {
+    const {t} = useTranslation('navigation');
+
     return (
         <Drawer.Navigator
             drawerPosition={'right'}
             drawerType={'slide'}
             drawerContent={(props) => <DrawerMenuItems {...props} />}
         >
-            <Drawer.Screen name='App' component={AppTabs}/>
-            <Drawer.Screen name='Profile' component={Profile}/>
+            <Drawer.Screen
+                name='App'
+                component={AppTabs}
+                options={{drawerLabel: t('App')}}
+            />
+            <Drawer.Screen
+                name='Profile'
+                component={Profile}
+                options={{drawerLabel: t('Profile')}}
+            />
         </Drawer.Navigator>
     );
 };

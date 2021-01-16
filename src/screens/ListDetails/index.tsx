@@ -13,6 +13,7 @@ import {List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
 import {FirestoreUser} from '../../firestore/types';
 import moment from 'moment';
+import {useTranslation} from 'react-i18next';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -23,6 +24,8 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const [inputQty, setInputQty] = useState(0);
     const [inputName, setInputName] = useState('');
     const inputNameRef = useRef<TextInput>(null);
+
+    const {t} = useTranslation('lists');
 
     useEffect(() => {
         const listName = selectedList?.name;
@@ -94,15 +97,19 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 <View style={styles.header}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
-                        {creator && <Text>Creator: {creator.name}</Text>}
+                        {creator && <Text>{t('createdBy', {
+                            creator: creator.name
+                        })}</Text>}
                     </View>
                     <TouchableOpacity onPress={() => {
                         dispatch(setOverlay({
-                            title: `Delete '${selectedList.name}'`,
-                            text: 'Are you sure you want to delete this list?',
+                            title: t('deleteListTitle', {
+                                listName: selectedList.name
+                            }),
+                            text: t('deleteListText'),
                             buttons: [
                                 {
-                                    text: 'Cancel',
+                                    text: t('common:cancel'),
                                     textStyle: {
                                         color: 'black'
                                     },
@@ -111,7 +118,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                     }
                                 },
                                 {
-                                    text: 'Delete',
+                                    text: t('common:delete'),
                                     onPress: async () => {
                                         await firestoreListActions.removeList(id);
                                         navigation.popToTop();
@@ -142,7 +149,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     <QtyInput onChangeValue={(value) => setInputQty(value)}/>
                     <View style={styles.addItemInputContainer}>
                         <TextInput
-                            placeholder={'Item name'}
+                            placeholder={t('itemName')}
                             style={styles.addItemInput}
                             value={inputName}
                             onChangeText={(value) => setInputName(value)}

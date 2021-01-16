@@ -4,6 +4,8 @@ import Search from '../screens/Search';
 import ListStack from './ListStack';
 import GroupStack from './GroupStack';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useTranslation} from 'react-i18next';
+import {Text} from 'react-native';
 
 export type AppTabsParamList = {
     Lists: undefined;
@@ -14,6 +16,8 @@ export type AppTabsParamList = {
 const Tabs = createBottomTabNavigator<AppTabsParamList>();
 
 const AppTabs = () => {
+    const {t} = useTranslation('navigation');
+
     return (
         <Tabs.Navigator
             initialRouteName={'Lists'}
@@ -28,6 +32,10 @@ const AppTabs = () => {
                         case 'Search':
                             return <Icon name={'search'} size={30} color={color}/>;
                     }
+                },
+                tabBarLabel: ({focused}) => {
+                    const color = focused ? 'tomato' : 'black';
+                    return <Text style={{color}}>{t(route.name)}</Text>;
                 }
             })}
             tabBarOptions={{
@@ -35,7 +43,7 @@ const AppTabs = () => {
                 inactiveTintColor: 'black'
             }}
         >
-            <Tabs.Screen name='Groups' component={GroupStack}/>
+            <Tabs.Screen name='Groups' component={GroupStack} />
             <Tabs.Screen name='Lists' component={ListStack}/>
             <Tabs.Screen name='Search' component={Search}/>
         </Tabs.Navigator>

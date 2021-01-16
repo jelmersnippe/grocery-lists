@@ -6,19 +6,23 @@ import {persistor, store} from './config/store';
 import AppContainer from './navigators/AppContainer';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Overlay, OverlayContextProvider} from '@jelmersnippe/flexible-overlays';
+import i18n from './config/i18n';
+import {I18nextProvider} from 'react-i18next';
 
 const App = () => {
     return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <OverlayContextProvider>
-                    <NavigationContainer>
-                        <AppContainer/>
-                    </NavigationContainer>
-                    <Overlay/>
-                </OverlayContextProvider>
-            </PersistGate>
-        </Provider>
+        <I18nextProvider i18n={i18n}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <OverlayContextProvider>
+                        <NavigationContainer>
+                            <AppContainer/>
+                        </NavigationContainer>
+                        <Overlay/>
+                    </OverlayContextProvider>
+                </PersistGate>
+            </Provider>
+        </I18nextProvider>
     );
 };
 
