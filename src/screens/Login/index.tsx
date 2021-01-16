@@ -4,8 +4,11 @@ import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
 import Button from '../../components/Button';
+import {setUser} from '../../reducers/user/actions';
+import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}: Props): JSX.Element => {
+    const dispatch = useDispatch();
     const passwordRef = useRef<TextInput>(null);
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
@@ -14,7 +17,12 @@ const Login = ({navigation}: Props): JSX.Element => {
     const login = async (email: string, password: string) => {
         if (!!emailInput && !!passwordInput) {
             try {
-                await auth().signInWithEmailAndPassword(email, password);
+                const user = await auth().signInWithEmailAndPassword(email, password);
+                dispatch(setUser({
+                    displayName: user.user.displayName ?? undefined,
+                    email: user.user.email ?? undefined,
+                    uid: user.user.uid
+                }));
             } catch (e) {
                 setError(e.code);
             }

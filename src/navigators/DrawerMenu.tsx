@@ -9,6 +9,8 @@ import {
 import AppTabs from './AppTabs';
 import Profile from '../screens/Profile';
 import auth from '@react-native-firebase/auth';
+import {resetUser} from '../reducers/user/actions';
+import {store} from '../config/store';
 
 export type DrawerMenuParamList = {
     App: undefined;
@@ -25,6 +27,7 @@ const DrawerMenuItems = (props: DrawerContentComponentProps) => {
                 label='Logout'
                 onPress={async () => {
                     await auth().signOut();
+                    store.dispatch(resetUser());
                 }}
             />
         </DrawerContentScrollView>
