@@ -5,16 +5,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column'
     },
-    title: {
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        fontSize: 36,
-        fontWeight: 'bold',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: 'black'
     },
-    listContainer: {
+    title: {
+        fontSize: 36,
+        fontWeight: 'bold'
     },
+    listContainer: {},
     listItem: {
         flexDirection: 'row',
         alignItems: 'center',

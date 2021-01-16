@@ -3,10 +3,12 @@ import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 export type FirestoreList = {
     name: string;
     creator: FirebaseFirestoreTypes.DocumentReference;
-    items: Array<{
-        name: string;
-        quantity: number;
-    }>
+    items?: { [key: string]: FirestoreListItem }
+}
+
+export type FirestoreListItem = {
+    name: string;
+    quantity: number;
 }
 
 export type FirestoreUser = {

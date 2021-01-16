@@ -11,7 +11,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
 
     useEffect(() => {
-        return firestoreListActions.subscribeToUpdates();
+        return firestoreListActions.subscribeToListUpdates();
     }, []);
 
     const renderLists = (): Array<JSX.Element> => {
@@ -24,7 +24,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                     style={styles.listItem}
                 >
                     <Text style={styles.listItemName}>{value.name}</Text>
-                    <Icon style={styles.listItemIcon} name={'caret-forward'} size={24} color={'black'} />
+                    <Icon style={styles.listItemIcon} name={'caret-forward'} size={24} color={'black'}/>
                 </TouchableOpacity>
             );
         }
@@ -34,7 +34,15 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>ListOverview</Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>ListOverview</Text>
+                <TouchableOpacity
+                    style={{marginLeft: 'auto'}}
+                    onPress={() => firestoreListActions.addList('New List')}
+                >
+                    <Icon name={'add-circle-outline'} size={40} color={'black'}/>
+                </TouchableOpacity>
+            </View>
             <ScrollView
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
