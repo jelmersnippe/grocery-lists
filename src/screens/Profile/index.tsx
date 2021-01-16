@@ -7,7 +7,12 @@ const Profile: FunctionComponent<Props> = ({}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Profile</Text>
+            {
+                __DEV__ ?
+                    <Text style={styles.title}>Profile</Text>
+                    :
+                    <Text style={styles.title}>Coming soon</Text>
+            }
         </View>
     );
 };

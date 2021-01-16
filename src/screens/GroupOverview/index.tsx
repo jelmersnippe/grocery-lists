@@ -32,8 +32,15 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>GroupOverview</Text>
-            {renderGroups()}
+            {
+                __DEV__ ?
+                    <>
+                        <Text style={styles.title}>GroupOverview</Text>
+                        {renderGroups()}
+                    </>
+                    :
+                    <Text style={styles.title}>Coming soon</Text>
+            }
         </View>
     );
 };

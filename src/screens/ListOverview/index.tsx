@@ -6,13 +6,29 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import firestoreListActions from '../../firestore/listActions';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
+import InputModal from '../../components/InputModal';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
+    const {dispatch} = useOverlayData();
 
     useEffect(() => {
         return firestoreListActions.subscribeToListUpdates();
     }, []);
+
+    const createNewList = async (name: string) => {
+        if (name === '') {
+            dispatch(resetOverlay());
+            return;
+        }
+
+        const listId = await firestoreListActions.addList(name);
+        dispatch(resetOverlay());
+        if (listId) {
+            navigation.navigate('ListDetails', {id: listId});
+        }
+    };
 
     const renderLists = (): Array<JSX.Element> => {
         const listItems: Array<JSX.Element> = [];
@@ -32,13 +48,24 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
         return listItems;
     };
 
+    const openInputModal = () => {
+        dispatch(setOverlay({
+            title: 'New list',
+            content: <InputModal
+                onSubmit={async (input: string) => createNewList(input)}
+            />,
+            wrapperStyle: {
+                width: '60%'
+            }
+        }));
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>ListOverview</Text>
                 <TouchableOpacity
-                    style={{marginLeft: 'auto'}}
-                    onPress={() => firestoreListActions.addList('New List')}
+                    onPress={() => openInputModal()}
                 >
                     <Icon name={'add-circle-outline'} size={40} color={'black'}/>
                 </TouchableOpacity>
