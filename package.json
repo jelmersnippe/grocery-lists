@@ -6,7 +6,8 @@
         "android": "react-native run-android",
         "ios": "react-native run-ios",
         "start": "react-native start",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx ./playground"
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
+        "postinstall": "cd ios && pod install && cd .."
     },
     "dependencies": {
         "@jelmersnippe/flexible-overlays": "^0.3.0",
