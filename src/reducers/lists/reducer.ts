@@ -30,6 +30,10 @@ const listsReducer = (state = initialState, action: ListsActionTypes): ListsStat
                 }
             });
         case REMOVE_LIST_ITEM:
+            if (!state[action.payload.listId]?.items) {
+                return state;
+            }
+
             return update(state, {
                 [action.payload.listId]: {
                     items: {

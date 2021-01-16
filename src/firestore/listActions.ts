@@ -38,35 +38,52 @@ const subscribeToItemUpdates = (listId: string): () => void => {
     });
 };
 
-const addList = (name: string): void => {
+const addList = async (name: string): Promise<string | undefined> => {
     const userId = store.getState().user.uid;
     if (!userId) {
         return;
     }
 
-    const userDocRef = firestore().collection('users').doc(userId);
-    firestore().collection('lists')
-        .add({
-            name: name,
-            creator: userDocRef
-        })
-        .then(() => console.log('added list'))
-        .catch((error) => console.log('error',error));
+    try {
+        const userDocRef = firestore().collection('users').doc(userId);
+        const createdList = await firestore().collection('lists')
+            .add({
+                name: name,
+                creator: userDocRef
+            });
+        return createdList.id;
+    } catch (error) {
+        console.log('error',error);
+        return undefined;
+    }
 };
 
-const removeList = (listId: string): void => {
-    firestore().collection('lists')
-        .doc(listId)
-        .delete()
-        .then(() => console.log('removed list'))
-        .catch((error) => console.log('error',error));
+const removeList = async (listId: string): Promise<void> => {
+    const listDocument = await firestore().collection('lists').doc(listId).get();
+    const listItemsQuerySnapshot = await firestore().collection(`lists/${listId}/items`).get();
+
+    const batch = firestore().batch();
+
+    listItemsQuerySnapshot.forEach((documentSnapshot) => {
+        batch.delete(documentSnapshot.ref);
+    });
+    batch.delete(listDocument.ref);
+
+    return batch.commit();
 };
 
-const addListItem = (listId: string, item: FirestoreListItem): void => {
-    firestore().collection(`lists/${listId}/items`)
-        .add(item)
-        .then(() => console.log('added list item'))
-        .catch((error) => console.log('error',error));
+const addListItem = async (listId: string, item: FirestoreListItem): Promise<string | undefined> => {
+    if (item.quantity <= 0 || item.name === '') {
+        return undefined;
+    }
+
+    try {
+        const createdListItem = await firestore().collection(`lists/${listId}/items`).add(item);
+        return createdListItem.id;
+    } catch (error) {
+        console.log('error',error);
+        return undefined;
+    }
 };
 
 const removeListItem = (listId: string, itemId: string): void => {

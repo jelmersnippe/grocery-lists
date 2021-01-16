@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 36,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        flex: 1
     },
     listContainer: {},
     listItem: {

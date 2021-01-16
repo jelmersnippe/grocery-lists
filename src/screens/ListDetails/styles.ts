@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     titleContainer: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -16,7 +17,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 36,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        width: '80%'
     },
     header: {
         flexDirection: 'row',
@@ -58,6 +60,23 @@ const styles = StyleSheet.create({
     itemName: {
         flex: 1,
         fontSize: 18
+    },
+    addItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    addItemInputContainer: {
+        flex: 1,
+        height: '100%',
+        borderWidth: 1,
+        borderColor: 'black',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10
+    },
+    addItemInput: {
+        padding: 0,
+        flex: 1
     }
 });
 
