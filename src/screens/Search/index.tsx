@@ -7,7 +7,12 @@ const Search: FunctionComponent<Props> = ({}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Search</Text>
+            {
+                __DEV__ ?
+                    <Text style={styles.title}>Search</Text>
+                    :
+                    <Text style={styles.title}>Coming soon</Text>
+            }
         </View>
     );
 };
