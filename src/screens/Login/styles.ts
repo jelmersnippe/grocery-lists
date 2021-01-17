@@ -8,10 +8,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input: {
-        borderWidth: 1,
-        borderColor: 'black',
         width: '60%',
-        padding: 10,
         marginVertical: 10
     },
     linkWrapper: {
