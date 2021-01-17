@@ -1,3 +1,5 @@
+import {FirestoreUserUid} from '../../firestore/types';
+
 export const ADD_LIST = 'ADD_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
 export const ADD_LIST_ITEM = 'ADD_LIST_ITEM';
@@ -6,8 +8,9 @@ export const RESET_LISTS = 'RESET_LISTS';
 
 export interface List {
     name: string;
-    creatorUid: string;
-    items?: { [key: string]: ListItem }
+    creatorUid: FirestoreUserUid;
+    items?: { [key: string]: ListItem };
+    users: Array<FirestoreUserUid>;
 }
 
 export interface ListItem {

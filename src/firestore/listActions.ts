@@ -1,40 +1,45 @@
 import firestore from '@react-native-firebase/firestore';
 import {FirestoreList, FirestoreListItem} from './types';
-import lists from '../reducers/lists/actions';
 import {store} from '../config/store';
 import {List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
+import {addList, addListItem, removeList, removeListItem} from '../reducers/lists/actions';
 
-const subscribeToListUpdates = (): () => void => {
-    return firestore().collection('lists').onSnapshot((querySnapshot) => {
-        querySnapshot.docChanges().forEach(async (documentChange) => {
-            const listId = documentChange.doc.id;
+export const subscribeToFirestoreListUpdates = (): () => void => {
+    const currentUserUid = store.getState().user.uid;
 
-            switch (documentChange.type) {
-                case 'removed':
-                    store.dispatch(lists.remove(listId));
-                    break;
-                default:
-                    const documentData = documentChange.doc.data() as FirestoreList;
-                    const creatorUid = documentData.creator.id;
-                    const listData: List = {
-                        name: documentData.name,
-                        creatorUid: creatorUid
-                    };
-                    store.dispatch(lists.add({id: listId, list: listData}));
-                    break;
-            }
+    return firestore()
+        .collection('lists')
+        .where('users', 'array-contains', currentUserUid)
+        .onSnapshot((querySnapshot) => {
+            querySnapshot.docChanges().forEach(async (documentChange) => {
+                const listId = documentChange.doc.id;
+
+                switch (documentChange.type) {
+                    case 'removed':
+                        store.dispatch(removeList(listId));
+                        break;
+                    default:
+                        const documentData = documentChange.doc.data() as FirestoreList;
+                        const listData: List = {
+                            name: documentData.name,
+                            creatorUid: documentData.creator,
+                            users: documentData.users
+                        };
+                        store.dispatch(addList({id: listId, list: listData}));
+                        break;
+                }
+            });
         });
-    });
 };
 
-const subscribeToItemUpdates = (listId: string): () => void => {
+export const subscribeToFirestoreListItemUpdates = (listId: string): () => void => {
     return firestore().collection(`lists/${listId}/items`).onSnapshot((querySnapshot) => {
         querySnapshot.docChanges().forEach((documentChange) => {
             const listItemId = documentChange.doc.id;
             switch (documentChange.type) {
                 case 'removed':
-                    store.dispatch(lists.removeItem({listId, listItemId}));
+                    store.dispatch(removeListItem({listId, listItemId}));
                     break;
                 default:
                     const documentData = documentChange.doc.data() as FirestoreListItem;
@@ -44,34 +49,34 @@ const subscribeToItemUpdates = (listId: string): () => void => {
                         updatedAt: new Date(documentData.updatedAt)
                     };
                     const listItem = {id: listItemId, data: listItemData};
-                    store.dispatch(lists.addItem({listId, listItem}));
+                    store.dispatch(addListItem({listId, listItem}));
                     break;
             }
         });
     });
 };
 
-const addList = async (name: string): Promise<string | undefined> => {
+export const addFirestoreList = async (name: string): Promise<string | undefined> => {
     const userId = store.getState().user.uid;
     if (!userId) {
         return;
     }
 
     try {
-        const userDocRef = firestore().collection('users').doc(userId);
-        const createdList = await firestore().collection('lists')
-            .add({
-                name: name,
-                creator: userDocRef
-            });
+        const newList: FirestoreList = {
+            name: name,
+            creator: userId,
+            users: [userId]
+        };
+        const createdList = await firestore().collection('lists').add(newList);
         return createdList.id;
     } catch (error) {
-        console.log('error',error);
+        console.log('error', error);
         return undefined;
     }
 };
 
-const removeList = async (listId: string): Promise<void> => {
+export const removeFirestoreList = async (listId: string): Promise<void> => {
     const listDocument = await firestore().collection('lists').doc(listId).get();
     const listItemsQuerySnapshot = await firestore().collection(`lists/${listId}/items`).get();
 
@@ -85,7 +90,7 @@ const removeList = async (listId: string): Promise<void> => {
     return batch.commit();
 };
 
-const addListItem = async (listId: string, item: ListItem): Promise<string | undefined> => {
+export const addFirestoreListItem = async (listId: string, item: ListItem): Promise<string | undefined> => {
     if (item.quantity <= 0 || item.name === '') {
         return undefined;
     }
@@ -97,26 +102,15 @@ const addListItem = async (listId: string, item: ListItem): Promise<string | und
         });
         return createdListItem.id;
     } catch (error) {
-        console.log('error',error);
+        console.log('error', error);
         return undefined;
     }
 };
 
-const removeListItem = (listId: string, itemId: string): void => {
+export const removeFirestoreListItem = (listId: string, itemId: string): void => {
     firestore().collection(`lists/${listId}/items`)
         .doc(itemId)
         .delete()
         .then(() => console.log('removed list item'))
-        .catch((error) => console.log('error',error));
+        .catch((error) => console.log('error', error));
 };
-
-const firestoreListActions = {
-    subscribeToListUpdates,
-    subscribeToItemUpdates,
-    addList,
-    removeList,
-    addListItem,
-    removeListItem
-};
-
-export default firestoreListActions;

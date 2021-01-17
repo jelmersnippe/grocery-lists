@@ -19,11 +19,10 @@ const Login = ({navigation}: Props): JSX.Element => {
     const login = async (email: string, password: string) => {
         if (!!emailInput && !!passwordInput) {
             try {
-                const user = await auth().signInWithEmailAndPassword(email, password);
+                const {user} = await auth().signInWithEmailAndPassword(email, password);
                 dispatch(setUser({
-                    displayName: user.user.displayName ?? undefined,
-                    email: user.user.email ?? undefined,
-                    uid: user.user.uid
+                    email: user.email ?? undefined,
+                    uid: user.uid
                 }));
             } catch (e) {
                 setError(e.code);

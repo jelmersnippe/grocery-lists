@@ -5,7 +5,6 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/Ionicons';
-import firestoreListActions from '../../firestore/listActions';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
@@ -14,6 +13,12 @@ import firestoreUserActions from '../../firestore/userActions';
 import {FirestoreUser} from '../../firestore/types';
 import moment from 'moment';
 import {useTranslation} from 'react-i18next';
+import {
+    addFirestoreListItem,
+    removeFirestoreList,
+    removeFirestoreListItem,
+    subscribeToFirestoreListItemUpdates
+} from '../../firestore/listActions';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -47,11 +52,11 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     }, [selectedList?.creatorUid]);
 
     useEffect(() => {
-        return firestoreListActions.subscribeToItemUpdates(id);
+        return subscribeToFirestoreListItemUpdates(id);
     }, []);
 
     const addItem = async () => {
-        const createdItem = await firestoreListActions.addListItem(id, {
+        const createdItem = await addFirestoreListItem(id, {
             name: inputName,
             quantity: inputQty,
             updatedAt: new Date()
@@ -80,7 +85,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                             <Icon name={'close'} size={18} color={'black'}/>
                         </View>
                         <Text style={styles.itemName}>{item.name}</Text>
-                        <TouchableOpacity onPress={() => firestoreListActions.removeListItem(id, item.uid)}>
+                        <TouchableOpacity onPress={() => removeFirestoreListItem(id, item.uid)}>
                             <Icon name={'trash'} size={26} color={'tomato'}/>
                         </TouchableOpacity>
                     </View>
@@ -120,7 +125,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                 {
                                     text: t('common:delete'),
                                     onPress: async () => {
-                                        await firestoreListActions.removeList(id);
+                                        await removeFirestoreList(id);
                                         navigation.popToTop();
                                     },
                                     textStyle: {

@@ -1,9 +1,10 @@
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+export type FirestoreUserUid = string
 
 export type FirestoreList = {
     name: string;
-    creator: FirebaseFirestoreTypes.DocumentReference;
+    creator: FirestoreUserUid;
     items?: { [key: string]: FirestoreListItem }
+    users: Array<FirestoreUserUid>;
 }
 
 export type FirestoreListItem = {
@@ -18,5 +19,5 @@ export type FirestoreUser = {
 
 export type FirestoreGroup = {
     name: string;
-    users: Array<FirebaseFirestoreTypes.DocumentReference>;
+    users: Array<FirestoreUserUid>;
 }

@@ -12,6 +12,8 @@ import auth from '@react-native-firebase/auth';
 import {resetUser} from '../reducers/user/actions';
 import {store} from '../config/store';
 import {useTranslation} from 'react-i18next';
+import {resetGroups} from '../reducers/groups/actions';
+import {resetLists} from '../reducers/lists/actions';
 
 export type DrawerMenuParamList = {
     App: undefined;
@@ -30,6 +32,8 @@ const DrawerMenuItems = (props: DrawerContentComponentProps) => {
                 label={t('Logout')}
                 onPress={async () => {
                     await auth().signOut();
+                    store.dispatch(resetGroups());
+                    store.dispatch(resetLists());
                     store.dispatch(resetUser());
                 }}
             />

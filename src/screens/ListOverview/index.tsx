@@ -4,11 +4,11 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import firestoreListActions from '../../firestore/listActions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/InputModal';
 import {useTranslation} from 'react-i18next';
+import {addFirestoreList, subscribeToFirestoreListUpdates} from '../../firestore/listActions';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
@@ -16,7 +16,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const {t} = useTranslation('lists');
 
     useEffect(() => {
-        return firestoreListActions.subscribeToListUpdates();
+        return subscribeToFirestoreListUpdates();
     }, []);
 
     const createNewList = async (name: string) => {
@@ -25,7 +25,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
             return;
         }
 
-        const listId = await firestoreListActions.addList(name);
+        const listId = await addFirestoreList(name);
         dispatch(resetOverlay());
         if (listId) {
             navigation.navigate('ListDetails', {id: listId});
