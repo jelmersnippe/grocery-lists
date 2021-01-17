@@ -54,6 +54,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
         dispatch(setOverlay({
             title: t('newList'),
             content: <InputModal
+                buttonLabel={t('common:create')}
                 onSubmit={async (input: string) => createNewList(input)}
             />,
             wrapperStyle: {

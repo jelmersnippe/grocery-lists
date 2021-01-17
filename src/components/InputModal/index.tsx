@@ -4,9 +4,9 @@ import {Props} from './props';
 import styles from './styles';
 import Button from '../Button';
 
-const InputModal: FunctionComponent<Props> = ({onSubmit}) => {
+const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, onSubmit}) => {
     const inputRef = useRef<TextInput>(null);
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState(defaultValue ?? '');
 
     useEffect(() => {
         setTimeout(() => {
@@ -26,7 +26,7 @@ const InputModal: FunctionComponent<Props> = ({onSubmit}) => {
                 ref={inputRef}
             />
             <Button
-                text={'Create'}
+                text={buttonLabel}
                 onPress={() => onSubmit(input)}
             />
         </>
