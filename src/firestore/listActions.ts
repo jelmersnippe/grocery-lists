@@ -76,6 +76,12 @@ export const addFirestoreList = async (name: string): Promise<string | undefined
     }
 };
 
+export const updateFirestoreList = (listId: string, updatedName: string): void => {
+    firestore().collection('lists').doc(listId).update({name: updatedName})
+        .then(() => console.log('updated list item'))
+        .catch((error) => console.log('error', error));
+};
+
 export const removeFirestoreList = async (listId: string): Promise<void> => {
     const listDocument = await firestore().collection('lists').doc(listId).get();
     const listItemsQuerySnapshot = await firestore().collection(`lists/${listId}/items`).get();

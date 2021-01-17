@@ -5,7 +5,7 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
+import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import {List} from '../../reducers/lists/types';
@@ -15,10 +15,11 @@ import moment from 'moment';
 import {useTranslation} from 'react-i18next';
 import {
     addFirestoreListItem,
-    removeFirestoreList,
     removeFirestoreListItem,
-    subscribeToFirestoreListItemUpdates
+    subscribeToFirestoreListItemUpdates,
+    updateFirestoreList
 } from '../../firestore/listActions';
+import InputModal from '../../components/InputModal';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -96,53 +97,45 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         return listItems;
     };
 
+    const updateList = (listId: string, updatedName: string) => {
+        if (updatedName === '' || updatedName === selectedList?.name) {
+            dispatch(resetOverlay());
+            return;
+        }
+
+        updateFirestoreList(listId, updatedName);
+        dispatch(resetOverlay());
+    };
+
     return (
         selectedList ?
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
+                            <TouchableOpacity
+                                style={{marginLeft: 5}}
+                                onPress={() => {
+                                    dispatch(setOverlay({
+                                        content: <InputModal
+                                            defaultValue={selectedList.name}
+                                            onSubmit={async (input: string) => updateList(id, input)}
+                                            buttonLabel={t('common:update')}
+                                        />,
+                                        wrapperStyle: {
+                                            width: '60%'
+                                        }
+                                    }));
+                                }}
+                            >
+                                <Icon name={'create-outline'} size={30} color={'black'}/>
+                            </TouchableOpacity>
+                        </View>
                         {creator && <Text>{t('createdBy', {
                             creator: creator.name
                         })}</Text>}
                     </View>
-                    <TouchableOpacity onPress={() => {
-                        dispatch(setOverlay({
-                            title: t('deleteListTitle', {
-                                listName: selectedList.name
-                            }),
-                            text: t('deleteListText'),
-                            buttons: [
-                                {
-                                    text: t('common:cancel'),
-                                    textStyle: {
-                                        color: 'black'
-                                    },
-                                    style: {
-                                        borderColor: 'black'
-                                    }
-                                },
-                                {
-                                    text: t('common:delete'),
-                                    onPress: async () => {
-                                        await removeFirestoreList(id);
-                                        navigation.popToTop();
-                                    },
-                                    textStyle: {
-                                        color: 'red'
-                                    },
-                                    style: {
-                                        borderColor: 'red'
-                                    }
-                                }
-                            ],
-                            buttonStyle: {
-                                marginHorizontal: 10
-                            }
-                        }));
-                    }}>
-                        <Icon name={'trash'} size={30} color={'tomato'}/>
-                    </TouchableOpacity>
                 </View>
                 <ScrollView
                     alwaysBounceVertical={false}

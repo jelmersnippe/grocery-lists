@@ -5,7 +5,10 @@ const resources = {
     en: {
         common: {
             ok: 'Ok',
+            save: 'Save',
             cancel: 'Cancel',
+            create: 'Create',
+            update: 'Update',
             delete: 'Delete'
         },
         auth: {
@@ -33,14 +36,18 @@ const resources = {
             createdBy: 'Created by: {{creator}}',
             itemName: 'Item',
             deleteListTitle: 'Delete \'{{listName}}\'',
-            deleteListText: 'Are you sure you want to delete this list?'
+            deleteListText: 'Are you sure you want to delete this list?',
+            users: 'Users'
         }
     },
     nl: {
         common: {
             ok: 'Ok',
+            save: 'Opslaan',
             cancel: 'Annuleer',
-            delete: 'Verwijder'
+            create: 'Aanmaken',
+            update: 'Wijzigen',
+            delete: 'Verwijderen'
         },
         auth: {
             email: 'Email',
@@ -67,7 +74,8 @@ const resources = {
             createdBy: 'Aangemaakt door: {{creator}}',
             itemName: 'Product',
             deleteListTitle: 'Verwijder \'{{listName}}\'',
-            deleteListText: 'Weet je zeker dat je deze lijst wilt verwijderen?'
+            deleteListText: 'Weet je zeker dat je deze lijst wilt verwijderen?',
+            users: 'Gebruikers'
         }
     }
 };
