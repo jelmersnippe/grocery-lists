@@ -20,6 +20,7 @@ import {
     updateFirestoreList
 } from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
+import UserModal from '../../components/UserModal';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -136,6 +137,22 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                             creator: creator.name
                         })}</Text>}
                     </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            dispatch(setOverlay({
+                                title: t('users'),
+                                content: <UserModal
+                                    listId={id}
+                                />,
+                                wrapperStyle: {
+                                    width: '60%',
+                                    height: '60%'
+                                }
+                            }));
+                        }}
+                    >
+                        <Icon name={'people'} size={36} color={'black'}/>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView
                     alwaysBounceVertical={false}
