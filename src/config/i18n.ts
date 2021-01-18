@@ -31,7 +31,7 @@ const resources = {
             Profile: 'Profile',
             Logout: 'Logout'
         },
-        lists:  {
+        lists: {
             title: 'Your lists',
             newList: 'New list',
             createdBy: 'Created by: {{creator}}',
@@ -70,7 +70,7 @@ const resources = {
             Profile: 'Profiel',
             Logout: 'Uitloggen'
         },
-        lists:  {
+        lists: {
             title: 'Jouw lijsten',
             newList: 'Nieuwe lijst',
             createdBy: 'Aangemaakt door: {{creator}}',

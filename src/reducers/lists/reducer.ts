@@ -1,4 +1,4 @@
-import {List, ADD_LIST, ADD_LIST_ITEM, REMOVE_LIST, REMOVE_LIST_ITEM, RESET_LISTS} from './types';
+import {ADD_LIST, ADD_LIST_ITEM, List, REMOVE_LIST, REMOVE_LIST_ITEM, RESET_LISTS} from './types';
 import {ListsActionTypes} from './actions';
 import update from 'immutability-helper';
 

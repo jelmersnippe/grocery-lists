@@ -131,11 +131,11 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                             </TouchableOpacity>
                         </View>
                         {creator &&
-                            <Text>
-                                {t('createdBy', {
-                                    creator: creator.name
-                                })}
-                            </Text>
+                        <Text>
+                            {t('createdBy', {
+                                creator: creator.name
+                            })}
+                        </Text>
                         }
                     </View>
                     <TouchableOpacity

@@ -15,12 +15,12 @@ const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, cont
         <View style={[styles.container, containerStyle]}>
             <Text style={styles.name}>{user.name}{user.uid === currentUserId && ` (${t('common:you')})`}</Text>
             {user.uid !== currentUserId &&
-                <TouchableOpacity
-                    style={styles.iconButton}
-                    onPress={() => action(user.uid)}
-                >
-                    <Icon name={icon} size={26} style={{color: iconColor}}/>
-                </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => action(user.uid)}
+            >
+                <Icon name={icon} size={26} style={{color: iconColor}}/>
+            </TouchableOpacity>
             }
         </View>
     );

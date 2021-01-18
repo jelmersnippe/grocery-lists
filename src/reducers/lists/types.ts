@@ -31,12 +31,12 @@ export interface RemoveListAction {
 
 export interface AddListItemAction {
     type: typeof ADD_LIST_ITEM;
-    payload: {listId: string, listItem: { id: string, data: ListItem }}
+    payload: { listId: string, listItem: { id: string, data: ListItem } }
 }
 
 export interface RemoveListItemAction {
     type: typeof REMOVE_LIST_ITEM;
-    payload: {listId: string, listItemId: string}
+    payload: { listId: string, listItemId: string }
 }
 
 export interface ResetListsAction {

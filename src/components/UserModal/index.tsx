@@ -80,7 +80,6 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
         } else if (!usersToRemove.includes(uid)) {
             setUsersToRemove([...usersToRemove, uid]);
         }
-        console.log(usersToRemove);
     };
 
     const addUser = (user: User) => {
@@ -90,7 +89,6 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
             setUsersToAdd([...usersToAdd, user.uid]);
             setUsers([...users, user]);
         }
-        console.log(usersToAdd);
     };
 
     const saveUserChanges = async () => {

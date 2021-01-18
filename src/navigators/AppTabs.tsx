@@ -43,7 +43,7 @@ const AppTabs = () => {
                 inactiveTintColor: 'black'
             }}
         >
-            <Tabs.Screen name='Groups' component={GroupStack} />
+            <Tabs.Screen name='Groups' component={GroupStack}/>
             <Tabs.Screen name='Lists' component={ListStack}/>
             <Tabs.Screen name='Search' component={Search}/>
         </Tabs.Navigator>
