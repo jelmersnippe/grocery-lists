@@ -7,12 +7,12 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
 
-const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action}) => {
+const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const {t} = useTranslation();
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
             <Text style={styles.name}>{user.name}{user.uid === currentUserId && ` (${t('common:you')})`}</Text>
             {user.uid !== currentUserId &&
                 <TouchableOpacity

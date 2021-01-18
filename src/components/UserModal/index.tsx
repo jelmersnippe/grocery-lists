@@ -18,6 +18,8 @@ import {User} from '../../reducers/userCache/types';
 const UserModal: FunctionComponent<Props> = ({listId}) => {
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(listId) ? rootState.lists[listId] : undefined);
     const [users, setUsers] = useState<Array<User>>([]);
+    const [userUids, setUserUids] = useState<Array<FirestoreUserUid>>([]);
+
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
     const [usersToRemove, setUsersToRemove] = useState<Array<FirestoreUserUid>>([]);
     const [searchUsers, setSearchUsers] = useState<Array<User>>([]);
@@ -36,9 +38,34 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
                     }
                 }
                 setUsers(userList);
+                setUserUids(userList.map((user) => user.uid));
             }
         })();
     }, [selectedList]);
+
+    const renderUserItem = (user: User) => {
+        const toBeAdded = usersToAdd.includes(user.uid);
+        const toBeRemoved = usersToRemove.includes(user.uid);
+        const removable = toBeAdded || (userUids.includes(user.uid) && !toBeRemoved);
+
+        return (
+            <UserItem
+                key={user.uid}
+                user={user}
+                icon={removable ? 'trash' : 'add'}
+                iconColor={removable ? 'tomato' : 'black'}
+                action={(uid: string) => {
+                    removable
+                        ? removeUser(uid)
+                        : addUser(user);
+                }}
+                containerStyle={{
+                    opacity: toBeRemoved ? 0.4 : 1,
+                    backgroundColor: toBeAdded ? 'lime' : toBeRemoved ? 'tomato' : 'lightgray'
+                }}
+            />
+        );
+    };
 
     const searchForUsers = async (searchString: string) => {
         const foundUsers = await firestoreUserActions.search(searchString);
@@ -46,13 +73,14 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
     };
 
     const removeUser = (uid: string) => {
-        const newUsers = users.filter((user) => user.uid !== uid);
         if (usersToAdd.includes(uid)) {
             setUsersToAdd([...usersToAdd.filter((id) => id !== uid)]);
-        } else {
+            const newUsers = users.filter((user) => user.uid !== uid);
+            setUsers([...newUsers]);
+        } else if (!usersToRemove.includes(uid)) {
             setUsersToRemove([...usersToRemove, uid]);
         }
-        setUsers([...newUsers]);
+        console.log(usersToRemove);
     };
 
     const addUser = (user: User) => {
@@ -60,14 +88,13 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
             setUsersToRemove([...usersToRemove.filter((id) => id !== user.uid)]);
         } else {
             setUsersToAdd([...usersToAdd, user.uid]);
+            setUsers([...users, user]);
         }
-        setUsers([...users, user]);
+        console.log(usersToAdd);
     };
 
     const saveUserChanges = async () => {
-        await addUsersToFirestoreList(listId, usersToAdd, usersToRemove)
-            .then(() => console.log('Users changed'))
-            .catch((error) => console.log('error', error));
+        await addUsersToFirestoreList(listId, usersToAdd, usersToRemove);
         dispatch(resetOverlay());
     };
 
@@ -81,15 +108,7 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
                 >
                     <TouchableOpacity activeOpacity={1}>
                         {
-                            users.map((user) => (
-                                <UserItem
-                                    key={user.uid}
-                                    user={user}
-                                    icon={'trash'}
-                                    iconColor={'tomato'}
-                                    action={(uid: string) => removeUser(uid)}
-                                />
-                            ))
+                            users.map((user) => renderUserItem(user))
                         }
                     </TouchableOpacity>
                 </ScrollView>
@@ -102,19 +121,7 @@ const UserModal: FunctionComponent<Props> = ({listId}) => {
                     >
                         <TouchableOpacity activeOpacity={1}>
                             {
-                                searchUsers.map((user) => (
-                                    <UserItem
-                                        key={user.uid}
-                                        user={user}
-                                        icon={users.find((joinedUser) => joinedUser.uid === user.uid) ? 'trash' : 'add'}
-                                        iconColor={users.find((joinedUser) => joinedUser.uid === user.uid) ? 'tomato' : 'lime'}
-                                        action={(uid: string) => {
-                                            users.find((joinedUser) => joinedUser.uid === user.uid)
-                                                ? removeUser(uid)
-                                                : addUser(user);
-                                        }}
-                                    />
-                                ))
+                                searchUsers.map((user) => renderUserItem(user))
                             }
                         </TouchableOpacity>
                     </ScrollView>

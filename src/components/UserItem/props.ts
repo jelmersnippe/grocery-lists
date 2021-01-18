@@ -1,4 +1,4 @@
-import {ColorValue} from 'react-native';
+import {ColorValue, ViewStyle} from 'react-native';
 import {User} from '../../reducers/userCache/types';
 
 export interface Props {
@@ -6,4 +6,5 @@ export interface Props {
     icon: string;
     iconColor: ColorValue;
     action: (uid: string) => void;
+    containerStyle?: ViewStyle;
 }
