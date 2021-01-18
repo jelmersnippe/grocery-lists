@@ -14,6 +14,7 @@ import {store} from '../config/store';
 import {useTranslation} from 'react-i18next';
 import {resetGroups} from '../reducers/groups/actions';
 import {resetLists} from '../reducers/lists/actions';
+import {resetUserCache} from '../reducers/userCache/actions';
 
 export type DrawerMenuParamList = {
     App: undefined;
@@ -28,6 +29,13 @@ const DrawerMenuItems = (props: DrawerContentComponentProps) => {
     return (
         <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
+            {
+                __DEV__ &&
+                <DrawerItem
+                    label={t('Clear user cache')}
+                    onPress={() => store.dispatch(resetUserCache())}
+                />
+            }
             <DrawerItem
                 label={t('Logout')}
                 onPress={async () => {
