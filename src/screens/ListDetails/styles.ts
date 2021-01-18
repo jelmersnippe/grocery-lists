@@ -15,12 +15,17 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: 'black'
     },
-    titleContainer: {
+    headerTextContainer: {
         width: '80%'
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     title: {
         fontSize: 36,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginRight: 'auto'
     },
     item: {
         flexDirection: 'row',

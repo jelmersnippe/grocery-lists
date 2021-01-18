@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreList, FirestoreListItem} from './types';
+import {FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
 import {store} from '../config/store';
 import {List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
@@ -52,6 +52,24 @@ export const subscribeToFirestoreListItemUpdates = (listId: string): () => void 
                     store.dispatch(addListItem({listId, listItem}));
                     break;
             }
+        });
+    });
+};
+
+export const addUsersToFirestoreList = async (listId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
+    const listUsersRef = firestore().doc(`lists/${listId}`);
+
+    return firestore().runTransaction(async (transaction) => {
+        const listUsersSnapshot = await transaction.get(listUsersRef);
+
+        if (!listUsersSnapshot.exists) {
+            throw 'List users don\'t exists';
+        }
+
+        const listData = listUsersSnapshot.data() as FirestoreList;
+        const newListUsers = listData.users.filter((user) => !usersToRemove.includes(user));
+        await transaction.update(listUsersRef, {
+            users: [...newListUsers, ...usersToAdd]
         });
     });
 };

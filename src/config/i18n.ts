@@ -9,7 +9,8 @@ const resources = {
             cancel: 'Cancel',
             create: 'Create',
             update: 'Update',
-            delete: 'Delete'
+            delete: 'Delete',
+            you: 'You'
         },
         auth: {
             email: 'Email',
@@ -47,7 +48,8 @@ const resources = {
             cancel: 'Annuleer',
             create: 'Aanmaken',
             update: 'Wijzigen',
-            delete: 'Verwijderen'
+            delete: 'Verwijderen',
+            you: 'Jij'
         },
         auth: {
             email: 'Email',

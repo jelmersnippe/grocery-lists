@@ -10,7 +10,6 @@ import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import {List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
-import {FirestoreUser} from '../../firestore/types';
 import moment from 'moment';
 import {useTranslation} from 'react-i18next';
 import {
@@ -21,12 +20,13 @@ import {
 } from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
 import UserModal from '../../components/UserModal';
+import {UserInfo} from '../../reducers/userCache/types';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
     const {id} = route.params;
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
-    const [creator, setCreator] = useState<FirestoreUser | undefined>(undefined);
+    const [creator, setCreator] = useState<UserInfo | undefined>(undefined);
 
     const [inputQty, setInputQty] = useState(0);
     const [inputName, setInputName] = useState('');
@@ -45,10 +45,8 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         const creatorUid = selectedList?.creatorUid;
         if (creatorUid) {
             (async () => {
-                const creatorUser = await firestoreUserActions.getByUid(creatorUid);
-                if (creatorUser) {
-                    setCreator(creatorUser);
-                }
+                const creatorUserInfo = await firestoreUserActions.getByUid(creatorUid);
+                setCreator(creatorUserInfo);
             })();
         }
     }, [selectedList?.creatorUid]);
@@ -112,11 +110,10 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         selectedList ?
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <View style={styles.titleContainer}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.headerTextContainer}>
+                        <View style={styles.titleContainer}>
                             <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
                             <TouchableOpacity
-                                style={{marginLeft: 5}}
                                 onPress={() => {
                                     dispatch(setOverlay({
                                         content: <InputModal
@@ -133,9 +130,13 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                 <Icon name={'create-outline'} size={30} color={'black'}/>
                             </TouchableOpacity>
                         </View>
-                        {creator && <Text>{t('createdBy', {
-                            creator: creator.name
-                        })}</Text>}
+                        {creator &&
+                            <Text>
+                                {t('createdBy', {
+                                    creator: creator.name
+                                })}
+                            </Text>
+                        }
                     </View>
                     <TouchableOpacity
                         onPress={() => {
@@ -145,8 +146,8 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                     listId={id}
                                 />,
                                 wrapperStyle: {
-                                    width: '60%',
-                                    height: '60%'
+                                    width: '80%',
+                                    height: '80%'
                                 }
                             }));
                         }}

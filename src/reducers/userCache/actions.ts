@@ -1,9 +1,16 @@
-import {ADD_CACHED_USER, AddCachedUserAction, REMOVE_CACHED_USER, RemoveCachedUser, RESET_USER_CACHE, ResetUserCacheAction} from './types';
-import {FirestoreUser} from '../../firestore/types';
+import {
+    ADD_CACHED_USER,
+    AddCachedUserAction,
+    REMOVE_CACHED_USER,
+    RemoveCachedUser,
+    RESET_USER_CACHE,
+    ResetUserCacheAction,
+    User
+} from './types';
 
 export type UserActionTypes = AddCachedUserAction | RemoveCachedUser | ResetUserCacheAction
 
-export const addCachedUser = (payload: {id: string, user: FirestoreUser, timestamp: Date}): UserActionTypes => {
+export const addCachedUser = (payload: {user: User, timestamp: Date}): UserActionTypes => {
     return {
         type: ADD_CACHED_USER,
         payload: payload
