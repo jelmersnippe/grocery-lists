@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
@@ -14,14 +14,28 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     // const emailRef = useRef<TextInput>(null);
     // const passwordRef = useRef<TextInput>(null);
     const [displayNameInput, setDisplayNameInput] = useState('');
+    const [displayNameError, setDisplayNameError] = useState('');
+
     const [emailInput, setEmailInput] = useState('');
+    const [emailError, setEmailError] = useState('');
+
     const [passwordInput, setPasswordInput] = useState('');
-    const [error, setError] = useState<string | null>(null);
+    const [passwordError, setPasswordError] = useState('');
+
+    const [error, setError] = useState('');
     const {t} = useTranslation('auth');
     const dispatch = useDispatch();
 
     const createAccount = async (email: string, password: string) => {
-        if (!!displayNameInput && !!emailInput && !!passwordInput) {
+        let newDisplayNameError = '';
+        let newEmailError = '';
+        let newPasswordError = '';
+
+        const validEmail = emailInput.match('^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$');
+        const validPassword = passwordInput.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$');
+        const validDisplayName = !!displayNameInput;
+
+        if (validEmail && validPassword && validDisplayName) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
                 await firestore().collection('users').doc(result.user.uid).set({
@@ -32,51 +46,73 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 setError(e.code);
             }
         } else {
-            setError('Hey! You missed a spot..');
+            if (!validEmail) {
+                newEmailError = 'Invalid email';
+            }
+            if (!validPassword) {
+                newPasswordError = 'Invalid password. Make sure it contains atleast:\n - one uppercase letter\n - one lower case letter\n - one number\n - one character in: @$!%*?&';
+            }
+            if (!validDisplayName) {
+                newDisplayNameError = 'Invalid display name';
+            }
         }
+
+        setDisplayNameError(newDisplayNameError);
+        setEmailError(newEmailError);
+        setPasswordError(newPasswordError);
     };
 
     return (
-        <View style={styles.container}>
-            <CustomTextInput
-                label={t('displayName')}
-                containerStyle={styles.input}
-                value={displayNameInput}
-                onChangeText={setDisplayNameInput}
-                placeholder={t('displayName')}
-                // onSubmitEditing={() => emailRef.current?.focus()}
-                returnKeyType={'next'}
-                blurOnSubmit={false}
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-            />
-            <CustomTextInput
-                label={t('email')}
-                containerStyle={styles.input}
-                value={emailInput}
-                onChangeText={setEmailInput}
-                placeholder={t('email')}
-                // onSubmitEditing={() => passwordRef.current?.focus()}
-                returnKeyType={'next'}
-                blurOnSubmit={false}
-                keyboardType={'email-address'}
-                autoCapitalize={'none'}
-                // ref={emailRef}
-            />
-            <CustomTextInput
-                label={t('password')}
-                containerStyle={styles.input}
-                value={passwordInput}
-                onChangeText={setPasswordInput}
-                secureTextEntry={true}
-                placeholder={t('password')}
-                onSubmitEditing={() => createAccount(emailInput, passwordInput)}
-                returnKeyType={'go'}
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-                // ref={passwordRef}
-            />
-            {error && <Text style={styles.error}>Error: {error}</Text>}
+        <ScrollView
+            style={{width: '100%'}}
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.input}>
+                <CustomTextInput
+                    label={t('displayName')}
+                    value={displayNameInput}
+                    onChangeText={setDisplayNameInput}
+                    placeholder={t('displayName')}
+                    // onSubmitEditing={() => emailRef.current?.focus()}
+                    returnKeyType={'next'}
+                    blurOnSubmit={false}
+                    keyboardType={'default'}
+                    autoCapitalize={'none'}
+                />
+                {!!displayNameError && <Text style={styles.error}>{displayNameError}</Text>}
+            </View>
+            <View style={styles.input}>
+                <CustomTextInput
+                    label={t('email')}
+                    value={emailInput}
+                    onChangeText={setEmailInput}
+                    placeholder={t('email')}
+                    // onSubmitEditing={() => passwordRef.current?.focus()}
+                    returnKeyType={'next'}
+                    blurOnSubmit={false}
+                    keyboardType={'email-address'}
+                    autoCapitalize={'none'}
+                    // ref={emailRef}
+                />
+                {!!emailError && <Text style={styles.error}>{emailError}</Text>}
+            </View>
+            <View style={styles.input}>
+                <CustomTextInput
+                    label={t('password')}
+                    value={passwordInput}
+                    onChangeText={setPasswordInput}
+                    secureTextEntry={true}
+                    placeholder={t('password')}
+                    onSubmitEditing={() => createAccount(emailInput, passwordInput)}
+                    returnKeyType={'go'}
+                    keyboardType={'default'}
+                    autoCapitalize={'none'}
+                    // ref={passwordRef}
+                />
+                {!!passwordError && <Text style={styles.error}>{passwordError}</Text>}
+            </View>
+            {!!error && <Text style={styles.error}>{error}</Text>}
             <Button
                 onPress={() => createAccount(emailInput, passwordInput)}
                 text={t('createAccount')}
@@ -88,7 +124,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             >
                 <Text style={styles.link}>{t('toLogin')}</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 };
 

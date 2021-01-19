@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
@@ -34,7 +34,11 @@ const Login = ({navigation}: Props): JSX.Element => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView
+            style={{width: '100%'}}
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+        >
             <CustomTextInput
                 label={t('email')}
                 containerStyle={styles.input}
@@ -71,7 +75,7 @@ const Login = ({navigation}: Props): JSX.Element => {
             >
                 <Text style={styles.link}>{t('toCreateAccount')}</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 };
 
