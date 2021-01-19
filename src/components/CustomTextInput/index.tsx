@@ -3,7 +3,6 @@ import {Text, TextInput, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 
-// TODO: Implement forwardRef
 const CustomTextInput = forwardRef<TextInput, Props>(({containerStyle, label, labelStyle, ...props}, ref) => {
     return (
         <View style={[styles.container, containerStyle]}>
@@ -11,7 +10,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(({containerStyle, label, la
             <TextInput
                 {...props}
                 style={[styles.input, props.style]}
-                ref={ref}
+                ref={ref ?? null}
             />
         </View>
     );
