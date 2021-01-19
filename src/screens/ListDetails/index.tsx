@@ -8,15 +8,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
-import {List} from '../../reducers/lists/types';
+import {ItemStatus, List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
 import moment from 'moment';
 import {useTranslation} from 'react-i18next';
 import {
     addFirestoreListItem,
-    removeFirestoreListItem,
     subscribeToFirestoreListItemUpdates,
-    updateFirestoreList
+    updateFirestoreList,
+    updateFirestoreListItem
 } from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
 import UserModal from '../../components/UserModal';
@@ -59,8 +59,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const addItem = async () => {
         const createdItem = await addFirestoreListItem(id, {
             name: inputName,
-            quantity: inputQty,
-            updatedAt: new Date()
+            quantity: inputQty
         });
         if (createdItem) {
             setInputName('');
@@ -72,6 +71,10 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         const items = list?.items;
 
         if (items) {
+            // TODO:
+            // Seperate DONE and TODO items before sorting
+            // So we can show the DONE items above the TODO items,
+            // and have both lists in order of updatedAt
             const sortedItems = Object.keys(items)
                 .map((key) => ({
                     ...items[key],
@@ -80,14 +83,18 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 .sort((a, b) => moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf());
             for (const item of sortedItems) {
                 listItems.push(
+                    // TODO:
+                    // Make seperate ListItem component so we can use hooks
+                    // Need to add an opened/closed state where we can put
+                    // More info and actions, such as delete
                     <View key={item.uid} style={styles.item}>
                         <View style={styles.itemQuantity}>
                             <Text style={styles.itemQuantityText}>{item.quantity}</Text>
                             <Icon name={'close'} size={18} color={'black'}/>
                         </View>
                         <Text style={styles.itemName}>{item.name}</Text>
-                        <TouchableOpacity onPress={() => removeFirestoreListItem(id, item.uid)}>
-                            <Icon name={'trash'} size={26} color={'tomato'}/>
+                        <TouchableOpacity onPress={() => updateFirestoreListItem(id, item.uid, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}>
+                            <Icon name={item.status === ItemStatus.TODO ? 'checkbox-outline' : 'checkbox'} size={26} color={'black'}/>
                         </TouchableOpacity>
                     </View>
                 );

@@ -1,3 +1,5 @@
+import {ItemStatus} from '../reducers/lists/types';
+
 export type FirestoreUserUid = string
 
 export type FirestoreList = {
@@ -10,6 +12,8 @@ export type FirestoreList = {
 export type FirestoreListItem = {
     name: string;
     quantity: number;
+    status: ItemStatus;
+    addedBy: FirestoreUserUid;
     updatedAt: number;
 }
 

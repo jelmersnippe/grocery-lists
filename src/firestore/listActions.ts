@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import {FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
 import {store} from '../config/store';
-import {List, ListItem} from '../reducers/lists/types';
+import {ItemStatus, List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
 import {addList, addListItem, removeList, removeListItem} from '../reducers/lists/actions';
 
@@ -34,6 +34,12 @@ export const subscribeToFirestoreListUpdates = (): () => void => {
 };
 
 export const subscribeToFirestoreListItemUpdates = (listId: string): () => void => {
+    const currentUserUid = store.getState().user.uid;
+
+    if (!currentUserUid) {
+        throw new Error('No current user');
+    }
+
     return firestore().collection(`lists/${listId}/items`).onSnapshot((querySnapshot) => {
         querySnapshot.docChanges().forEach((documentChange) => {
             const listItemId = documentChange.doc.id;
@@ -46,6 +52,8 @@ export const subscribeToFirestoreListItemUpdates = (listId: string): () => void 
                     const listItemData: ListItem = {
                         name: documentData.name,
                         quantity: documentData.quantity,
+                        status: documentData.status,
+                        addedBy: documentData.addedBy,
                         updatedAt: new Date(documentData.updatedAt)
                     };
                     const listItem = {id: listItemId, data: listItemData};
@@ -114,20 +122,38 @@ export const removeFirestoreList = async (listId: string): Promise<void> => {
     return batch.commit();
 };
 
-export const addFirestoreListItem = async (listId: string, item: ListItem): Promise<string | undefined> => {
-    if (item.quantity <= 0 || item.name === '') {
+export const addFirestoreListItem = async (listId: string, item: {name: string, quantity: number}): Promise<string | undefined> => {
+    const userId = store.getState().user.uid;
+    if (!userId || item.quantity <= 0 || item.name === '') {
         return undefined;
     }
 
     try {
-        const createdListItem = await firestore().collection(`lists/${listId}/items`).add({
+        const newListItem: FirestoreListItem = {
             ...item,
-            updatedAt: moment(item.updatedAt).valueOf()
-        });
+            status: ItemStatus.TODO,
+            addedBy: userId,
+            updatedAt: moment(new Date()).valueOf()
+        };
+        const createdListItem = await firestore().collection(`lists/${listId}/items`).add(newListItem);
         return createdListItem.id;
     } catch (error) {
         console.log('error', error);
         return undefined;
+    }
+};
+
+export const updateFirestoreListItem = async (listId: string, itemId: string, updates: Partial<ListItem>): Promise<void> => {
+    if (!updates) {
+        return;
+    }
+
+    try {
+        return await firestore().collection(`lists/${listId}/items`).doc(itemId)
+            .update({...updates, updatedAt: moment(new Date()).valueOf()});
+    } catch (error) {
+        console.log('error', error);
+        return;
     }
 };
 

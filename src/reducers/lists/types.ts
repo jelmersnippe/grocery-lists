@@ -6,6 +6,11 @@ export const ADD_LIST_ITEM = 'ADD_LIST_ITEM';
 export const REMOVE_LIST_ITEM = 'REMOVE_LIST_ITEM';
 export const RESET_LISTS = 'RESET_LISTS';
 
+export enum ItemStatus {
+    TODO = 'TODO',
+    DONE = 'DONE'
+}
+
 export interface List {
     name: string;
     creatorUid: FirestoreUserUid;
@@ -13,10 +18,13 @@ export interface List {
     users: Array<FirestoreUserUid>;
 }
 
+// Probably add a 'completedAt' timestamp
 export interface ListItem {
     name: string;
     quantity: number;
+    status: ItemStatus;
     updatedAt: Date;
+    addedBy: FirestoreUserUid;
 }
 
 export interface AddListAction {
