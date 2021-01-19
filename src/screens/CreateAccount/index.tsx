@@ -1,5 +1,5 @@
-import React, {FunctionComponent, useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import React, {FunctionComponent, useRef, useState} from 'react';
+import {ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
@@ -11,8 +11,8 @@ import {useTranslation} from 'react-i18next';
 import CustomTextInput from '../../components/CustomTextInput';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
-    // const emailRef = useRef<TextInput>(null);
-    // const passwordRef = useRef<TextInput>(null);
+    const emailRef = useRef<TextInput>(null);
+    const passwordRef = useRef<TextInput>(null);
     const [displayNameInput, setDisplayNameInput] = useState('');
     const [displayNameError, setDisplayNameError] = useState('');
 
@@ -74,11 +74,11 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     value={displayNameInput}
                     onChangeText={setDisplayNameInput}
                     placeholder={t('displayName')}
-                    // onSubmitEditing={() => emailRef.current?.focus()}
+                    onSubmitEditing={() => emailRef.current?.focus()}
                     returnKeyType={'next'}
                     blurOnSubmit={false}
                     keyboardType={'default'}
-                    autoCapitalize={'none'}
+                    autoCapitalize={'words'}
                 />
                 {!!displayNameError && <Text style={styles.error}>{displayNameError}</Text>}
             </View>
@@ -88,12 +88,12 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     value={emailInput}
                     onChangeText={setEmailInput}
                     placeholder={t('email')}
-                    // onSubmitEditing={() => passwordRef.current?.focus()}
+                    onSubmitEditing={() => passwordRef.current?.focus()}
                     returnKeyType={'next'}
                     blurOnSubmit={false}
                     keyboardType={'email-address'}
                     autoCapitalize={'none'}
-                    // ref={emailRef}
+                    ref={emailRef}
                 />
                 {!!emailError && <Text style={styles.error}>{emailError}</Text>}
             </View>
@@ -108,7 +108,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     returnKeyType={'go'}
                     keyboardType={'default'}
                     autoCapitalize={'none'}
-                    // ref={passwordRef}
+                    ref={passwordRef}
                 />
                 {!!passwordError && <Text style={styles.error}>{passwordError}</Text>}
             </View>
