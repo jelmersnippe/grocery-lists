@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
+import {capitalize} from '../../utils/capitalize';
 
 const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
@@ -13,7 +14,7 @@ const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, cont
 
     return (
         <View style={[styles.container, containerStyle]}>
-            <Text style={styles.name}>{user.name}{user.uid === currentUserId && ` (${t('common:you')})`}</Text>
+            <Text style={styles.name}>{capitalize(user.name)}{user.uid === currentUserId && ` (${t('common:you')})`}</Text>
             {user.uid !== currentUserId &&
             <TouchableOpacity
                 style={styles.iconButton}

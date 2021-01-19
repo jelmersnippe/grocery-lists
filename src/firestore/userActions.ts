@@ -36,8 +36,8 @@ const search = async (searchString: string): Promise<Array<User>> => {
     const foundUsers: Array<User> = [];
 
     const users = await firestore().collection('users')
-        .where('name', '>=', searchString)
-        .where('name', '<', searchString + 'z')
+        .where('name', '>=', searchString.toLowerCase())
+        .where('name', '<', searchString.toLowerCase() + 'z')
         .get();
 
     users.forEach((documentSnapshot) => {

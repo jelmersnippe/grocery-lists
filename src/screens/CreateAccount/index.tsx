@@ -25,7 +25,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
                 await firestore().collection('users').doc(result.user.uid).set({
-                    name: displayNameInput
+                    name: displayNameInput.toLowerCase()
                 });
                 dispatch(setUser({uid: result.user.uid}));
             } catch (e) {

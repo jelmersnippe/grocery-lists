@@ -21,6 +21,7 @@ import {
 import InputModal from '../../components/InputModal';
 import UserModal from '../../components/UserModal';
 import {UserInfo} from '../../reducers/userCache/types';
+import {capitalize} from '../../utils/capitalize';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -133,7 +134,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         {creator &&
                         <Text>
                             {t('createdBy', {
-                                creator: creator.name
+                                creator: capitalize(creator.name)
                             })}
                         </Text>
                         }
