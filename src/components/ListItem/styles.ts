@@ -1,28 +1,32 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-    item: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
+    wrapper: {
         paddingVertical: 10,
         paddingHorizontal: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black'
+        borderColor: 'black',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
-    itemQuantity: {
+    quantity: {
         flexDirection: 'row',
         alignItems: 'flex-end',
         width: '12.5%',
         marginRight: 10
     },
-    itemQuantityText: {
+    quantityText: {
         fontSize: 18,
         marginRight: -2
     },
-    itemName: {
+    name: {
         flex: 1,
         fontSize: 18
-    }
+    },
+    addedBy: {
+        marginRight: 10
+    },
+    iconButton: {}
 });
 
 export default styles;
