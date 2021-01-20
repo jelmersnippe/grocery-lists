@@ -12,16 +12,12 @@ import {ItemStatus, List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
 import moment from 'moment';
 import {useTranslation} from 'react-i18next';
-import {
-    addFirestoreListItem,
-    subscribeToFirestoreListItemUpdates,
-    updateFirestoreList,
-    updateFirestoreListItem
-} from '../../firestore/listActions';
+import {addFirestoreListItem, subscribeToFirestoreListItemUpdates, updateFirestoreList} from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
 import UserModal from '../../components/UserModal';
 import {UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
+import ListItem from '../../components/ListItem';
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -71,33 +67,19 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         const items = list?.items;
 
         if (items) {
-            // TODO:
-            // Seperate DONE and TODO items before sorting
-            // So we can show the DONE items above the TODO items,
-            // and have both lists in order of updatedAt
             const sortedItems = Object.keys(items)
                 .map((key) => ({
                     ...items[key],
                     uid: key
                 }))
                 .sort((a, b) => moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf());
-            for (const item of sortedItems) {
-                listItems.push(
-                    // TODO:
-                    // Make seperate ListItem component so we can use hooks
-                    // Need to add an opened/closed state where we can put
-                    // More info and actions, such as delete
-                    <View key={item.uid} style={styles.item}>
-                        <View style={styles.itemQuantity}>
-                            <Text style={styles.itemQuantityText}>{item.quantity}</Text>
-                            <Icon name={'close'} size={18} color={'black'}/>
-                        </View>
-                        <Text style={styles.itemName}>{item.name}</Text>
-                        <TouchableOpacity onPress={() => updateFirestoreListItem(id, item.uid, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}>
-                            <Icon name={item.status === ItemStatus.TODO ? 'checkbox-outline' : 'checkbox'} size={26} color={'black'}/>
-                        </TouchableOpacity>
-                    </View>
-                );
+            const todoItems = sortedItems.filter((item) => item.status === ItemStatus.TODO);
+            const doneItems = sortedItems.filter((item) => item.status === ItemStatus.DONE);
+            for (const item of todoItems) {
+                listItems.push(<ListItem key={item.uid} item={item} listId={id} listItemId={item.uid}/>);
+            }
+            for (const item of doneItems) {
+                listItems.push(<ListItem key={item.uid} item={item} listId={id} listItemId={item.uid}/>);
             }
         }
 
