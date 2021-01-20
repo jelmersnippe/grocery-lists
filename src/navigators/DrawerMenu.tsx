@@ -39,6 +39,7 @@ const DrawerMenuItems = (props: DrawerContentComponentProps) => {
             <DrawerItem
                 label={t('Logout')}
                 onPress={async () => {
+                    props.navigation.closeDrawer();
                     await auth().signOut();
                     store.dispatch(resetGroups());
                     store.dispatch(resetLists());
