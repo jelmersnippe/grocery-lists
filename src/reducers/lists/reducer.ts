@@ -11,7 +11,7 @@ const listsReducer = (state = initialState, action: ListsActionTypes): ListsStat
         case ADD_LIST:
             return update(state, {
                 $merge: {
-                    [action.payload.id]: {...action.payload.list, items: {}}
+                    [action.payload.id]: {...action.payload.list, items: state[action.payload.id]?.items ?? {}}
                 }
             });
         case REMOVE_LIST:
