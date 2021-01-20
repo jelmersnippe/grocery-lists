@@ -21,12 +21,15 @@ const styles = StyleSheet.create({
     },
     name: {
         flex: 1,
-        fontSize: 18
+        fontSize: 18,
+        marginRight: 10
     },
     addedBy: {
         marginRight: 10
     },
-    iconButton: {}
+    iconButton: {
+        paddingHorizontal: 5
+    }
 });
 
 export default styles;

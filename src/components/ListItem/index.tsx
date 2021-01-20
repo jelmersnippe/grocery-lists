@@ -22,7 +22,10 @@ const ListItem: FunctionComponent<Props> = ({item, listId, listItemId}) => {
 
     return (
         <TouchableOpacity
-            style={styles.wrapper}
+            style={[
+                styles.wrapper,
+                item.status === ItemStatus.DONE && {backgroundColor: 'lightgray'}
+            ]}
             delayLongPress={0}
             onLongPress={() => {
                 setOpened(true);
@@ -35,7 +38,16 @@ const ListItem: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                 <Text style={styles.quantityText}>{item.quantity}</Text>
                 <Icon name={'close'} size={18} color={'black'}/>
             </View>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text
+                style={[
+                    styles.name,
+                    item.status === ItemStatus.DONE && {textDecorationLine: 'line-through'}
+                ]}
+                numberOfLines={2}
+                ellipsizeMode={'tail'}
+            >
+                {item.name}
+            </Text>
             {addedBy &&
                 <View style={styles.addedBy}>
                     <Text>{capitalize(addedBy.name)}</Text>
