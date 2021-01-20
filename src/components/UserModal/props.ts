@@ -1,3 +1,6 @@
+import {FirestoreUserUid} from '../../firestore/types';
+
 export interface Props {
-    listId: string;
+    saveAction: (usersToAdd: Array<FirestoreUserUid>, usersToRmove: Array<FirestoreUserUid>) => void;
+    initialUsers: Array<FirestoreUserUid>;
 }
