@@ -68,7 +68,10 @@ const create = async (uid: string, user: User): Promise<void> => {
 
     return await firestore().collection('users')
         .doc(uid)
-        .set(newUser)
+        .set({
+            ...newUser,
+            name: newUser.name.toLowerCase()
+        })
         .then(() => console.log('User created'))
         .catch((error: ReactNativeFirebase.NativeFirebaseError) => console.log('Error creating user', error));
 };
@@ -77,7 +80,10 @@ const update = async (uid: string, user: Partial<User>): Promise<void> => {
     const updatedUser: Partial<FirestoreUser> = user;
     return await firestore().collection('users')
         .doc(uid)
-        .update(updatedUser)
+        .update({
+            ...updatedUser,
+            name: updatedUser.name?.toLowerCase()
+        })
         .then(() => console.log('User updated'))
         .catch((error: ReactNativeFirebase.NativeFirebaseError) => console.log('Error updating user', error.code));
 };

@@ -13,8 +13,8 @@ import CustomTextInput from '../../components/CustomTextInput';
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
     const passwordRef = useRef<TextInput>(null);
-    const [displayNameInput, setDisplayNameInput] = useState('');
-    const [displayNameError, setDisplayNameError] = useState('');
+    const [nameInput, setNameInput] = useState('');
+    const [nameError, setNameError] = useState('');
 
     const [emailInput, setEmailInput] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -33,15 +33,15 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
 
         const validEmail = emailInput.match('^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$');
         const validPassword = passwordInput.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$');
-        const validDisplayName = !!displayNameInput;
+        const validDisplayName = !!nameInput;
 
         if (validEmail && validPassword && validDisplayName) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
                 await firestore().collection('users').doc(result.user.uid).set({
-                    name: displayNameInput.toLowerCase()
+                    name: nameInput.toLowerCase()
                 });
-                dispatch(setUser({uid: result.user.uid}));
+                dispatch(setUser({uid: result.user.uid, name: nameInput}));
             } catch (e) {
                 setError(e.code);
             }
@@ -57,7 +57,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             }
         }
 
-        setDisplayNameError(newDisplayNameError);
+        setNameError(newDisplayNameError);
         setEmailError(newEmailError);
         setPasswordError(newPasswordError);
     };
@@ -71,8 +71,8 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             <View style={styles.input}>
                 <CustomTextInput
                     label={t('displayName')}
-                    value={displayNameInput}
-                    onChangeText={setDisplayNameInput}
+                    value={nameInput}
+                    onChangeText={setNameInput}
                     placeholder={t('displayName')}
                     onSubmitEditing={() => emailRef.current?.focus()}
                     returnKeyType={'next'}
@@ -80,7 +80,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     keyboardType={'default'}
                     autoCapitalize={'words'}
                 />
-                {!!displayNameError && <Text style={styles.error}>{displayNameError}</Text>}
+                {!!nameError && <Text style={styles.error}>{nameError}</Text>}
             </View>
             <View style={styles.input}>
                 <CustomTextInput

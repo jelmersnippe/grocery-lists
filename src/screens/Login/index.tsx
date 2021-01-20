@@ -21,6 +21,8 @@ const Login = ({navigation}: Props): JSX.Element => {
         if (!!emailInput && !!passwordInput) {
             try {
                 const {user} = await auth().signInWithEmailAndPassword(email, password);
+                // TODO:
+                // Get user info from firestore
                 dispatch(setUser({
                     email: user.email ?? undefined,
                     uid: user.uid

@@ -2,7 +2,7 @@ import {UserActionTypes} from './actions';
 import {RESET_USER, SET_USER} from './types';
 
 export type UserState = {
-    displayName?: string;
+    name?: string;
     email?: string;
     uid?: string;
 };

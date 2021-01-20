@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 36,
         fontWeight: 'bold'
+    },
+    input: {
+        width: '60%',
+        marginVertical: 10
     }
 });
 

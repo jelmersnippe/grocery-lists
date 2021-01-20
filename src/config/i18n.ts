@@ -39,6 +39,11 @@ const resources = {
             deleteListTitle: 'Delete \'{{listName}}\'',
             deleteListText: 'Are you sure you want to delete this list?',
             users: 'Users'
+        },
+        profile: {
+            title: 'Profile',
+            displayName: 'Display name',
+            updateProfile: 'Update profile'
         }
     },
     nl: {
