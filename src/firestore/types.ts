@@ -7,6 +7,7 @@ export type FirestoreList = {
     creator: FirestoreUserUid;
     items?: { [key: string]: FirestoreListItem }
     users: Array<FirestoreUserUid>;
+    groups?: Array<string>;
 }
 
 export type FirestoreListItem = {
@@ -25,4 +26,14 @@ export type FirestoreGroup = {
     name: string;
     creator: FirestoreUserUid;
     users: Array<FirestoreUserUid>;
+}
+
+export type FirestoreGroupSearchResult = {
+    name: string;
+    uid: string;
+}
+
+export type FirestoreUserSearchResult = {
+    name: string;
+    uid: string;
 }

@@ -1,9 +1,8 @@
-import {FirestoreGroup} from '../../firestore/types';
-import {ADD_GROUP, REMOVE_GROUP, RESET_GROUPS} from './types';
+import {ADD_GROUP, Group, REMOVE_GROUP, RESET_GROUPS} from './types';
 import {GroupsActionTypes} from './actions';
 import update from 'immutability-helper';
 
-export type GroupsState = { [key: string]: FirestoreGroup };
+export type GroupsState = { [key: string]: Group };
 
 const initialState: GroupsState = {};
 

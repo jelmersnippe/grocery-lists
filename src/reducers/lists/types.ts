@@ -16,6 +16,7 @@ export interface List {
     creatorUid: FirestoreUserUid;
     items?: { [key: string]: ListItem };
     users: Array<FirestoreUserUid>;
+    groups?: Array<string>;
 }
 
 // Probably add a 'completedAt' timestamp

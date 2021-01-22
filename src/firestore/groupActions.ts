@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreGroup, FirestoreList, FirestoreUserUid} from './types';
+import {FirestoreGroup, FirestoreGroupSearchResult, FirestoreList, FirestoreUserUid} from './types';
 import {addGroup, removeGroup} from '../reducers/groups/actions';
 import {store} from '../config/store';
 import {Group} from '../reducers/groups/types';
@@ -28,6 +28,33 @@ export const subscribeToFirestoreGroupUpdates = () => {
                         break;
                 }
             });
+        });
+};
+
+export const getFirestoreGroupByUid = async (uid: string): Promise<Group | undefined> => {
+    const groupsState = store.getState().groups;
+    const foundGroup = groupsState[uid];
+
+    if (foundGroup) {
+        return foundGroup;
+    }
+
+    return await firestore().collection('groups')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => {
+            if (documentSnapshot.exists) {
+                const group = documentSnapshot.data() as FirestoreGroup;
+                const groupData: Group = {
+                    name: group.name,
+                    creatorUid: group.creator,
+                    users: group.users
+                };
+                store.dispatch(addGroup({id: uid, group: groupData}));
+                return groupData;
+            } else {
+                return undefined;
+            }
         });
 };
 
@@ -71,4 +98,25 @@ export const addUsersToFirestoreGroup = async (groupId: string, usersToAdd: Arra
             users: [...newListUsers, ...usersToAdd]
         });
     });
+};
+
+export const searchFirestoreGroups = async (searchString: string): Promise<Array<FirestoreGroupSearchResult>> => {
+    const foundGroups: Array<FirestoreGroupSearchResult> = [];
+
+    const groups = await firestore().collection('groups')
+        .where('name', '>=', searchString.toLowerCase())
+        .where('name', '<', searchString.toLowerCase() + 'z')
+        .get();
+
+    groups.forEach((documentSnapshot) => {
+        const uid = documentSnapshot.id;
+        const data = documentSnapshot.data() as FirestoreGroup;
+        const groupInfo = {
+            uid: uid,
+            name: data.name
+        };
+        foundGroups.push(groupInfo);
+    });
+
+    return foundGroups;
 };

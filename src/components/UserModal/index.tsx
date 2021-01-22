@@ -5,7 +5,7 @@ import styles from './styles';
 import {useTranslation} from 'react-i18next';
 import Button from '../Button';
 import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
-import {FirestoreUserUid} from '../../firestore/types';
+import {FirestoreUserSearchResult, FirestoreUserUid} from '../../firestore/types';
 import firestoreUserActions from '../../firestore/userActions';
 import CustomTextInput from '../CustomTextInput';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,7 +18,7 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
 
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
     const [usersToRemove, setUsersToRemove] = useState<Array<FirestoreUserUid>>([]);
-    const [searchUsers, setSearchUsers] = useState<Array<User>>([]);
+    const [searchUsers, setSearchUsers] = useState<Array<FirestoreUserSearchResult>>([]);
     const [searchInput, setSearchInput] = useState('');
     const {t} = useTranslation('lists');
     const {dispatch} = useOverlayData();
@@ -39,7 +39,7 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
         })();
     }, [initialUsers]);
 
-    const renderUserItem = (user: User) => {
+    const renderUserItem = (user: FirestoreUserSearchResult) => {
         const toBeAdded = usersToAdd.includes(user.uid);
         const toBeRemoved = usersToRemove.includes(user.uid);
         const removable = toBeAdded || (userUids.includes(user.uid) && !toBeRemoved);
