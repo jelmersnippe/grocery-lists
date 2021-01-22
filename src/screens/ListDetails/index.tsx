@@ -101,10 +101,18 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 </View>
 
                 <View style={styles.tabContainer}>
-                    <TouchableOpacity onPress={() => setCurrentTab(Tab.TASKS)} disabled={currentTab === Tab.TASKS} style={[styles.tabButton, currentTab === Tab.TASKS && styles.activeTabButton]}>
+                    <TouchableOpacity
+                        onPress={() => setCurrentTab(Tab.TASKS)}
+                        disabled={currentTab === Tab.TASKS}
+                        style={[styles.tabButton, currentTab === Tab.TASKS && styles.activeTabButton]}
+                    >
                         <Text style={styles.tabButtonText}>Tasks</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setCurrentTab(Tab.USERS)} disabled={currentTab === Tab.USERS} style={[styles.tabButton, currentTab === Tab.USERS && styles.activeTabButton]}>
+                    <TouchableOpacity
+                        onPress={() => setCurrentTab(Tab.USERS)}
+                        disabled={currentTab === Tab.USERS}
+                        style={[styles.tabButton, currentTab === Tab.USERS && styles.activeTabButton]}
+                    >
                         <Text style={styles.tabButtonText}>Users</Text>
                     </TouchableOpacity>
                 </View>

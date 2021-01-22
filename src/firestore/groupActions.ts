@@ -50,7 +50,6 @@ export const getFirestoreGroupByUid = async (uid: string): Promise<Group | undef
                     creatorUid: group.creator,
                     users: group.users
                 };
-                store.dispatch(addGroup({id: uid, group: groupData}));
                 return groupData;
             } else {
                 return undefined;

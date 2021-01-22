@@ -34,6 +34,33 @@ export const subscribeToFirestoreListUpdates = (): () => void => {
         });
 };
 
+export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>): () => void => {
+    return firestore()
+        .collection('lists')
+        .where('groups', 'array-contains-any', groups)
+        .onSnapshot((querySnapshot) => {
+            querySnapshot.docChanges().forEach(async (documentChange) => {
+                const listId = documentChange.doc.id;
+
+                switch (documentChange.type) {
+                    case 'removed':
+                        store.dispatch(removeList(listId));
+                        break;
+                    default:
+                        const documentData = documentChange.doc.data() as FirestoreList;
+                        const listData: List = {
+                            name: documentData.name,
+                            creatorUid: documentData.creator,
+                            users: documentData.users,
+                            groups: documentData.groups
+                        };
+                        store.dispatch(addList({id: listId, list: listData}));
+                        break;
+                }
+            });
+        });
+};
+
 export const subscribeToFirestoreListItemUpdates = (listId: string): () => void => {
     const currentUserUid = store.getState().user.uid;
 
@@ -141,7 +168,7 @@ export const removeFirestoreList = async (listId: string): Promise<void> => {
     return batch.commit();
 };
 
-export const addFirestoreListItem = async (listId: string, item: {name: string, quantity: number}): Promise<string | undefined> => {
+export const addFirestoreListItem = async (listId: string, item: { name: string, quantity: number }): Promise<string | undefined> => {
     const userId = store.getState().user.uid;
     if (!userId || item.quantity <= 0 || item.name === '') {
         return undefined;
