@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
+import {FirestoreGroup, FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
 import {store} from '../config/store';
 import {ItemStatus, List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
@@ -48,11 +48,20 @@ export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>):
                         break;
                     default:
                         const documentData = documentChange.doc.data() as FirestoreList;
+                        const groupUsers: Array<string> = [];
+                        if (documentData?.groups) {
+                            for (const group of documentData.groups) {
+                                const groupDocument = await firestore().collection('groups').doc(group).get();
+                                const groupData = groupDocument.data() as FirestoreGroup;
+                                groupUsers.push(...groupData.users);
+                            }
+                        }
                         const listData: List = {
                             name: documentData.name,
                             creatorUid: documentData.creator,
                             users: documentData.users,
-                            groups: documentData.groups
+                            groups: documentData.groups,
+                            groupUsers: groupUsers
                         };
                         store.dispatch(addList({id: listId, list: listData}));
                         break;
