@@ -27,22 +27,22 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginRight: 'auto'
     },
-    addItemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center'
+    tabContainer: {
+        flexDirection: 'row'
     },
-    addItemInputContainer: {
-        flex: 1,
-        height: '100%',
-        borderWidth: 1,
-        borderColor: 'black',
-        flexDirection: 'row',
+    tabButton: {
+        flex: 0.4,
         alignItems: 'center',
-        paddingHorizontal: 10
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: 'black'
     },
-    addItemInput: {
-        padding: 0,
-        flex: 1
+    activeTabButton: {
+        flex: 0.6
+    },
+    tabButtonText: {
+        paddingVertical: 10,
+        fontSize: 20
     }
 });
 

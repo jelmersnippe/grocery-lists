@@ -4,7 +4,6 @@ import {Props} from './props';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
 import Button from '../Button';
-import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import {FirestoreUserSearchResult, FirestoreUserUid} from '../../firestore/types';
 import firestoreUserActions from '../../firestore/userActions';
 import CustomTextInput from '../CustomTextInput';
@@ -12,7 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import UserItem from '../UserItem';
 import {User} from '../../reducers/userCache/types';
 
-const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
+const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}) => {
     const [users, setUsers] = useState<Array<User>>([]);
     const [userUids, setUserUids] = useState<Array<FirestoreUserUid>>([]);
 
@@ -21,7 +20,6 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
     const [searchUsers, setSearchUsers] = useState<Array<FirestoreUserSearchResult>>([]);
     const [searchInput, setSearchInput] = useState('');
     const {t} = useTranslation('lists');
-    const {dispatch} = useOverlayData();
 
     useEffect(() => {
         (async () => {
@@ -50,6 +48,7 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
                 user={user}
                 icon={removable ? 'trash' : 'add'}
                 iconColor={removable ? 'tomato' : 'black'}
+                editable={editable}
                 action={(uid: string) => {
                     removable
                         ? removeUser(uid)
@@ -89,12 +88,12 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
 
     const saveUserChanges = async () => {
         await saveAction(usersToAdd, usersToRemove);
-        dispatch(resetOverlay());
+        setUsersToAdd([]);
+        setUsersToRemove([]);
     };
 
     return (
         <View style={styles.container}>
-            <Text>Users</Text>
             <ScrollView
                 style={styles.userContainer}
                 alwaysBounceVertical={false}
@@ -103,54 +102,53 @@ const UserModal: FunctionComponent<Props> = ({saveAction, initialUsers}) => {
                     {users.map((user) => renderUserItem(user))}
                 </TouchableOpacity>
             </ScrollView>
-            {searchUsers.length > 0 &&
-            <>
-                <Text>Found users</Text>
-                <ScrollView
-                    style={styles.searchResultContainer}
-                    alwaysBounceVertical={false}
-                >
-                    <TouchableOpacity activeOpacity={1}>
-                        {
-                            searchUsers.map((user) => renderUserItem(user))
-                        }
-                    </TouchableOpacity>
-                </ScrollView>
-            </>
+            {
+                editable &&
+                <>
+                    {searchUsers.length > 0 &&
+                    <>
+                        <Text>Found users</Text>
+                        <ScrollView
+                            style={styles.searchResultContainer}
+                            alwaysBounceVertical={false}
+                        >
+                            <TouchableOpacity activeOpacity={1}>
+                                {
+                                    searchUsers.map((user) => renderUserItem(user))
+                                }
+                            </TouchableOpacity>
+                        </ScrollView>
+                    </>
+                    }
+                    <View style={styles.searchContainer}>
+                        <CustomTextInput
+                            containerStyle={styles.searchInputContainer}
+                            placeholder={'Username'}
+                            value={searchInput}
+                            onChangeText={(input) => setSearchInput(input)}
+                            onSubmitEditing={() => searchForUsers(searchInput)}
+                            autoCapitalize={'words'}
+                            returnKeyType={'go'}
+                            style={styles.searchInput}
+                        />
+                        <TouchableOpacity
+                            onPress={async () => {
+                                Keyboard.dismiss();
+                                await searchForUsers(searchInput);
+                            }}
+                            style={styles.searchIcon}
+                        >
+                            <Icon name={'search'} size={40} color={'black'}/>
+                        </TouchableOpacity>
+                    </View>
+                    <Button
+                        text={t('common:save')}
+                        onPress={() => saveUserChanges()}
+                    />
+                </>
             }
-            <View style={styles.searchContainer}>
-                <CustomTextInput
-                    containerStyle={styles.searchInputContainer}
-                    placeholder={'Username'}
-                    value={searchInput}
-                    onChangeText={(input) => setSearchInput(input)}
-                    onSubmitEditing={() => searchForUsers(searchInput)}
-                    autoCapitalize={'words'}
-                    returnKeyType={'go'}
-                    style={styles.searchInput}
-                />
-                <TouchableOpacity
-                    onPress={async () => {
-                        Keyboard.dismiss();
-                        await searchForUsers(searchInput);
-                    }}
-                    style={styles.searchIcon}
-                >
-                    <Icon name={'search'} size={40} color={'black'}/>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button
-                    text={t('common:cancel')}
-                    onPress={() => dispatch(resetOverlay())}
-                />
-                <Button
-                    text={t('common:save')}
-                    onPress={() => saveUserChanges()}
-                />
-            </View>
         </View>
     );
 };
 
-export default UserModal;
+export default UserView;

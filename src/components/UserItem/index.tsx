@@ -8,14 +8,14 @@ import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
 import {capitalize} from '../../utils/capitalize';
 
-const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle}) => {
+const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle, editable}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const {t} = useTranslation();
 
     return (
         <View style={[styles.container, containerStyle]}>
             <Text style={styles.name}>{capitalize(user.name)}{user.uid === currentUserId && ` (${t('common:you')})`}</Text>
-            {user.uid !== currentUserId &&
+            {(user.uid !== currentUserId && editable) &&
             <TouchableOpacity
                 style={styles.iconButton}
                 onPress={() => action(user.uid)}

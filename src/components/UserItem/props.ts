@@ -7,4 +7,5 @@ export interface Props {
     iconColor: ColorValue;
     action: (uid: string) => void;
     containerStyle?: ViewStyle;
+    editable: boolean;
 }

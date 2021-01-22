@@ -1,28 +1,25 @@
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {FunctionComponent, useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
-import QtyInput from '../../components/QtyInput';
 import FullSizeLoader from '../../components/FullSizeLoader';
-import {ItemStatus, List} from '../../reducers/lists/types';
 import firestoreUserActions from '../../firestore/userActions';
-import moment from 'moment';
 import {useTranslation} from 'react-i18next';
-import {
-    addFirestoreListItem,
-    addUsersToFirestoreList,
-    subscribeToFirestoreListItemUpdates,
-    updateFirestoreList
-} from '../../firestore/listActions';
+import {addUsersToFirestoreList, subscribeToFirestoreListItemUpdates, updateFirestoreList} from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
-import UserModal from '../../components/UserModal';
+import UserView from '../../components/UserView';
 import {UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
-import ListItem from '../../components/ListItem';
+import ListItemView from '../../components/ListItemView';
+
+enum Tab {
+    TASKS = 'Tasks',
+    USERS = 'USERS'
+}
 
 const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
@@ -32,9 +29,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const listCreatedByCurrentUser = selectedList?.creatorUid === currentUserId;
     const [creator, setCreator] = useState<UserInfo | undefined>(undefined);
 
-    const [inputQty, setInputQty] = useState(0);
-    const [inputName, setInputName] = useState('');
-    const inputNameRef = useRef<TextInput>(null);
+    const [currentTab, setCurrentTab] = useState<Tab>(Tab.TASKS);
 
     const {t} = useTranslation('lists');
 
@@ -59,40 +54,6 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         return subscribeToFirestoreListItemUpdates(id);
     }, []);
 
-    const addItem = async () => {
-        const createdItem = await addFirestoreListItem(id, {
-            name: inputName,
-            quantity: inputQty
-        });
-        if (createdItem) {
-            setInputName('');
-        }
-    };
-
-    const renderDetails = (list: List): Array<JSX.Element> => {
-        const listItems: Array<JSX.Element> = [];
-        const items = list?.items;
-
-        if (items) {
-            const sortedItems = Object.keys(items)
-                .map((key) => ({
-                    ...items[key],
-                    uid: key
-                }))
-                .sort((a, b) => moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf());
-            const todoItems = sortedItems.filter((item) => item.status === ItemStatus.TODO);
-            const doneItems = sortedItems.filter((item) => item.status === ItemStatus.DONE);
-            for (const item of todoItems) {
-                listItems.push(<ListItem key={item.uid} item={item} listId={id} listItemId={item.uid}/>);
-            }
-            for (const item of doneItems) {
-                listItems.push(<ListItem key={item.uid} item={item} listId={id} listItemId={item.uid}/>);
-            }
-        }
-
-        return listItems;
-    };
-
     const updateList = (listId: string, updatedName: string) => {
         if (updatedName === '' || updatedName === selectedList?.name) {
             dispatch(resetOverlay());
@@ -111,22 +72,22 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <View style={styles.titleContainer}>
                             <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
                             {listCreatedByCurrentUser &&
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        dispatch(setOverlay({
-                                            content: <InputModal
-                                                defaultValue={selectedList.name}
-                                                onSubmit={async (input: string) => updateList(id, input)}
-                                                buttonLabel={t('common:update')}
-                                            />,
-                                            wrapperStyle: {
-                                                width: '60%'
-                                            }
-                                        }));
-                                    }}
-                                >
-                                    <Icon name={'create-outline'} size={30} color={'black'}/>
-                                </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    dispatch(setOverlay({
+                                        content: <InputModal
+                                            defaultValue={selectedList.name}
+                                            onSubmit={async (input: string) => updateList(id, input)}
+                                            buttonLabel={t('common:update')}
+                                        />,
+                                        wrapperStyle: {
+                                            width: '60%'
+                                        }
+                                    }));
+                                }}
+                            >
+                                <Icon name={'create-outline'} size={30} color={'black'}/>
+                            </TouchableOpacity>
                             }
                         </View>
                         {creator &&
@@ -137,52 +98,28 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         </Text>
                         }
                     </View>
-                    {
-                        listCreatedByCurrentUser &&
-                        <TouchableOpacity
-                            onPress={() => {
-                                dispatch(setOverlay({
-                                    title: t('users'),
-                                    content: <UserModal
-                                        saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreList(id, usersToAdd, usersToRemove)}
-                                        initialUsers={selectedList.users}
-                                    />,
-                                    wrapperStyle: {
-                                        width: '80%',
-                                        height: '80%'
-                                    }
-                                }));
-                            }}
-                        >
-                            <Icon name={'people'} size={36} color={'black'}/>
-                        </TouchableOpacity>
-                    }
                 </View>
-                <ScrollView
-                    alwaysBounceVertical={false}
-                    showsVerticalScrollIndicator={false}
-                >
-                    {renderDetails(selectedList)}
-                </ScrollView>
-                <View style={styles.addItemContainer}>
-                    <QtyInput onChangeValue={(value) => setInputQty(value)}/>
-                    <View style={styles.addItemInputContainer}>
-                        <TextInput
-                            placeholder={t('itemName')}
-                            style={styles.addItemInput}
-                            value={inputName}
-                            onChangeText={(value) => setInputName(value)}
-                            onSubmitEditing={() => addItem()}
-                            blurOnSubmit={false}
-                            ref={inputNameRef}
+
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity onPress={() => setCurrentTab(Tab.TASKS)} disabled={currentTab === Tab.TASKS} style={[styles.tabButton, currentTab === Tab.TASKS && styles.activeTabButton]}>
+                        <Text style={styles.tabButtonText}>Tasks</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setCurrentTab(Tab.USERS)} disabled={currentTab === Tab.USERS} style={[styles.tabButton, currentTab === Tab.USERS && styles.activeTabButton]}>
+                        <Text style={styles.tabButtonText}>Users</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {
+                    currentTab === Tab.TASKS ?
+                        <ListItemView listId={id} items={selectedList?.items}/>
+                        :
+                        <UserView
+                            saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreList(id, usersToAdd, usersToRemove)}
+                            initialUsers={selectedList.users}
+                            editable={listCreatedByCurrentUser}
                         />
-                        <TouchableOpacity
-                            onPress={() => addItem()}
-                        >
-                            <Icon name={'add-circle-outline'} size={30} color={'black'}/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                }
+
             </View>
             : <FullSizeLoader size={100} color={'black'}/>
     );

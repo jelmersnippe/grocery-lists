@@ -9,7 +9,7 @@ import firestoreUserActions from '../../firestore/userActions';
 import {UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
 
-const ListItem: FunctionComponent<Props> = ({item, listId, listItemId}) => {
+const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     const [opened, setOpened] = useState(false);
     const [addedBy, setAddedBy] = useState<UserInfo | undefined>(undefined);
 
@@ -73,4 +73,4 @@ const ListItem: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     );
 };
 
-export default ListItem;
+export default ListItemRow;
