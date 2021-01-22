@@ -8,31 +8,13 @@ const styles = StyleSheet.create({
     userContainer: {
         flex: 1
     },
-    searchContainer: {
+    buttonContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 'auto',
-        borderWidth: 1,
-        borderColor: 'black',
-        marginBottom: 10
+        justifyContent: 'space-between'
     },
     searchResultContainer: {
         flex: 1,
         maxHeight: 150
-    },
-    searchInputContainer: {
-        flex: 1
-    },
-    searchInput: {
-        borderWidth: 0
-    },
-    searchIcon: {
-        paddingHorizontal: 5
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
     }
 });
 

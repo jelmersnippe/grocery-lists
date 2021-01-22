@@ -1,4 +1,4 @@
-import {Keyboard, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';
@@ -6,10 +6,9 @@ import {useTranslation} from 'react-i18next';
 import Button from '../Button';
 import {FirestoreUserSearchResult, FirestoreUserUid} from '../../firestore/types';
 import firestoreUserActions from '../../firestore/userActions';
-import CustomTextInput from '../CustomTextInput';
-import Icon from 'react-native-vector-icons/Ionicons';
 import UserItem from '../UserItem';
 import {User} from '../../reducers/userCache/types';
+import SearchBar from '../SearchBar';
 
 const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}) => {
     const [users, setUsers] = useState<Array<User>>([]);
@@ -18,7 +17,6 @@ const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
     const [usersToRemove, setUsersToRemove] = useState<Array<FirestoreUserUid>>([]);
     const [searchUsers, setSearchUsers] = useState<Array<FirestoreUserSearchResult>>([]);
-    const [searchInput, setSearchInput] = useState('');
     const {t} = useTranslation('lists');
 
     useEffect(() => {
@@ -62,11 +60,6 @@ const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}
         );
     };
 
-    const searchForUsers = async (searchString: string) => {
-        const foundUsers = await firestoreUserActions.search(searchString);
-        setSearchUsers(foundUsers);
-    };
-
     const removeUser = (uid: string) => {
         if (usersToAdd.includes(uid)) {
             setUsersToAdd([...usersToAdd.filter((id) => id !== uid)]);
@@ -92,15 +85,18 @@ const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}
         setUsersToRemove([]);
     };
 
+    const searchForUsers = async (searchString: string) => {
+        const foundUsers = await firestoreUserActions.search(searchString);
+        setSearchUsers(foundUsers);
+    };
+
     return (
         <View style={styles.container}>
             <ScrollView
                 style={styles.userContainer}
                 alwaysBounceVertical={false}
             >
-                <TouchableOpacity activeOpacity={1}>
-                    {users.map((user) => renderUserItem(user))}
-                </TouchableOpacity>
+                {users.map((user) => renderUserItem(user))}
             </ScrollView>
             {
                 editable &&
@@ -120,27 +116,7 @@ const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}
                         </ScrollView>
                     </>
                     }
-                    <View style={styles.searchContainer}>
-                        <CustomTextInput
-                            containerStyle={styles.searchInputContainer}
-                            placeholder={'Username'}
-                            value={searchInput}
-                            onChangeText={(input) => setSearchInput(input)}
-                            onSubmitEditing={() => searchForUsers(searchInput)}
-                            autoCapitalize={'words'}
-                            returnKeyType={'go'}
-                            style={styles.searchInput}
-                        />
-                        <TouchableOpacity
-                            onPress={async () => {
-                                Keyboard.dismiss();
-                                await searchForUsers(searchInput);
-                            }}
-                            style={styles.searchIcon}
-                        >
-                            <Icon name={'search'} size={40} color={'black'}/>
-                        </TouchableOpacity>
-                    </View>
+                    <SearchBar searchAction={(searchInput) => searchForUsers(searchInput)} />
                     <Button
                         text={t('common:save')}
                         onPress={() => saveUserChanges()}
