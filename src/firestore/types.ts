@@ -23,5 +23,6 @@ export type FirestoreUser = {
 
 export type FirestoreGroup = {
     name: string;
+    creator: FirestoreUserUid;
     users: Array<FirestoreUserUid>;
 }

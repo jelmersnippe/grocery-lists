@@ -1,12 +1,18 @@
-import {ADD_GROUP, AddGroupAction, RESET_GROUPS, ResetGroupsAction} from './types';
-import {FirestoreGroup} from '../../firestore/types';
+import {ADD_GROUP, AddGroupAction, Group, REMOVE_GROUP, RemoveGroupAction, RESET_GROUPS, ResetGroupsAction} from './types';
 
-export type GroupsActionTypes = AddGroupAction | ResetGroupsAction
+export type GroupsActionTypes = AddGroupAction | RemoveGroupAction | ResetGroupsAction
 
-export const addGroup = (payload: { id: string, group: FirestoreGroup }): GroupsActionTypes => {
+export const addGroup = (payload: { id: string, group: Group }): GroupsActionTypes => {
     return {
         type: ADD_GROUP,
         payload: payload
+    };
+};
+
+export const removeGroup = (id: string): GroupsActionTypes => {
+    return {
+        type: REMOVE_GROUP,
+        payload: id
     };
 };
 

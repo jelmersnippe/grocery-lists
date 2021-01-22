@@ -4,13 +4,19 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import firestoreGroupActions from '../../firestore/groupActions';
+import {addFirestoreGroup, subscribeToFirestoreGroupUpdates} from '../../firestore/groupActions';
+import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
+import InputModal from '../../components/InputModal';
+import {useTranslation} from 'react-i18next';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
+    const {dispatch} = useOverlayData();
+    const {t} = useTranslation('groups');
 
     useEffect(() => {
-        return firestoreGroupActions.subscribeToUpdates();
+        return subscribeToFirestoreGroupUpdates();
     }, []);
 
     const renderGroups = (): Array<JSX.Element> => {
@@ -30,17 +36,41 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
         return groupItems;
     };
 
+    const createNewGroup = async (name: string) => {
+        if (name === '') {
+            dispatch(resetOverlay());
+            return;
+        }
+
+        const groupId = await addFirestoreGroup(name);
+        dispatch(resetOverlay());
+        if (groupId) {
+            navigation.navigate('GroupDetails', {id: groupId});
+        }
+    };
+
+    const openInputModal = () => {
+        dispatch(setOverlay({
+            title: t('newGroup'),
+            content: <InputModal
+                buttonLabel={t('common:create')}
+                onSubmit={async (input: string) => createNewGroup(input)}
+            />,
+            wrapperStyle: {
+                width: '60%'
+            }
+        }));
+    };
+
     return (
         <View style={styles.container}>
-            {
-                __DEV__ ?
-                    <>
-                        <Text style={styles.title}>GroupOverview</Text>
-                        {renderGroups()}
-                    </>
-                    :
-                    <Text style={styles.title}>Coming soon</Text>
-            }
+            <TouchableOpacity
+                onPress={() => openInputModal()}
+            >
+                <Icon name={'add-circle-outline'} size={40} color={'black'}/>
+            </TouchableOpacity>
+            <Text style={styles.title}>GroupOverview</Text>
+            {renderGroups()}
         </View>
     );
 };

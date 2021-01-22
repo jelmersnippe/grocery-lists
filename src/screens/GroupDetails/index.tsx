@@ -9,12 +9,12 @@ import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import UserModal from '../../components/UserModal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
-import firestoreGroupActions from '../../firestore/groupActions';
+import {addUsersToFirestoreGroup, deleteFirestoreGroup} from '../../firestore/groupActions';
 import {UserInfo} from '../../reducers/userCache/types';
 import firestoreUserActions from '../../firestore/userActions';
 import {capitalize} from '../../utils/capitalize';
 
-const GroupDetails: FunctionComponent<Props> = ({route}) => {
+const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {id} = route.params;
     const selectedGroup = useSelector((rootState: RootState) => rootState.groups.hasOwnProperty(id) ? rootState.groups[id] : undefined);
     const [users, setUsers] = useState<Array<UserInfo>>([]);
@@ -40,12 +40,18 @@ const GroupDetails: FunctionComponent<Props> = ({route}) => {
         selectedGroup ?
             <View style={styles.container}>
                 <Text style={styles.title}>{selectedGroup.name}</Text>
+                <TouchableOpacity onPress={async () => {
+                    await deleteFirestoreGroup(id);
+                    navigation.popToTop();
+                }}>
+                    <Icon name={'trash'} color={'tomato'} size={24}/>
+                </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
                         dispatch(setOverlay({
                             title: t('users'),
                             content: <UserModal
-                                saveAction={async (usersToAdd, usersToRemove) => await firestoreGroupActions.addUsersToFirestoreGroup(id, usersToAdd, usersToRemove)}
+                                saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreGroup(id, usersToAdd, usersToRemove)}
                                 initialUsers={selectedGroup.users}
                             />,
                             wrapperStyle: {

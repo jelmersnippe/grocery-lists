@@ -1,5 +1,5 @@
 import {FirestoreGroup} from '../../firestore/types';
-import {ADD_GROUP, RESET_GROUPS} from './types';
+import {ADD_GROUP, REMOVE_GROUP, RESET_GROUPS} from './types';
 import {GroupsActionTypes} from './actions';
 import update from 'immutability-helper';
 
@@ -11,6 +11,10 @@ const groupsReducer = (state = initialState, action: GroupsActionTypes): GroupsS
     switch (action.type) {
         case ADD_GROUP:
             return update(state, {$merge: {[action.payload.id]: action.payload.group}});
+        case REMOVE_GROUP:
+            return update(state, {
+                $unset: [action.payload]
+            });
         case RESET_GROUPS:
             return initialState;
         default:
