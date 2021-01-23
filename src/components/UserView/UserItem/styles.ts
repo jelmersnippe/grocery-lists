@@ -29,10 +29,5 @@ export const styles = StyleSheet.create({
         flex: 1,
         fontSize: 18,
         marginRight: 10
-    },
-    deleteButton: {
-        paddingHorizontal: 10,
-        marginLeft: 8,
-        justifyContent: 'center'
     }
 });

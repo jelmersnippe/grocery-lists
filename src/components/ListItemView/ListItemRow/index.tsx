@@ -9,6 +9,7 @@ import {getUser} from '../../../firestore/userActions';
 import {UserInfo} from '../../../reducers/userCache/types';
 import {capitalize} from '../../../utils/capitalize';
 import Checkbox from '../../Checkbox';
+import theme from '../../../config/theme';
 
 const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     const [opened, setOpened] = useState(false);
@@ -37,9 +38,9 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
         <View style={styles.wrapper}>
             <TouchableOpacity
                 style={[
-                    styles.container,
+                    theme.rowContainer,
                     {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'},
-                    item.status !== ItemStatus.DONE && styles.containerShadow
+                    item.status !== ItemStatus.DONE && theme.rowContainerShadow
                 ]}
                 delayLongPress={500}
                 onLongPress={() => setOpened(true)}

@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
 import {updateFirestoreUser} from '../../firestore/userActions';
+import theme from '../../config/theme';
 
 const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const Profile: FunctionComponent<Props> = ({}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{t('title')}</Text>
+            <Text style={theme.pageTitle}>{t('title')}</Text>
             <CustomTextInput
                 label={t('displayName')}
                 containerStyle={styles.input}

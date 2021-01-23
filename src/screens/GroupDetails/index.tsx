@@ -6,13 +6,14 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {deleteFirestoreGroup, addFirestoreGroupUsers, removeFirestoreGroupUsers} from '../../firestore/groupActions';
+import {addFirestoreGroupUsers, deleteFirestoreGroup, removeFirestoreGroupUsers} from '../../firestore/groupActions';
 import {User} from '../../reducers/userCache/types';
 import {getUser} from '../../firestore/userActions';
 import UserView from '../../components/UserView';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import UserSearch from '../../components/UserSearch';
 import {capitalize} from '../../utils/capitalize';
+import theme from '../../config/theme';
 
 const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {id} = route.params;
@@ -55,11 +56,14 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
         selectedGroup ?
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{capitalize(selectedGroup.name)}</Text>
-                    <TouchableOpacity onPress={async () => {
-                        await deleteFirestoreGroup(id);
-                        navigation.popToTop();
-                    }}>
+                    <Text style={theme.pageTitle}>{capitalize(selectedGroup.name)}</Text>
+                    <TouchableOpacity
+                        onPress={async () => {
+                            await deleteFirestoreGroup(id);
+                            navigation.popToTop();
+                        }}
+                        style={theme.iconButton}
+                    >
                         <Icon name={'delete'} color={'tomato'} size={24}/>
                     </TouchableOpacity>
                 </View>
@@ -71,7 +75,7 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 {
                     createdByUser &&
                     <TouchableOpacity
-                        style={styles.fab}
+                        style={theme.floatingActionButton}
                         onPress={() => openUserSearch()}
                     >
                         <Icon name={'search'} size={32} color={'white'}/>

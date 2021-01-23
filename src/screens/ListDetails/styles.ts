@@ -22,11 +22,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    title: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        marginRight: 'auto'
-    },
     tabContainer: {
         flexDirection: 'row'
     },
@@ -60,17 +55,6 @@ const styles = StyleSheet.create({
     },
     activeTabButtonText: {
         color: 'black'
-    },
-    fab: {
-        backgroundColor: 'black',
-        borderRadius: 24,
-        width: 48,
-        height: 48,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 8,
-        right: 8
     }
 });
 

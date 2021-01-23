@@ -11,20 +11,6 @@ const styles = StyleSheet.create({
         width: '60%',
         marginVertical: 10
     },
-    linkWrapper: {
-        padding: 10
-    },
-    link: {
-        color: 'blue',
-        textDecorationLine: 'underline'
-    },
-    buttonContainer: {
-        backgroundColor: 'black',
-        alignItems: 'center'
-    },
-    buttonText: {
-        color: 'white'
-    },
     error: {
         color: 'tomato',
         fontWeight: 'bold'

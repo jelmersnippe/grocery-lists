@@ -9,10 +9,6 @@ const styles = StyleSheet.create({
         borderColor: 'black'
     },
     button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 40,
-        width: 40,
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderColor: 'black'

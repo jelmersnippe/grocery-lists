@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import AddGroupModal from '../ModalContent/AddGroupModal';
 import {removeFirestoreListGroup} from '../../firestore/listActions';
+import theme from '../../config/theme';
 
 const GroupView: FunctionComponent<Props> = ({groups, editable, listId}) => {
     const {dispatch} = useOverlayData();
@@ -46,7 +47,7 @@ const GroupView: FunctionComponent<Props> = ({groups, editable, listId}) => {
                 }
                 <TouchableOpacity
                     onPress={() => openAddGroupModal()}
-                    style={{paddingHorizontal: 5}}
+                    style={theme.iconButton}
                 >
                     <Icon name={'add'} size={32} color={'black'}/>
                 </TouchableOpacity>

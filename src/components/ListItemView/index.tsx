@@ -9,6 +9,7 @@ import ListItemRow from './ListItemRow';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import AddItemModal from '../ModalContent/AddItemModal';
 import styles from './styles';
+import theme from '../../config/theme';
 
 const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
     const {dispatch} = useOverlayData();
@@ -62,7 +63,7 @@ const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
             </ScrollView>
             <TouchableOpacity
                 onPress={() => openAddItemModal()}
-                style={styles.fab}
+                style={theme.floatingActionButton}
             >
                 <Icon name={'add'} size={32} color={'white'}/>
             </TouchableOpacity>

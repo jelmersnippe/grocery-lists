@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
     },
     label: {
         marginLeft: 8,
-        fontSize: 18,
-        textTransform: 'capitalize'
+        fontSize: 18
     }
 });
 

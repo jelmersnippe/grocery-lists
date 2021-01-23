@@ -3,6 +3,7 @@ import React, {FunctionComponent, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../config/theme';
 
 const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
     const [qty, setQty] = useState('0');
@@ -30,7 +31,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                style={styles.button}
+                style={[theme.iconButton, styles.button]}
                 onPress={() => decrementQty()}
                 disabled={isNaN(Number(qty)) || Number(qty) <= 0}
             >
@@ -50,7 +51,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
                 }}
             />
             <TouchableOpacity
-                style={styles.button}
+                style={[theme.iconButton, styles.button]}
                 onPress={() => incrementQty()}
                 disabled={isNaN(Number(qty))}
             >

@@ -14,11 +14,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: 'black'
     },
-    title: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        flex: 1
-    },
     listContainer: {},
     listItem: {
         flexDirection: 'row',

@@ -8,6 +8,7 @@ import Button from '../../components/Button';
 import {setUser} from '../../reducers/user/actions';
 import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import theme from '../../config/theme';
 
 const Login = ({navigation}: Props): JSX.Element => {
     const dispatch = useDispatch();
@@ -72,10 +73,10 @@ const Login = ({navigation}: Props): JSX.Element => {
                 containerStyle={styles.input}
             />
             <TouchableOpacity
-                style={styles.linkWrapper}
+                style={theme.buttons.tertiary.container}
                 onPress={() => navigation.navigate('CreateAccount')}
             >
-                <Text style={styles.link}>{t('toCreateAccount')}</Text>
+                <Text style={theme.buttons.tertiary.text}>{t('toCreateAccount')}</Text>
             </TouchableOpacity>
         </ScrollView>
     );

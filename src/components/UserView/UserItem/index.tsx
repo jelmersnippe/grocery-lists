@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Props} from './props';
 import {capitalize} from '../../../utils/capitalize';
 import {useTranslation} from 'react-i18next';
+import theme from '../../../config/theme';
 
 export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction, isCurrentUser}) => {
     const [opened, setOpened] = useState(false);
@@ -25,7 +26,7 @@ export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction
     return (
         <View style={styles.wrapper}>
             <TouchableOpacity
-                style={styles.container}
+                style={[theme.rowContainer, theme.rowContainerShadow]}
                 delayLongPress={500}
                 onLongPress={() => (editable && !isCurrentUser) && setOpened(true)}
                 activeOpacity={(editable && !isCurrentUser) ? 0.6 : 1}
@@ -42,7 +43,7 @@ export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction
             {
                 opened &&
                 <TouchableOpacity
-                    style={styles.deleteButton}
+                    style={theme.iconButton}
                     onPress={() => removeAction(user.uid)}
                 >
                     <Icon name={'delete'} size={32} color={'tomato'}/>

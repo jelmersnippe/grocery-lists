@@ -9,6 +9,7 @@ import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-o
 import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
 import {addFirestoreList, subscribeToFirestoreListUpdates, subscribeToFirestoreListUpdatesForGroups} from '../../firestore/listActions';
+import theme from '../../config/theme';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -83,7 +84,9 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>{t('title')}</Text>
+                <Text style={theme.pageTitle}>
+                    {t('title')}
+                </Text>
                 <TouchableOpacity
                     onPress={() => openInputModal()}
                 >

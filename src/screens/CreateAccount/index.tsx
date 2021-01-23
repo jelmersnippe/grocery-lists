@@ -9,6 +9,7 @@ import {setUser} from '../../reducers/user/actions';
 import {useTranslation} from 'react-i18next';
 import CustomTextInput from '../../components/CustomTextInput';
 import {createFirestoreUser} from '../../firestore/userActions';
+import theme from '../../config/theme';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -117,10 +118,10 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                 containerStyle={styles.input}
             />
             <TouchableOpacity
-                style={styles.linkWrapper}
+                style={theme.buttons.tertiary.container}
                 onPress={() => navigation.navigate('Login')}
             >
-                <Text style={styles.link}>{t('toLogin')}</Text>
+                <Text style={theme.buttons.tertiary.text}>{t('toLogin')}</Text>
             </TouchableOpacity>
         </ScrollView>
     );

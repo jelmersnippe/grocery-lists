@@ -7,6 +7,7 @@ import ListDetails from '../screens/ListDetails';
 import ListOverview from '../screens/ListOverview';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
+import theme from '../config/theme';
 
 export type ListStackParamList = {
     ListOverview: undefined;
@@ -30,7 +31,7 @@ const ListStack: FunctionComponent<Props> = ({navigation}) => {
                 headerRight: (_) => (
                     <TouchableOpacity
                         onPress={() => navigation.toggleDrawer()}
-                        style={{padding: 5, marginRight: 10}}
+                        style={[theme.iconButton, {marginRight: 5}]}
                     >
                         <Icon name={'settings'} size={30}/>
                     </TouchableOpacity>

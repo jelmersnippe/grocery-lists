@@ -6,27 +6,6 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginHorizontal: 10
     },
-    container: {
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black',
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 8,
-        flex: 1
-    },
-    containerShadow: {
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4
-    },
     quantity: {
         flexDirection: 'row',
         alignItems: 'flex-end',

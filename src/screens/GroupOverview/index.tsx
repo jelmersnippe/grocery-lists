@@ -10,6 +10,7 @@ import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {capitalize} from '../../utils/capitalize';
+import theme from '../../config/theme';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -67,10 +68,13 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
         <View style={styles.container}>
             <TouchableOpacity
                 onPress={() => openInputModal()}
+                style={theme.iconButton}
             >
                 <Icon name={'add'} size={40} color={'black'}/>
             </TouchableOpacity>
-            <Text style={styles.title}>GroupOverview</Text>
+            <Text style={theme.pageTitle}>
+                GroupOverview
+            </Text>
             {renderGroups()}
         </View>
     );

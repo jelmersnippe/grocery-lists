@@ -22,6 +22,7 @@ import {capitalize} from '../../utils/capitalize';
 import ListItemView from '../../components/ListItemView';
 import UserSearch from '../../components/UserSearch';
 import GroupView from '../../components/GroupView';
+import theme from '../../config/theme';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -108,7 +109,13 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 <View style={styles.header}>
                     <View style={styles.headerTextContainer}>
                         <View style={styles.titleContainer}>
-                            <Text style={styles.title} numberOfLines={2} ellipsizeMode={'tail'}>{selectedList.name}</Text>
+                            <Text
+                                style={theme.pageTitle}
+                                numberOfLines={2}
+                                ellipsizeMode={'tail'}
+                            >
+                                {selectedList.name}
+                            </Text>
                             {listCreatedByCurrentUser &&
                             <TouchableOpacity
                                 onPress={() => {
@@ -123,6 +130,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                         }
                                     }));
                                 }}
+                                style={theme.iconButton}
                             >
                                 <Icon name={'edit'} size={30} color={'black'}/>
                             </TouchableOpacity>
@@ -179,7 +187,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                             {
                                 listCreatedByCurrentUser &&
                                 <TouchableOpacity
-                                    style={styles.fab}
+                                    style={theme.floatingActionButton}
                                     onPress={() => openUserSearch()}
                                 >
                                     <Icon name={'search'} size={32} color={'white'}/>

@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {AppTabsParamList} from './AppTabs';
+import theme from '../config/theme';
 
 export type GroupStackParamList = {
     GroupOverview: undefined;
@@ -27,7 +28,7 @@ const GroupStack: FunctionComponent<Props> = ({navigation}) => {
                 headerRight: (_) => (
                     <TouchableOpacity
                         onPress={() => navigation.toggleDrawer()}
-                        style={{padding: 5, marginRight: 10}}
+                        style={[theme.iconButton, {marginRight: 5}]}
                     >
                         <Icon name={'settings'} size={30}/>
                     </TouchableOpacity>
