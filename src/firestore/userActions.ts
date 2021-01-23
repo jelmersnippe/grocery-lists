@@ -6,7 +6,16 @@ import {addCachedUser, removeCachedUser} from '../reducers/userCache/actions';
 import {CachedUser, User, UserInfo} from '../reducers/userCache/types';
 import moment from 'moment';
 
-const getByUid = async (uid: string): Promise<UserInfo | undefined> => {
+export const getUser = async (uid: string): Promise<UserInfo | undefined> => {
+    const cachedUser = getUserFromCache(uid);
+    if (cachedUser) {
+        return cachedUser;
+    }
+
+    return getFirestoreUserByUid(uid);
+};
+
+const getUserFromCache = (uid: string): CachedUser | undefined => {
     const userCache = store.getState().userCache;
     const cachedUser = userCache.hasOwnProperty(uid) ? userCache[uid] : undefined;
 
@@ -17,7 +26,10 @@ const getByUid = async (uid: string): Promise<UserInfo | undefined> => {
             return cachedUser;
         }
     }
+    return undefined;
+};
 
+const getFirestoreUserByUid = async (uid: string): Promise<UserInfo | undefined> => {
     return await firestore().collection('users')
         .doc(uid)
         .get()
@@ -37,7 +49,7 @@ const getByUid = async (uid: string): Promise<UserInfo | undefined> => {
         });
 };
 
-const search = async (searchString: string): Promise<Array<FirestoreSearchResult>> => {
+export const searchFirestoreUsers = async (searchString: string): Promise<Array<FirestoreSearchResult>> => {
     const foundUsers: Array<FirestoreSearchResult> = [];
 
     const users = await firestore().collection('users')
@@ -58,8 +70,8 @@ const search = async (searchString: string): Promise<Array<FirestoreSearchResult
     return foundUsers;
 };
 
-const create = async (uid: string, user: User): Promise<void> => {
-    const userExists = await getByUid(uid);
+export const createFirestoreUser = async (uid: string, user: UserInfo): Promise<void> => {
+    const userExists = await getUser(uid);
     if (userExists) {
         console.log('User already exists');
         return;
@@ -77,7 +89,7 @@ const create = async (uid: string, user: User): Promise<void> => {
         .catch((error: ReactNativeFirebase.NativeFirebaseError) => console.log('Error creating user', error));
 };
 
-const update = async (uid: string, user: Partial<User>): Promise<void> => {
+export const updateFirestoreUser = async (uid: string, user: Partial<User>): Promise<void> => {
     const updatedUser: Partial<FirestoreUser> = user;
     return await firestore().collection('users')
         .doc(uid)
@@ -88,12 +100,3 @@ const update = async (uid: string, user: Partial<User>): Promise<void> => {
         .then(() => console.log('User updated'))
         .catch((error: ReactNativeFirebase.NativeFirebaseError) => console.log('Error updating user', error.code));
 };
-
-const firestoreUserActions = {
-    getByUid,
-    search,
-    create,
-    update
-};
-
-export default firestoreUserActions;

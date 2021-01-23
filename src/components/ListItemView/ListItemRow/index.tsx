@@ -5,7 +5,7 @@ import {removeFirestoreListItem, updateFirestoreListItem} from '../../../firesto
 import {ItemStatus} from '../../../reducers/lists/types';
 import {Props} from './props';
 import styles from './styles';
-import firestoreUserActions from '../../../firestore/userActions';
+import {getUser} from '../../../firestore/userActions';
 import {UserInfo} from '../../../reducers/userCache/types';
 import {capitalize} from '../../../utils/capitalize';
 import Checkbox from '../../Checkbox';
@@ -16,7 +16,7 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
 
     useEffect(() => {
         (async () => {
-            const addedByUser = await firestoreUserActions.getByUid(item.addedBy);
+            const addedByUser = await getUser(item.addedBy);
             setAddedBy(addedByUser);
         })();
     }, [item.addedBy]);

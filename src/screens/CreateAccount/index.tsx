@@ -3,12 +3,12 @@ import {ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import Button from '../../components/Button';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../reducers/user/actions';
 import {useTranslation} from 'react-i18next';
 import CustomTextInput from '../../components/CustomTextInput';
+import {createFirestoreUser} from '../../firestore/userActions';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
     const emailRef = useRef<TextInput>(null);
@@ -38,9 +38,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
         if (validEmail && validPassword && validDisplayName) {
             try {
                 const result = await auth().createUserWithEmailAndPassword(email, password);
-                await firestore().collection('users').doc(result.user.uid).set({
-                    name: nameInput.toLowerCase()
-                });
+                await createFirestoreUser(result.user.uid, {name: nameInput});
                 dispatch(setUser({uid: result.user.uid, name: nameInput}));
             } catch (e) {
                 setError(e.code);

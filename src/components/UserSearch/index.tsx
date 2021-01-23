@@ -3,7 +3,7 @@ import styles from './styles';
 import SearchBar from './SearchBar';
 import Button from '../Button';
 import React, {FunctionComponent, useState} from 'react';
-import firestoreUserActions from '../../firestore/userActions';
+import {searchFirestoreUsers} from '../../firestore/userActions';
 import {FirestoreSearchResult, FirestoreUserUid} from '../../firestore/types';
 import SearchResultItem from './SearchResultItem';
 import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
@@ -22,7 +22,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEdit
     };
 
     const searchForUsers = async (searchString: string) => {
-        const foundUsers = await firestoreUserActions.search(searchString);
+        const foundUsers = await searchFirestoreUsers(searchString);
         setUserResults(foundUsers);
     };
 

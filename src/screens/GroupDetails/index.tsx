@@ -8,7 +8,7 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {deleteFirestoreGroup, addFirestoreGroupUsers, removeFirestoreGroupUsers} from '../../firestore/groupActions';
 import {User} from '../../reducers/userCache/types';
-import firestoreUserActions from '../../firestore/userActions';
+import {getUser} from '../../firestore/userActions';
 import UserView from '../../components/UserView';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import UserSearch from '../../components/UserSearch';
@@ -27,7 +27,7 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
             if (selectedGroup?.users) {
                 const newUsers: Array<User> = [];
                 for (const user of selectedGroup.users) {
-                    const foundUser = await firestoreUserActions.getByUid(user);
+                    const foundUser = await getUser(user);
                     if (foundUser) {
                         newUsers.push({
                             uid: user,

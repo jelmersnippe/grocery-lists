@@ -31,7 +31,7 @@ export const subscribeToFirestoreGroupUpdates = () => {
         });
 };
 
-export const getFirestoreGroupByUid = async (uid: string): Promise<Group | undefined> => {
+export const getFirestoreGroupByUid = async (uid: string): Promise<GroupInfo | undefined> => {
     const groupsState = store.getState().groups;
     const foundGroup = groupsState[uid];
 

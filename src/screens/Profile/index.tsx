@@ -8,7 +8,7 @@ import {setUser} from '../../reducers/user/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
-import firestoreUserActions from '../../firestore/userActions';
+import {updateFirestoreUser} from '../../firestore/userActions';
 
 const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Profile: FunctionComponent<Props> = ({}) => {
         }
 
         try {
-            await firestoreUserActions.update(user.uid, {name: nameInput});
+            await updateFirestoreUser(user.uid, {name: nameInput});
             dispatch(setUser({
                 name: nameInput
             }));

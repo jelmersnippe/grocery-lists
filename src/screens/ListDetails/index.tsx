@@ -7,7 +7,7 @@ import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import FullSizeLoader from '../../components/FullSizeLoader';
-import firestoreUserActions from '../../firestore/userActions';
+import {getUser} from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
 import {
     addFirestoreListUsers,
@@ -52,7 +52,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         const creatorUid = selectedList?.creatorUid;
         if (creatorUid) {
             (async () => {
-                const creatorUserInfo = await firestoreUserActions.getByUid(creatorUid);
+                const creatorUserInfo = await getUser(creatorUid);
                 setCreator(creatorUserInfo);
             })();
         }
@@ -63,7 +63,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
             if (selectedList?.users) {
                 const userList: Array<User> = [];
                 for (const user of selectedList?.users) {
-                    const userData = await firestoreUserActions.getByUid(user);
+                    const userData = await getUser(user);
                     if (userData) {
                         userList.push({uid: user, ...userData});
                     }
