@@ -39,8 +39,8 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
             <TouchableOpacity
                 style={[
                     theme.rowContainer,
-                    {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'},
-                    item.status !== ItemStatus.DONE && theme.rowContainerShadow
+                    {backgroundColor: item.status === ItemStatus.DONE ? theme.colors.gray : theme.colors.primary},
+                    item.status !== ItemStatus.DONE && theme.lightShadow
                 ]}
                 delayLongPress={500}
                 onLongPress={() => setOpened(true)}
@@ -50,13 +50,13 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                     onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
                 />
                 <View style={styles.quantity}>
-                    <Text style={styles.quantityText}>{item.quantity}</Text>
-                    <Icon name={'close'} size={18} color={'black'}/>
+                    <Text style={[styles.quantityText, item.status === ItemStatus.DONE && {color: theme.colors.grayDark}]}>{item.quantity}</Text>
+                    <Icon name={'close'} size={18} color={item.status === ItemStatus.DONE ? theme.colors.grayDark : theme.colors.black}/>
                 </View>
                 <Text
                     style={[
                         styles.name,
-                        item.status === ItemStatus.DONE && {textDecorationLine: 'line-through'}
+                        item.status === ItemStatus.DONE && {textDecorationLine: 'line-through', color: theme.colors.grayDark}
                     ]}
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
@@ -64,9 +64,9 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                     {item.name}
                 </Text>
                 {addedBy &&
-                <View style={styles.addedBy}>
-                    <Text>{capitalize(addedBy.name)}</Text>
-                </View>
+                    <Text style={[styles.addedBy, item.status === ItemStatus.DONE && {color: theme.colors.grayDark}]}>
+                        {capitalize(addedBy.name)}
+                    </Text>
                 }
             </TouchableOpacity>
 
@@ -76,7 +76,7 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                     style={styles.deleteButton}
                     onPress={() => removeFirestoreListItem(listId, listItemId)}
                 >
-                    <Icon name={'delete'} size={32} color={'tomato'}/>
+                    <Icon name={'delete'} size={32} color={theme.colors.red}/>
                 </TouchableOpacity>
             }
         </View>

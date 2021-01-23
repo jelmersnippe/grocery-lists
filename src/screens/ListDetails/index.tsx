@@ -132,7 +132,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                 }}
                                 style={theme.iconButton}
                             >
-                                <Icon name={'edit'} size={30} color={'black'}/>
+                                <Icon name={'edit'} size={30} color={theme.colors.black}/>
                             </TouchableOpacity>
                             }
                         </View>
@@ -150,7 +150,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     <TouchableOpacity
                         onPress={() => setCurrentTab(Tab.TASKS)}
                         disabled={currentTab === Tab.TASKS}
-                        style={[styles.tabButton, currentTab === Tab.TASKS && styles.activeTabButton]}
+                        style={[styles.tabButton, currentTab === Tab.TASKS && {...styles.activeTabButton, ...theme.heavyShadow}]}
                     >
                         <Text style={[
                             styles.tabButtonText,
@@ -160,7 +160,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     <TouchableOpacity
                         onPress={() => setCurrentTab(Tab.USERS)}
                         disabled={currentTab === Tab.USERS}
-                        style={[styles.tabButton, currentTab === Tab.USERS && styles.activeTabButton]}
+                        style={[styles.tabButton, currentTab === Tab.USERS && {...styles.activeTabButton, ...theme.heavyShadow}]}
                     >
                         <Text style={[
                             styles.tabButtonText,
@@ -190,14 +190,14 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                     style={theme.floatingActionButton}
                                     onPress={() => openUserSearch()}
                                 >
-                                    <Icon name={'search'} size={32} color={'white'}/>
+                                    <Icon name={'search'} size={32} color={theme.colors.white}/>
                                 </TouchableOpacity>
                             }
                         </>
                 }
 
             </View>
-            : <FullSizeLoader size={100} color={'black'}/>
+            : <FullSizeLoader size={100} color={theme.colors.black}/>
     );
 };
 

@@ -1,19 +1,32 @@
 import {StyleSheet, TextStyle, ViewStyle} from 'react-native';
 
+const colors = {
+    background: '#ffefda',
+    header: 'transparent',
+    white: '#ffffff',
+    black: '#011627',
+    red: '#FF0022',
+    blue: '#02A9EA',
+    gray: '#EAEAEA',
+    grayDark: '#a1a1a1',
+    primary: '#e6f2ff',
+    primaryDark: '#2d4c74'
+};
+
 const rowContainer: ViewStyle = {
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'black',
+    borderColor: colors.primaryDark,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 8,
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: colors.primary
 };
 
-const rowContainerShadow: ViewStyle = {
-    shadowColor: 'black',
+const lightShadow: ViewStyle = {
+    shadowColor: colors.black,
     shadowOffset: {
         width: 0,
         height: 2
@@ -24,8 +37,21 @@ const rowContainerShadow: ViewStyle = {
     elevation: 4
 };
 
+const heavyShadow: ViewStyle = {
+    shadowOffset: {
+        width: 0,
+        height: 10
+    },
+    shadowOpacity: 0.51,
+    shadowRadius: 13.16,
+
+    elevation: 10
+};
+
 const floatingActionButton: ViewStyle = {
-    backgroundColor: 'black',
+    backgroundColor: colors.blue,
+    borderColor: colors.primaryDark,
+    borderWidth: 1,
     borderRadius: 24,
     width: 48,
     height: 48,
@@ -47,27 +73,33 @@ const pageTitle: TextStyle = {
     fontWeight: 'bold'
 };
 
-const buttons: {[key: string]: {container: ViewStyle, text: TextStyle}} = {
+type ButtonStyling = {container: ViewStyle, text: TextStyle}
+type MainButtonsStyle = {
+    primary: ButtonStyling,
+    secondary: ButtonStyling,
+    tertiary: ButtonStyling
+}
+const buttons: MainButtonsStyle = {
     primary: {
         container: {
-            backgroundColor: 'black',
+            backgroundColor: colors.black,
             alignItems: 'center',
             padding: 10
         },
         text: {
-            color: 'white'
+            color: colors.white
         }
     },
     secondary: {
         container: {
-            backgroundColor: 'white',
+            backgroundColor: colors.white,
             alignItems: 'center',
             padding: 10,
             borderWidth: 1,
-            borderColor: 'black'
+            borderColor: colors.black
         },
         text: {
-            color: 'black'
+            color: colors.black
         }
     },
     tertiary: {
@@ -75,15 +107,17 @@ const buttons: {[key: string]: {container: ViewStyle, text: TextStyle}} = {
             padding: 10
         },
         text: {
-            color: 'black',
+            color: colors.black,
             textDecorationLine: 'underline'
         }
     }
 };
 
 const theme = {
+    colors,
     rowContainer,
-    rowContainerShadow,
+    lightShadow,
+    heavyShadow,
     floatingActionButton,
     iconButton,
     pageTitle,

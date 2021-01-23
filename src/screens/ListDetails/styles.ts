@@ -1,9 +1,11 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../config/theme';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: theme.colors.background
     },
     header: {
         width: '100%',
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black'
+        borderColor: theme.colors.black
     },
     headerTextContainer: {
         width: '80%'
@@ -30,31 +32,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: 'gray',
+        borderColor: theme.colors.grayDark,
         margin: 10,
         borderRadius: 15,
-        backgroundColor: 'white'
+        backgroundColor: theme.colors.gray
     },
     activeTabButton: {
         flex: 0.6,
-        borderColor: 'black',
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 10
-        },
-        shadowOpacity: 0.51,
-        shadowRadius: 13.16,
-
-        elevation: 10
+        borderColor: theme.colors.black,
+        backgroundColor: theme.colors.white
     },
     tabButtonText: {
         paddingVertical: 10,
         fontSize: 20,
-        color: 'gray'
+        color: theme.colors.grayDark
     },
     activeTabButtonText: {
-        color: 'black'
+        color: theme.colors.black
     }
 });
 

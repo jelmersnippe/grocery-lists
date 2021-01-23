@@ -26,7 +26,7 @@ export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction
     return (
         <View style={styles.wrapper}>
             <TouchableOpacity
-                style={[theme.rowContainer, theme.rowContainerShadow]}
+                style={[theme.rowContainer, theme.lightShadow]}
                 delayLongPress={500}
                 onLongPress={() => (editable && !isCurrentUser) && setOpened(true)}
                 activeOpacity={(editable && !isCurrentUser) ? 0.6 : 1}
@@ -46,7 +46,7 @@ export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction
                     style={theme.iconButton}
                     onPress={() => removeAction(user.uid)}
                 >
-                    <Icon name={'delete'} size={32} color={'tomato'}/>
+                    <Icon name={'delete'} size={32} color={theme.colors.red}/>
                 </TouchableOpacity>
             }
         </View>

@@ -1,9 +1,11 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../config/theme';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: theme.colors.background
     },
     titleContainer: {
         flexDirection: 'row',
@@ -12,7 +14,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black'
+        borderColor: theme.colors.black
     },
     listContainer: {},
     listItem: {
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: 'black'
+        borderColor: theme.colors.black
     },
     listItemName: {
         fontSize: 18

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../../config/theme';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -14,15 +15,18 @@ const styles = StyleSheet.create({
     },
     quantityText: {
         fontSize: 18,
-        marginRight: -2
+        marginRight: -2,
+        color: theme.colors.black
     },
     name: {
         flex: 1,
         fontSize: 18,
-        marginRight: 10
+        marginRight: 10,
+        color: theme.colors.black
     },
     addedBy: {
-        marginRight: 10
+        marginRight: 10,
+        color: theme.colors.black
     },
     deleteButton: {
         paddingHorizontal: 10,

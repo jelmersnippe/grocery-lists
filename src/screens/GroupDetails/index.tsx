@@ -64,7 +64,7 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         }}
                         style={theme.iconButton}
                     >
-                        <Icon name={'delete'} color={'tomato'} size={24}/>
+                        <Icon name={'delete'} color={theme.colors.red} size={24}/>
                     </TouchableOpacity>
                 </View>
                 <UserView
@@ -78,11 +78,11 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         style={theme.floatingActionButton}
                         onPress={() => openUserSearch()}
                     >
-                        <Icon name={'search'} size={32} color={'white'}/>
+                        <Icon name={'search'} size={32} color={theme.colors.white}/>
                     </TouchableOpacity>
                 }
             </View>
-            : <FullSizeLoader size={100} color={'black'}/>
+            : <FullSizeLoader size={100} color={theme.colors.black}/>
     );
 };
 

@@ -5,8 +5,9 @@ import styles from './styles';
 import Button from '../Button';
 import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import {useNavigation} from '@react-navigation/native';
+import theme from '../../config/theme';
 
-const FullSizeLoader: FunctionComponent<Props> = ({size = 100, color = 'black'}) => {
+const FullSizeLoader: FunctionComponent<Props> = ({size = 100, color = theme.colors.black}) => {
     const [showButton, setShowButton] = useState(false);
     const {state, dispatch} = useOverlayData();
     const navigation = useNavigation();

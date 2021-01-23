@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reducers';
 import {useTranslation} from 'react-i18next';
 import {capitalize} from '../../../utils/capitalize';
+import theme from '../../../config/theme';
 
 const SearchResultItem: FunctionComponent<Props> = ({user, icon, action, containerStyle, editable}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
@@ -20,7 +21,7 @@ const SearchResultItem: FunctionComponent<Props> = ({user, icon, action, contain
                 style={styles.iconButton}
                 onPress={() => action(user.uid)}
             >
-                <Icon name={icon} size={26} color={'black'}/>
+                <Icon name={icon} size={26} color={theme.colors.black}/>
             </TouchableOpacity>
             }
         </View>

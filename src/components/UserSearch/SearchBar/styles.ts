@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../../config/theme';
 
 const styles = StyleSheet.create({
     searchContainer: {
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 'auto',
         borderWidth: 1,
-        borderColor: 'black'
+        borderColor: theme.colors.black
     },
     searchInputContainer: {
         flex: 1

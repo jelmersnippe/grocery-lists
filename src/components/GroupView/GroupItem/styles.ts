@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../../config/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -7,11 +8,12 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         marginRight: 10,
         borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 25
+        borderColor: theme.colors.black,
+        borderRadius: 25,
+        backgroundColor: theme.colors.white
     },
     name: {
-        color: 'black',
+        color: theme.colors.black,
         fontSize: 22
     },
     deleteButton: {

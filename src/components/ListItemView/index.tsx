@@ -65,7 +65,7 @@ const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
                 onPress={() => openAddItemModal()}
                 style={theme.floatingActionButton}
             >
-                <Icon name={'add'} size={32} color={'white'}/>
+                <Icon name={'add'} size={32} color={theme.colors.white}/>
             </TouchableOpacity>
         </>
     );

@@ -60,7 +60,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                     style={styles.listItem}
                 >
                     <Text style={styles.listItemName}>{value.name}</Text>
-                    <Icon style={styles.listItemIcon} name={'keyboard-arrow-right'} size={24} color={'black'}/>
+                    <Icon style={styles.listItemIcon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
                 </TouchableOpacity>
             );
         }
@@ -90,7 +90,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => openInputModal()}
                 >
-                    <Icon name={'add'} size={40} color={'black'}/>
+                    <Icon name={'add'} size={40} color={theme.colors.black}/>
                 </TouchableOpacity>
             </View>
             <ScrollView

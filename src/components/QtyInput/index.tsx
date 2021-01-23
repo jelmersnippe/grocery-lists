@@ -35,7 +35,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
                 onPress={() => decrementQty()}
                 disabled={isNaN(Number(qty)) || Number(qty) <= 0}
             >
-                <Icon name={'remove'} size={32} color={'black'}/>
+                <Icon name={'remove'} size={32} color={theme.colors.black}/>
             </TouchableOpacity>
             <TextInput
                 keyboardType={'numeric'}
@@ -55,7 +55,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
                 onPress={() => incrementQty()}
                 disabled={isNaN(Number(qty))}
             >
-                <Icon name={'add'} size={32} color={'black'}/>
+                <Icon name={'add'} size={32} color={theme.colors.black}/>
             </TouchableOpacity>
         </View>
     );

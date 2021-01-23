@@ -5,6 +5,7 @@ import GroupStack from './GroupStack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
 import {Text} from 'react-native';
+import theme from '../config/theme';
 
 export type AppTabsParamList = {
     Lists: undefined;
@@ -21,7 +22,7 @@ const AppTabs = () => {
             initialRouteName={'Lists'}
             screenOptions={({route}) => ({
                 tabBarIcon: ({focused}) => {
-                    const color = focused ? 'tomato' : 'black';
+                    const color = focused ? theme.colors.blue : theme.colors.grayDark;
                     switch (route.name) {
                         case 'Groups':
                             return <Icon name={'people'} size={30} color={color}/>;
@@ -30,14 +31,10 @@ const AppTabs = () => {
                     }
                 },
                 tabBarLabel: ({focused}) => {
-                    const color = focused ? 'tomato' : 'black';
+                    const color = focused ? theme.colors.blue : theme.colors.grayDark;
                     return <Text style={{color}}>{t(route.name)}</Text>;
                 }
             })}
-            tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'black'
-            }}
         >
             <Tabs.Screen name='Groups' component={GroupStack}/>
             <Tabs.Screen name='Lists' component={ListStack}/>

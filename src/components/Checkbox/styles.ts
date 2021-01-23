@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../config/theme';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
         width: 22,
         height: 22,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: theme.colors.primaryDark,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center'

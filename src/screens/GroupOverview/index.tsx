@@ -70,7 +70,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
                 onPress={() => openInputModal()}
                 style={theme.iconButton}
             >
-                <Icon name={'add'} size={40} color={'black'}/>
+                <Icon name={'add'} size={40} color={theme.colors.black}/>
             </TouchableOpacity>
             <Text style={theme.pageTitle}>
                 GroupOverview

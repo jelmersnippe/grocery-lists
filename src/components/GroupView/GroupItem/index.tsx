@@ -4,6 +4,7 @@ import {capitalize} from '../../../utils/capitalize';
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Props} from './props';
+import theme from '../../../config/theme';
 
 const GroupItem: FunctionComponent<Props> = ({group, editable, removeAction}) => {
     const [opened, setOpened] = useState(false);
@@ -36,7 +37,7 @@ const GroupItem: FunctionComponent<Props> = ({group, editable, removeAction}) =>
                     style={styles.deleteButton}
                     onPress={() => removeAction(group.uid)}
                 >
-                    <Icon name={'delete'} size={32} color={'tomato'}/>
+                    <Icon name={'delete'} size={32} color={theme.colors.red}/>
                 </TouchableOpacity>
             }
         </TouchableOpacity>

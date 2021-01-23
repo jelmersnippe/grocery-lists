@@ -4,6 +4,7 @@ import {Keyboard, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, {FunctionComponent, useState} from 'react';
 import {Props} from './props';
+import theme from '../../../config/theme';
 
 const SearchBar: FunctionComponent<Props> = ({searchAction}) => {
     const [searchInput, setSearchInput] = useState('');
@@ -27,7 +28,7 @@ const SearchBar: FunctionComponent<Props> = ({searchAction}) => {
                 }}
                 style={styles.searchIcon}
             >
-                <Icon name={'search'} size={40} color={'black'}/>
+                <Icon name={'search'} size={40} color={theme.colors.black}/>
             </TouchableOpacity>
         </View>
     );
