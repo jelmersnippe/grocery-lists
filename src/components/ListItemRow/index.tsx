@@ -8,6 +8,7 @@ import styles from './styles';
 import firestoreUserActions from '../../firestore/userActions';
 import {UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
+import Checkbox from '../Checkbox';
 
 const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     const [opened, setOpened] = useState(false);
@@ -20,56 +21,65 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
         })();
     }, [item.addedBy]);
 
+    useEffect(() => {
+        if (opened) {
+            const close = setTimeout(() => {
+                setOpened(false);
+            }, 5000);
+
+            return () => clearTimeout(close);
+        }
+
+        return;
+    }, [opened]);
+
     return (
-        <TouchableOpacity
-            style={[
-                styles.wrapper,
-                item.status === ItemStatus.DONE && {backgroundColor: 'lightgray'}
-            ]}
-            delayLongPress={0}
-            onLongPress={() => {
-                setOpened(true);
-                setTimeout(() => {
-                    setOpened(false);
-                }, 5000);
-            }}
-        >
-            <View style={styles.quantity}>
-                <Text style={styles.quantityText}>{item.quantity}</Text>
-                <Icon name={'close'} size={18} color={'black'}/>
-            </View>
-            <Text
+        <View style={{flexDirection: 'row',
+            marginVertical: 5,
+            marginHorizontal: 10}}>
+            <TouchableOpacity
                 style={[
-                    styles.name,
-                    item.status === ItemStatus.DONE && {textDecorationLine: 'line-through'}
+                    styles.wrapper,
+                    {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'}
                 ]}
-                numberOfLines={2}
-                ellipsizeMode={'tail'}
+                delayLongPress={500}
+                onLongPress={() => setOpened(true)}
             >
-                {item.name}
-            </Text>
-            {addedBy &&
+                <Checkbox
+                    checked={item.status !== ItemStatus.TODO}
+                    onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
+                />
+                <View style={styles.quantity}>
+                    <Text style={styles.quantityText}>{item.quantity}</Text>
+                    <Icon name={'close'} size={18} color={'black'}/>
+                </View>
+                <Text
+                    style={[
+                        styles.name,
+                        item.status === ItemStatus.DONE && {textDecorationLine: 'line-through'}
+                    ]}
+                    numberOfLines={2}
+                    ellipsizeMode={'tail'}
+                >
+                    {item.name}
+                </Text>
+                {addedBy &&
                 <View style={styles.addedBy}>
                     <Text>{capitalize(addedBy.name)}</Text>
                 </View>
-            }
+                }
+            </TouchableOpacity>
+
             {
-                opened ?
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        onPress={() => removeFirestoreListItem(listId, listItemId)}
-                    >
-                        <Icon name={'trash'} size={26} color={'tomato'}/>
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
-                    >
-                        <Icon name={item.status === ItemStatus.TODO ? 'checkbox-outline' : 'checkbox'} size={26} color={'black'}/>
-                    </TouchableOpacity>
+                opened &&
+                <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeFirestoreListItem(listId, listItemId)}
+                >
+                    <Icon name={'trash'} size={32} color={'tomato'}/>
+                </TouchableOpacity>
             }
-        </TouchableOpacity>
+        </View>
     );
 };
 

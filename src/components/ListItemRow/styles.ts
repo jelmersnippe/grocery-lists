@@ -4,10 +4,21 @@ const styles = StyleSheet.create({
     wrapper: {
         paddingVertical: 10,
         paddingHorizontal: 15,
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderWidth: StyleSheet.hairlineWidth,
         borderColor: 'black',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 8,
+        flex: 1,
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4
     },
     quantity: {
         flexDirection: 'row',
@@ -27,8 +38,10 @@ const styles = StyleSheet.create({
     addedBy: {
         marginRight: 10
     },
-    iconButton: {
-        paddingHorizontal: 5
+    deleteButton: {
+        paddingHorizontal: 10,
+        marginLeft: 8,
+        justifyContent: 'center'
     }
 });
 
