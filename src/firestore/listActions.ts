@@ -4,6 +4,7 @@ import {store} from '../config/store';
 import {ItemStatus, List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
 import {addList, addListItem, removeList, removeListItem} from '../reducers/lists/actions';
+import {Group} from '../reducers/groups/types';
 
 export const subscribeToFirestoreListUpdates = (): () => void => {
     const currentUserUid = store.getState().user.uid;
@@ -48,12 +49,18 @@ export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>):
                         break;
                     default:
                         const documentData = documentChange.doc.data() as FirestoreList;
-                        const groupUsers: Array<string> = [];
+                        const groupData: Array<Group> = [];
                         if (documentData?.groups) {
                             for (const group of documentData.groups) {
                                 const groupDocument = await firestore().collection('groups').doc(group).get();
-                                const groupData = groupDocument.data() as FirestoreGroup;
-                                groupUsers.push(...groupData.users);
+                                const groupDocumentData = groupDocument.data() as FirestoreGroup;
+
+                                const groupDataObject: Group = {
+                                    name: groupDocumentData.name,
+                                    users: groupDocumentData.users,
+                                    creatorUid: groupDocumentData.creator
+                                };
+                                groupData.push(groupDataObject);
                             }
                         }
                         const listData: List = {
@@ -61,7 +68,7 @@ export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>):
                             creatorUid: documentData.creator,
                             users: documentData.users,
                             groups: documentData.groups,
-                            groupUsers: groupUsers
+                            groupData: groupData
                         };
                         store.dispatch(addList({id: listId, list: listData}));
                         break;

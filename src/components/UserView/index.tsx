@@ -10,7 +10,7 @@ import UserItem from '../UserItem';
 import {User} from '../../reducers/userCache/types';
 import SearchBar from '../SearchBar';
 
-const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}) => {
+const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable, nonEditableUsers}) => {
     const [users, setUsers] = useState<Array<User>>([]);
     const [userUids, setUserUids] = useState<Array<FirestoreUserUid>>([]);
 
@@ -46,7 +46,7 @@ const UserView: FunctionComponent<Props> = ({saveAction, initialUsers, editable}
                 user={user}
                 icon={removable ? 'trash' : 'add'}
                 iconColor={removable ? 'tomato' : 'black'}
-                editable={editable}
+                editable={editable && !nonEditableUsers.includes(user.uid)}
                 action={(uid: string) => {
                     removable
                         ? removeUser(uid)

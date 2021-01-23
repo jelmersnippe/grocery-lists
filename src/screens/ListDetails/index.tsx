@@ -64,6 +64,16 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         dispatch(resetOverlay());
     };
 
+    const renderGroups = () => {
+        return selectedList?.groupData?.map((group, index) => {
+            return (
+                <View key={index}>
+                    <Text>{group.name}</Text>
+                </View>
+            );
+        });
+    };
+
     return (
         selectedList ?
             <View style={styles.container}>
@@ -121,11 +131,19 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     currentTab === Tab.TASKS ?
                         <ListItemView listId={id} items={selectedList?.items}/>
                         :
-                        <UserView
-                            saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreList(id, usersToAdd, usersToRemove)}
-                            initialUsers={selectedList.users}
-                            editable={listCreatedByCurrentUser}
-                        />
+                        <>
+                            {renderGroups()}
+                            <UserView
+                                saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreList(id, usersToAdd, usersToRemove)}
+                                initialUsers={selectedList.users}
+                                editable={listCreatedByCurrentUser}
+                                nonEditableUsers={selectedList?.groupData?.map((group) =>
+                                    group.users).reduce<Array<string>>((acc, cur) => {
+                                        return [...acc, ...cur];
+                                    }, [])
+                                ?? []}
+                            />
+                        </>
                 }
 
             </View>
