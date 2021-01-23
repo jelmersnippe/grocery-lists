@@ -1,30 +1,23 @@
-import React, {FunctionComponent, useRef, useState} from 'react';
-import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {FunctionComponent} from 'react';
+import {ScrollView, TouchableOpacity} from 'react-native';
 import {Props} from './props';
-import styles from './styles';
-import QtyInput from '../QtyInput';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {addFirestoreListItem} from '../../firestore/listActions';
 import {ItemStatus} from '../../reducers/lists/types';
 import moment from 'moment';
 import ListItemRow from '../ListItemRow';
-import {useTranslation} from 'react-i18next';
+import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
+import AddItemModal from '../AddItemModal';
+import styles from './styles';
 
 const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
-    const [inputQty, setInputQty] = useState(0);
-    const [inputName, setInputName] = useState('');
-    const inputNameRef = useRef<TextInput>(null);
+    const {dispatch} = useOverlayData();
 
-    const {t} = useTranslation('lists');
-
-    const addItem = async () => {
-        const createdItem = await addFirestoreListItem(listId, {
-            name: inputName,
-            quantity: inputQty
+    const addItem = async (name: string, qty: number) => {
+        await addFirestoreListItem(listId, {
+            name: name,
+            quantity: qty
         });
-        if (createdItem) {
-            setInputName('');
-        }
     };
 
     const renderDetails = (): Array<JSX.Element> => {
@@ -50,33 +43,29 @@ const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
         return listItems;
     };
 
+    const openAddItemModal = () => {
+        dispatch(setOverlay({
+            content: <AddItemModal
+                addAction={(name, qty) => addItem(name, qty)}
+            />
+        }));
+    };
+
     return (
         <>
             <ScrollView
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContentContainer}
             >
                 {renderDetails()}
             </ScrollView>
-            <View style={styles.addItemContainer}>
-                <QtyInput onChangeValue={(value) => setInputQty(value)}/>
-                <View style={styles.addItemInputContainer}>
-                    <TextInput
-                        placeholder={t('itemName')}
-                        style={styles.addItemInput}
-                        value={inputName}
-                        onChangeText={(value) => setInputName(value)}
-                        onSubmitEditing={() => addItem()}
-                        blurOnSubmit={false}
-                        ref={inputNameRef}
-                    />
-                    <TouchableOpacity
-                        onPress={() => addItem()}
-                    >
-                        <Icon name={'add-circle-outline'} size={30} color={'black'}/>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <TouchableOpacity
+                onPress={() => openAddItemModal()}
+                style={styles.fab}
+            >
+                <Icon name={'plus'} size={32} color={'white'}/>
+            </TouchableOpacity>
         </>
     );
 };

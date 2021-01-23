@@ -1,22 +1,19 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-    addItemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center'
+    scrollViewContentContainer: {
+        flexGrow: 1
     },
-    addItemInputContainer: {
-        flex: 1,
-        height: '100%',
-        borderWidth: 1,
-        borderColor: 'black',
-        flexDirection: 'row',
+    fab: {
+        backgroundColor: 'black',
+        borderRadius: 24,
+        width: 48,
+        height: 48,
         alignItems: 'center',
-        paddingHorizontal: 10
-    },
-    addItemInput: {
-        padding: 0,
-        flex: 1
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 8,
+        right: 8
     }
 });
 
