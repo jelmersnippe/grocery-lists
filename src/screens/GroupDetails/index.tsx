@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {deleteFirestoreGroup, updateFirestoreGroupUsers} from '../../firestore/groupActions';
+import {deleteFirestoreGroup, addFirestoreGroupUsers, removeFirestoreGroupUsers} from '../../firestore/groupActions';
 import {User} from '../../reducers/userCache/types';
 import firestoreUserActions from '../../firestore/userActions';
 import UserView from '../../components/UserView';
@@ -44,8 +44,8 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
         dispatch(setOverlay({
             wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
             content: (<UserSearch
-                saveAction={async (usersToAdd, usersToRemove) => await updateFirestoreGroupUsers(id, usersToAdd, usersToRemove)}
-                initialUsers={users}
+                saveAction={async (usersToAdd) => await addFirestoreGroupUsers(id, usersToAdd)}
+                initialUsers={selectedGroup?.users ?? []}
             />),
             animationType: 'slide'
         }));
@@ -66,7 +66,7 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 <UserView
                     users={users}
                     editable={createdByUser}
-                    userRemoveAction={(userId) => updateFirestoreGroupUsers(id, [], [userId])}
+                    removeAction={(userId) => removeFirestoreGroupUsers(id, [userId])}
                 />
                 {
                     createdByUser &&

@@ -1,7 +1,7 @@
-import {Group} from '../../reducers/groups/types';
+import {Group} from '../../../reducers/groups/types';
 
 export type Props = {
-    groups: Array<Group>;
+    group: Group;
     editable: boolean;
     removeAction: (groupUid: string) => void;
 }

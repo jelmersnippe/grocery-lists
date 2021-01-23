@@ -2,9 +2,9 @@ import React, {FunctionComponent} from 'react';
 import {Props} from './props';
 import {ScrollView, Text, View} from 'react-native';
 import styles from './styles';
-import {capitalize} from '../../utils/capitalize';
+import GroupItem from './GroupItem';
 
-const GroupView: FunctionComponent<Props> = ({groups}) => {
+const GroupView: FunctionComponent<Props> = ({groups, editable, removeAction}) => {
 
     return (
         groups.length > 0 ?
@@ -15,17 +15,14 @@ const GroupView: FunctionComponent<Props> = ({groups}) => {
                     showsHorizontalScrollIndicator={false}
                     alwaysBounceHorizontal={false}
                 >
-                    {groups.map((group, index) => {
-                        return (
-                            <View
-                                key={index}
-                                style={styles.groupItem}>
-                                <Text style={styles.groupName}>
-                                    {capitalize(group.name)}
-                                </Text>
-                            </View>
-                        );
-                    })}
+                    {groups.map((group) => (
+                        <GroupItem
+                            key={group.uid}
+                            group={group}
+                            removeAction={removeAction}
+                            editable={editable}
+                        />
+                    ))}
                 </ScrollView>
             </View>
             : null

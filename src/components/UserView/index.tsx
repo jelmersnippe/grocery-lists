@@ -3,11 +3,11 @@ import React, {FunctionComponent} from 'react';
 import {Props} from './props';
 import styles from './styles';
 import {User} from '../../reducers/userCache/types';
-import UserItem from './UserItem';
+import {UserItem} from './UserItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 
-const UserView: FunctionComponent<Props> = ({users, editable, userRemoveAction}) => {
+const UserView: FunctionComponent<Props> = ({users, editable, removeAction}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
 
     const renderUserItem = (user: User): JSX.Element => {
@@ -16,7 +16,7 @@ const UserView: FunctionComponent<Props> = ({users, editable, userRemoveAction})
                 key={user.uid}
                 user={user}
                 editable={editable}
-                removeAction={(userId) => userRemoveAction(userId)}
+                removeAction={(userId) => removeAction(userId)}
                 isCurrentUser={user.uid === currentUserId}
             />
         );

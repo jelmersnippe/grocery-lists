@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreUser, FirestoreUserSearchResult} from './types';
+import {FirestoreUser, FirestoreSearchResult} from './types';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
 import {store} from '../config/store';
 import {addCachedUser, removeCachedUser} from '../reducers/userCache/actions';
@@ -37,8 +37,8 @@ const getByUid = async (uid: string): Promise<UserInfo | undefined> => {
         });
 };
 
-const search = async (searchString: string): Promise<Array<FirestoreUserSearchResult>> => {
-    const foundUsers: Array<FirestoreUserSearchResult> = [];
+const search = async (searchString: string): Promise<Array<FirestoreSearchResult>> => {
+    const foundUsers: Array<FirestoreSearchResult> = [];
 
     const users = await firestore().collection('users')
         .where('name', '>=', searchString.toLowerCase())

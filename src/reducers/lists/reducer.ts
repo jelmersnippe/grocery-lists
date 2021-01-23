@@ -13,7 +13,8 @@ const listsReducer = (state = initialState, action: ListsActionTypes): ListsStat
                 $merge: {
                     [action.payload.id]: {
                         ...action.payload.list,
-                        items: state[action.payload.id]?.items ?? {}
+                        items: state[action.payload.id]?.items ?? {},
+                        groupData: action.payload.list.groupData ?? state[action.payload.id]?.groupData ?? {}
                     }
                 }
             });

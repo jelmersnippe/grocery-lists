@@ -56,6 +56,7 @@ export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>):
                                 const groupDocumentData = groupDocument.data() as FirestoreGroup;
 
                                 const groupDataObject: Group = {
+                                    uid: groupDocument.id,
                                     name: groupDocumentData.name,
                                     users: groupDocumentData.users,
                                     creatorUid: groupDocumentData.creator
@@ -108,10 +109,10 @@ export const subscribeToFirestoreListItemUpdates = (listId: string): () => void 
     });
 };
 
-export const addGroupsToFirestoreList = async (listId: string, groupsToAdd: Array<string>, groupsToRemove: Array<string>) => {
-    const listRef = firestore().doc(`lists/${listId}`);
+export const addFirestoreListGroup = async (listId: string, groupToAdd: string): Promise<void> => {
+    const listRef = firestore().collection('lists').doc(listId);
 
-    return firestore().runTransaction(async (transaction) => {
+    return await firestore().runTransaction(async (transaction) => {
         const listSnapshot = await transaction.get(listRef);
 
         if (!listSnapshot.exists) {
@@ -119,17 +120,57 @@ export const addGroupsToFirestoreList = async (listId: string, groupsToAdd: Arra
         }
 
         const listData = listSnapshot.data() as FirestoreList;
-        const newListGroups = listData.groups?.filter((group) => !groupsToRemove.includes(group)) ?? [];
+
+        if (listData.groups && !listData.groups.includes(groupToAdd)) {
+            await transaction.update(listRef, {
+                groups: [...listData.groups, ...groupToAdd]
+            });
+        }
+    });
+};
+
+export const removeFirestoreListGroup = async (listId: string, groupToRemove: string): Promise<void> => {
+    const listRef = firestore().collection('lists').doc(listId);
+
+    return await firestore().runTransaction(async (transaction) => {
+        const listSnapshot = await transaction.get(listRef);
+
+        if (!listSnapshot.exists) {
+            throw 'List users don\'t exists';
+        }
+
+        const listData = listSnapshot.data() as FirestoreList;
+        if (listData.groups) {
+            const filteredListGroups = listData.groups?.filter((group) => group !== groupToRemove);
+            await transaction.update(listRef, {
+                groups: filteredListGroups
+            });
+        }
+    });
+};
+
+export const addFirestoreListUsers = async (listId: string, usersToAdd: Array<FirestoreUserUid>): Promise<void> => {
+    const listRef = firestore().collection('lists').doc(listId);
+
+    return await firestore().runTransaction(async (transaction) => {
+        const listSnapshot = await transaction.get(listRef);
+
+        if (!listSnapshot.exists) {
+            throw 'List users don\'t exists';
+        }
+
+        const listData = listSnapshot.data() as FirestoreList;
+        const filteredListUsers = listData.users.filter((user) => !usersToAdd.includes(user));
         await transaction.update(listRef, {
-            groups: [...newListGroups, ...groupsToAdd]
+            users: [...filteredListUsers, ...usersToAdd]
         });
     });
 };
 
-export const updateFirestoreListUsers = async (listId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
-    const listRef = firestore().doc(`lists/${listId}`);
+export const removeFirestoreListUsers = async (listId: string, usersToRemove: Array<FirestoreUserUid>): Promise<void> => {
+    const listRef = firestore().collection('lists').doc(listId);
 
-    return firestore().runTransaction(async (transaction) => {
+    return await firestore().runTransaction(async (transaction) => {
         const listSnapshot = await transaction.get(listRef);
 
         if (!listSnapshot.exists) {
@@ -137,9 +178,9 @@ export const updateFirestoreListUsers = async (listId: string, usersToAdd: Array
         }
 
         const listData = listSnapshot.data() as FirestoreList;
-        const newListUsers = listData.users.filter((user) => !usersToRemove.includes(user));
+        const filteredListUsers = listData.users.filter((user) => !usersToRemove.includes(user));
         await transaction.update(listRef, {
-            users: [...newListUsers, ...usersToAdd]
+            users: filteredListUsers
         });
     });
 };

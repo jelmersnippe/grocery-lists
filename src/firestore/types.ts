@@ -28,12 +28,7 @@ export type FirestoreGroup = {
     users: Array<FirestoreUserUid>;
 }
 
-export type FirestoreGroupSearchResult = {
-    name: string;
-    uid: string;
-}
-
-export type FirestoreUserSearchResult = {
+export type FirestoreSearchResult = {
     name: string;
     uid: string;
 }

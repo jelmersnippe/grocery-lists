@@ -1,8 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreGroup, FirestoreGroupSearchResult, FirestoreList, FirestoreUserUid} from './types';
+import {FirestoreGroup, FirestoreUserUid} from './types';
 import {addGroup, removeGroup} from '../reducers/groups/actions';
 import {store} from '../config/store';
-import {Group} from '../reducers/groups/types';
+import {Group, GroupInfo} from '../reducers/groups/types';
 
 export const subscribeToFirestoreGroupUpdates = () => {
     const currentUserUid = store.getState().user.uid;
@@ -19,7 +19,7 @@ export const subscribeToFirestoreGroupUpdates = () => {
                         break;
                     default:
                         const documentData = documentChange.doc.data() as FirestoreGroup;
-                        const group: Group = {
+                        const group: GroupInfo = {
                             name: documentData.name,
                             creatorUid: documentData.creator,
                             users: documentData.users
@@ -46,6 +46,7 @@ export const getFirestoreGroupByUid = async (uid: string): Promise<Group | undef
             if (documentSnapshot.exists) {
                 const group = documentSnapshot.data() as FirestoreGroup;
                 const groupData: Group = {
+                    uid: documentSnapshot.id,
                     name: group.name,
                     creatorUid: group.creator,
                     users: group.users
@@ -81,41 +82,38 @@ export const deleteFirestoreGroup = async (id: string): Promise<void> => {
     return await firestore().collection('groups').doc(id).delete();
 };
 
-export const updateFirestoreGroupUsers = async (groupId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
+export const addFirestoreGroupUsers = async (groupId: string, usersToAdd: Array<FirestoreUserUid>) => {
     const groupUsersRef = firestore().doc(`groups/${groupId}`);
 
     return firestore().runTransaction(async (transaction) => {
-        const listUsersSnapshot = await transaction.get(groupUsersRef);
+        const groupUsersSnapshot = await transaction.get(groupUsersRef);
 
-        if (!listUsersSnapshot.exists) {
+        if (!groupUsersSnapshot.exists) {
             throw 'Group users don\'t exists';
         }
 
-        const listData = listUsersSnapshot.data() as FirestoreList;
-        const newListUsers = listData.users.filter((user) => !usersToRemove.includes(user));
+        const groupData = groupUsersSnapshot.data() as FirestoreGroup;
+        const filteredGroupUsers = groupData.users.filter((user) => !usersToAdd.includes(user));
         await transaction.update(groupUsersRef, {
-            users: [...newListUsers, ...usersToAdd]
+            users: [...filteredGroupUsers, ...usersToAdd]
         });
     });
 };
 
-export const searchFirestoreGroups = async (searchString: string): Promise<Array<FirestoreGroupSearchResult>> => {
-    const foundGroups: Array<FirestoreGroupSearchResult> = [];
+export const removeFirestoreGroupUsers = async (groupId: string, usersToRemove: Array<FirestoreUserUid>) => {
+    const groupUsersRef = firestore().doc(`groups/${groupId}`);
 
-    const groups = await firestore().collection('groups')
-        .where('name', '>=', searchString.toLowerCase())
-        .where('name', '<', searchString.toLowerCase() + 'z')
-        .get();
+    return firestore().runTransaction(async (transaction) => {
+        const groupUsersSnapshot = await transaction.get(groupUsersRef);
 
-    groups.forEach((documentSnapshot) => {
-        const uid = documentSnapshot.id;
-        const data = documentSnapshot.data() as FirestoreGroup;
-        const groupInfo = {
-            uid: uid,
-            name: data.name
-        };
-        foundGroups.push(groupInfo);
+        if (!groupUsersSnapshot.exists) {
+            throw 'Group users don\'t exists';
+        }
+
+        const groupData = groupUsersSnapshot.data() as FirestoreGroup;
+        const filteredGroupUsers = groupData.users.filter((user) => !usersToRemove.includes(user));
+        await transaction.update(groupUsersRef, {
+            users: filteredGroupUsers
+        });
     });
-
-    return foundGroups;
 };

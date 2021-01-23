@@ -4,7 +4,11 @@ export const ADD_GROUP = 'ADD_GROUP';
 export const REMOVE_GROUP = 'REMOVE_GROUP';
 export const RESET_GROUPS = 'RESET_GROUPS';
 
-export interface Group {
+export type Group = {
+    uid: string;
+} & GroupInfo
+
+export interface GroupInfo {
     name: string;
     creatorUid: FirestoreUserUid;
     users: Array<FirestoreUserUid>;
@@ -14,7 +18,7 @@ export interface AddGroupAction {
     type: typeof ADD_GROUP;
     payload: {
         id: string,
-        group: Group
+        group: GroupInfo
     };
 }
 

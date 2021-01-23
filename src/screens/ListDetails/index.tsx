@@ -10,9 +10,9 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import firestoreUserActions from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
 import {
+    addFirestoreListUsers, removeFirestoreListGroup, removeFirestoreListUsers,
     subscribeToFirestoreListItemUpdates,
-    updateFirestoreList,
-    updateFirestoreListUsers
+    updateFirestoreList
 } from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
 import UserView from '../../components/UserView';
@@ -90,8 +90,8 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
         dispatch(setOverlay({
             wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
             content: (<UserSearch
-                saveAction={async (usersToAdd, usersToRemove) => await updateFirestoreListUsers(id, usersToAdd, usersToRemove)}
-                initialUsers={users}
+                saveAction={async (usersToAdd) => await addFirestoreListUsers(id, usersToAdd)}
+                initialUsers={users.map((user) => user.uid)}
                 nonEditableUsers={selectedList?.groupData?.map((group) =>
                     group.users).reduce<Array<string>>((acc, cur) => {
                         return [...acc, ...cur];
@@ -161,11 +161,13 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <>
                             <GroupView
                                 groups={selectedList.groupData ?? []}
+                                editable={listCreatedByCurrentUser}
+                                removeAction={(groupUid) => removeFirestoreListGroup(id, groupUid)}
                             />
                             <UserView
                                 users={users}
                                 editable={listCreatedByCurrentUser}
-                                userRemoveAction={(userId) => updateFirestoreListUsers(id, [], [userId])}
+                                removeAction={(userId) => removeFirestoreListUsers(id, [userId])}
                             />
                             {
                                 listCreatedByCurrentUser &&

@@ -6,7 +6,7 @@ import {Props} from './props';
 import {capitalize} from '../../../utils/capitalize';
 import {useTranslation} from 'react-i18next';
 
-const UserItem: FunctionComponent<Props> = ({user, editable, removeAction, isCurrentUser}) => {
+export const UserItem: FunctionComponent<Props> = ({user, editable, removeAction, isCurrentUser}) => {
     const [opened, setOpened] = useState(false);
     const {t} = useTranslation();
 
@@ -51,5 +51,3 @@ const UserItem: FunctionComponent<Props> = ({user, editable, removeAction, isCur
         </View>
     );
 };
-
-export default UserItem;

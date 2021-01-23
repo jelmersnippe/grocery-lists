@@ -1,8 +1,8 @@
-import {ADD_GROUP, AddGroupAction, Group, REMOVE_GROUP, RemoveGroupAction, RESET_GROUPS, ResetGroupsAction} from './types';
+import {ADD_GROUP, AddGroupAction, GroupInfo, REMOVE_GROUP, RemoveGroupAction, RESET_GROUPS, ResetGroupsAction} from './types';
 
 export type GroupsActionTypes = AddGroupAction | RemoveGroupAction | ResetGroupsAction
 
-export const addGroup = (payload: { id: string, group: Group }): GroupsActionTypes => {
+export const addGroup = (payload: { id: string, group: GroupInfo }): GroupsActionTypes => {
     return {
         type: ADD_GROUP,
         payload: payload

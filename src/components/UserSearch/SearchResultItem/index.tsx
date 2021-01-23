@@ -8,7 +8,7 @@ import {RootState} from '../../../reducers';
 import {useTranslation} from 'react-i18next';
 import {capitalize} from '../../../utils/capitalize';
 
-const UserSearchResultItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle, editable}) => {
+const SearchResultItem: FunctionComponent<Props> = ({user, icon, action, containerStyle, editable}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const {t} = useTranslation();
 
@@ -20,11 +20,11 @@ const UserSearchResultItem: FunctionComponent<Props> = ({user, icon, iconColor, 
                 style={styles.iconButton}
                 onPress={() => action(user.uid)}
             >
-                <Icon name={icon} size={26} style={{color: iconColor}}/>
+                <Icon name={icon} size={26} color={'black'}/>
             </TouchableOpacity>
             }
         </View>
     );
 };
 
-export default UserSearchResultItem;
+export default SearchResultItem;
