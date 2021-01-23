@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';

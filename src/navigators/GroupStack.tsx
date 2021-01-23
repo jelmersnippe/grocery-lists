@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import GroupDetails from '../screens/GroupDetails';
 import GroupOverview from '../screens/GroupOverview';
 import {TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {AppTabsParamList} from './AppTabs';
 
@@ -29,7 +29,7 @@ const GroupStack: FunctionComponent<Props> = ({navigation}) => {
                         onPress={() => navigation.toggleDrawer()}
                         style={{padding: 5, marginRight: 10}}
                     >
-                        <Icon name={'settings-outline'} size={30}/>
+                        <Icon name={'settings'} size={30}/>
                     </TouchableOpacity>
                 )
             }}

@@ -2,7 +2,7 @@ import {TextInput, TouchableOpacity, View} from 'react-native';
 import React, {FunctionComponent, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
     const [qty, setQty] = useState('0');

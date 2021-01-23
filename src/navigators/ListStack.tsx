@@ -5,7 +5,7 @@ import {AppTabsParamList} from './AppTabs';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import ListDetails from '../screens/ListDetails';
 import ListOverview from '../screens/ListOverview';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
 
 export type ListStackParamList = {
@@ -32,7 +32,7 @@ const ListStack: FunctionComponent<Props> = ({navigation}) => {
                         onPress={() => navigation.toggleDrawer()}
                         style={{padding: 5, marginRight: 10}}
                     >
-                        <Icon name={'settings-outline'} size={30}/>
+                        <Icon name={'settings'} size={30}/>
                     </TouchableOpacity>
                 )
             }}

@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {ScrollView, TouchableOpacity} from 'react-native';
 import {Props} from './props';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {addFirestoreListItem} from '../../firestore/listActions';
 import {ItemStatus} from '../../reducers/lists/types';
 import moment from 'moment';
@@ -64,7 +64,7 @@ const ListItemView: FunctionComponent<Props> = ({listId, items}) => {
                 onPress={() => openAddItemModal()}
                 style={styles.fab}
             >
-                <Icon name={'plus'} size={32} color={'white'}/>
+                <Icon name={'add'} size={32} color={'white'}/>
             </TouchableOpacity>
         </>
     );

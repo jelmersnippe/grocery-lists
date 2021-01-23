@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {removeFirestoreListItem, updateFirestoreListItem} from '../../firestore/listActions';
 import {ItemStatus} from '../../reducers/lists/types';
 import {Props} from './props';
@@ -34,12 +34,10 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     }, [opened]);
 
     return (
-        <View style={{flexDirection: 'row',
-            marginVertical: 5,
-            marginHorizontal: 10}}>
+        <View style={styles.wrapper}>
             <TouchableOpacity
                 style={[
-                    styles.wrapper,
+                    styles.container,
                     {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'}
                 ]}
                 delayLongPress={500}

@@ -5,23 +5,16 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import FullSizeLoader from '../../components/FullSizeLoader';
-import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {useTranslation} from 'react-i18next';
-import {addUsersToFirestoreGroup, deleteFirestoreGroup} from '../../firestore/groupActions';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {deleteFirestoreGroup} from '../../firestore/groupActions';
 import {UserInfo} from '../../reducers/userCache/types';
 import firestoreUserActions from '../../firestore/userActions';
 import {capitalize} from '../../utils/capitalize';
-import UserView from '../../components/UserView';
 
 const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {id} = route.params;
-    const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const selectedGroup = useSelector((rootState: RootState) => rootState.groups.hasOwnProperty(id) ? rootState.groups[id] : undefined);
     const [users, setUsers] = useState<Array<UserInfo>>([]);
-    const groupCreatedByCurrentUser = selectedGroup?.creatorUid === currentUserId;
-    const {dispatch} = useOverlayData();
-    const {t} = useTranslation();
 
     useEffect(() => {
         (async () => {
@@ -46,24 +39,9 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
                     await deleteFirestoreGroup(id);
                     navigation.popToTop();
                 }}>
-                    <Icon name={'trash'} color={'tomato'} size={24}/>
+                    <Icon name={'delete'} color={'tomato'} size={24}/>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        dispatch(setOverlay({
-                            title: t('users'),
-                            content: <UserView
-                                saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreGroup(id, usersToAdd, usersToRemove)}
-                                initialUsers={selectedGroup.users}
-                                editable={groupCreatedByCurrentUser}
-                            />,
-                            wrapperStyle: {
-                                width: '80%',
-                                height: '80%'
-                            }
-                        }));
-                    }}
-                >
+                <TouchableOpacity>
                     <Icon name={'people'} size={36} color={'black'}/>
                 </TouchableOpacity>
                 {

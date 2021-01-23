@@ -4,7 +4,7 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/InputModal';
 import {useTranslation} from 'react-i18next';
@@ -59,7 +59,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                     style={styles.listItem}
                 >
                     <Text style={styles.listItemName}>{value.name}</Text>
-                    <Icon style={styles.listItemIcon} name={'caret-forward'} size={24} color={'black'}/>
+                    <Icon style={styles.listItemIcon} name={'keyboard-arrow-right'} size={24} color={'black'}/>
                 </TouchableOpacity>
             );
         }
@@ -87,7 +87,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => openInputModal()}
                 >
-                    <Icon name={'add-circle-outline'} size={40} color={'black'}/>
+                    <Icon name={'add'} size={40} color={'black'}/>
                 </TouchableOpacity>
             </View>
             <ScrollView

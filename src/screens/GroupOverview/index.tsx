@@ -8,7 +8,7 @@ import {addFirestoreGroup, subscribeToFirestoreGroupUpdates} from '../../firesto
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/InputModal';
 import {useTranslation} from 'react-i18next';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -67,7 +67,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
             <TouchableOpacity
                 onPress={() => openInputModal()}
             >
-                <Icon name={'add-circle-outline'} size={40} color={'black'}/>
+                <Icon name={'add'} size={40} color={'black'}/>
             </TouchableOpacity>
             <Text style={styles.title}>GroupOverview</Text>
             {renderGroups()}

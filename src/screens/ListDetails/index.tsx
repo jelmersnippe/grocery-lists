@@ -4,7 +4,7 @@ import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import firestoreUserActions from '../../firestore/userActions';
@@ -96,7 +96,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                                     }));
                                 }}
                             >
-                                <Icon name={'create-outline'} size={30} color={'black'}/>
+                                <Icon name={'edit'} size={30} color={'black'}/>
                             </TouchableOpacity>
                             }
                         </View>
