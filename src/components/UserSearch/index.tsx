@@ -12,7 +12,6 @@ import {Props} from './props';
 const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEditableUsers}) => {
     const [userResults, setUserResults] = useState<Array<FirestoreSearchResult>>([]);
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
-
     const {dispatch} = useOverlayData();
 
     const saveUserChanges = async () => {
@@ -34,7 +33,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEdit
                 key={user.uid}
                 user={user}
                 icon={usersToAdd.includes(user.uid) ? 'undo' : 'add'}
-                editable={(!nonEditableUsers || !nonEditableUsers.includes(user.uid)) || initialUsers.includes(user.uid)}
+                editable={!nonEditableUsers?.includes(user.uid) && !initialUsers.includes(user.uid)}
                 action={(uid: string) => updateUsersToAdd(uid)}
                 containerStyle={{
                     backgroundColor: toBeAdded ? 'lime' : 'lightgray'

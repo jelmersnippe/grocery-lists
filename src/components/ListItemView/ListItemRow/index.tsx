@@ -38,7 +38,8 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
             <TouchableOpacity
                 style={[
                     styles.container,
-                    {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'}
+                    {backgroundColor: item.status === ItemStatus.DONE ? 'lightgray' : 'white'},
+                    item.status !== ItemStatus.DONE && styles.containerShadow
                 ]}
                 delayLongPress={500}
                 onLongPress={() => setOpened(true)}
@@ -74,7 +75,7 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                     style={styles.deleteButton}
                     onPress={() => removeFirestoreListItem(listId, listItemId)}
                 >
-                    <Icon name={'trash'} size={32} color={'tomato'}/>
+                    <Icon name={'delete'} size={32} color={'tomato'}/>
                 </TouchableOpacity>
             }
         </View>

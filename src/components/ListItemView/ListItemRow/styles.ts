@@ -3,18 +3,20 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
-        marginVertical: 5,
+        marginBottom: 5,
         marginHorizontal: 10
     },
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 15,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: 'black',
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 8,
-        flex: 1,
+        flex: 1
+    },
+    containerShadow: {
         shadowColor: 'black',
         shadowOffset: {
             width: 0,

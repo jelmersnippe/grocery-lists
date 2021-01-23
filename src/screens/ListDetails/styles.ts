@@ -35,14 +35,31 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: 'black'
+        borderColor: 'gray',
+        margin: 10,
+        borderRadius: 15,
+        backgroundColor: 'white'
     },
     activeTabButton: {
-        flex: 0.6
+        flex: 0.6,
+        borderColor: 'black',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 10
+        },
+        shadowOpacity: 0.51,
+        shadowRadius: 13.16,
+
+        elevation: 10
     },
     tabButtonText: {
         paddingVertical: 10,
-        fontSize: 20
+        fontSize: 20,
+        color: 'gray'
+    },
+    activeTabButtonText: {
+        color: 'black'
     },
     fab: {
         backgroundColor: 'black',

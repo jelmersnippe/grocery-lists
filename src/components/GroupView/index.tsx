@@ -46,7 +46,7 @@ const GroupView: FunctionComponent<Props> = ({groups, editable, listId}) => {
                 }
                 <TouchableOpacity
                     onPress={() => openAddGroupModal()}
-                    style={{marginRight: 10}}
+                    style={{paddingHorizontal: 5}}
                 >
                     <Icon name={'add'} size={32} color={'black'}/>
                 </TouchableOpacity>

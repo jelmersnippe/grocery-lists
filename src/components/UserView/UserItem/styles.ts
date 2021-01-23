@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
-        marginVertical: 5
+        marginBottom: 5
     },
     container: {
         paddingVertical: 10,
@@ -36,5 +36,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
-
-export default styles;

@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
+import {styles} from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Props} from './props';
 import {capitalize} from '../../../utils/capitalize';

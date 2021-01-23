@@ -144,14 +144,20 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         disabled={currentTab === Tab.TASKS}
                         style={[styles.tabButton, currentTab === Tab.TASKS && styles.activeTabButton]}
                     >
-                        <Text style={styles.tabButtonText}>Tasks</Text>
+                        <Text style={[
+                            styles.tabButtonText,
+                            currentTab === Tab.TASKS && styles.activeTabButtonText
+                        ]}>Tasks</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setCurrentTab(Tab.USERS)}
                         disabled={currentTab === Tab.USERS}
                         style={[styles.tabButton, currentTab === Tab.USERS && styles.activeTabButton]}
                     >
-                        <Text style={styles.tabButtonText}>Users</Text>
+                        <Text style={[
+                            styles.tabButtonText,
+                            currentTab === Tab.USERS && styles.activeTabButtonText
+                        ]}>Users</Text>
                     </TouchableOpacity>
                 </View>
 
