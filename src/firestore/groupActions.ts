@@ -81,7 +81,7 @@ export const deleteFirestoreGroup = async (id: string): Promise<void> => {
     return await firestore().collection('groups').doc(id).delete();
 };
 
-export const addUsersToFirestoreGroup = async (groupId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
+export const updateFirestoreGroupUsers = async (groupId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
     const groupUsersRef = firestore().doc(`groups/${groupId}`);
 
     return firestore().runTransaction(async (transaction) => {

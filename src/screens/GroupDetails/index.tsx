@@ -6,24 +6,32 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import FullSizeLoader from '../../components/FullSizeLoader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {deleteFirestoreGroup} from '../../firestore/groupActions';
-import {UserInfo} from '../../reducers/userCache/types';
+import {deleteFirestoreGroup, updateFirestoreGroupUsers} from '../../firestore/groupActions';
+import {User} from '../../reducers/userCache/types';
 import firestoreUserActions from '../../firestore/userActions';
-import {capitalize} from '../../utils/capitalize';
+import UserView from '../../components/UserView';
+import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
+import UserSearch from '../../components/UserSearch';
 
 const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {id} = route.params;
+    const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const selectedGroup = useSelector((rootState: RootState) => rootState.groups.hasOwnProperty(id) ? rootState.groups[id] : undefined);
-    const [users, setUsers] = useState<Array<UserInfo>>([]);
+    const createdByUser = selectedGroup?.creatorUid === currentUserId;
+    const [users, setUsers] = useState<Array<User>>([]);
+    const {dispatch} = useOverlayData();
 
     useEffect(() => {
         (async () => {
             if (selectedGroup?.users) {
-                const newUsers: Array<UserInfo> = [];
+                const newUsers: Array<User> = [];
                 for (const user of selectedGroup.users) {
                     const foundUser = await firestoreUserActions.getByUid(user);
                     if (foundUser) {
-                        newUsers.push(foundUser);
+                        newUsers.push({
+                            uid: user,
+                            ...foundUser
+                        });
                     }
                 }
                 setUsers(newUsers);
@@ -31,25 +39,42 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
         })();
     }, [selectedGroup?.users]);
 
+    const openUserSearch = () => {
+        dispatch(setOverlay({
+            wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
+            content: (<UserSearch
+                saveAction={async (usersToAdd, usersToRemove) => await updateFirestoreGroupUsers(id, usersToAdd, usersToRemove)}
+                initialUsers={users}
+            />),
+            animationType: 'slide'
+        }));
+    };
+
     return (
         selectedGroup ?
             <View style={styles.container}>
-                <Text style={styles.title}>{selectedGroup.name}</Text>
-                <TouchableOpacity onPress={async () => {
-                    await deleteFirestoreGroup(id);
-                    navigation.popToTop();
-                }}>
-                    <Icon name={'delete'} color={'tomato'} size={24}/>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name={'people'} size={36} color={'black'}/>
-                </TouchableOpacity>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{selectedGroup.name}</Text>
+                    <TouchableOpacity onPress={async () => {
+                        await deleteFirestoreGroup(id);
+                        navigation.popToTop();
+                    }}>
+                        <Icon name={'delete'} color={'tomato'} size={24}/>
+                    </TouchableOpacity>
+                </View>
+                <UserView
+                    users={users}
+                    editable={createdByUser}
+                    userRemoveAction={(userId) => updateFirestoreGroupUsers(id, [], [userId])}
+                />
                 {
-                    users.map((user) => {
-                        return (
-                            <Text>{capitalize(user.name)}</Text>
-                        );
-                    })
+                    createdByUser &&
+                    <TouchableOpacity
+                        style={styles.fab}
+                        onPress={() => openUserSearch()}
+                    >
+                        <Icon name={'search'} size={32} color={'white'}/>
+                    </TouchableOpacity>
                 }
             </View>
             : <FullSizeLoader size={100} color={'black'}/>

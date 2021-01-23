@@ -104,8 +104,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 nonEditableUsers={selectedList?.groupData?.map((group) =>
                     group.users).reduce<Array<string>>((acc, cur) => {
                         return [...acc, ...cur];
-                    }, [])
-                ?? []}
+                    }, [])}
             />),
             animationType: 'slide'
         }));

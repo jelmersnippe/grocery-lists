@@ -52,7 +52,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEdit
                 user={user}
                 icon={removable ? 'delete' : 'add'}
                 iconColor={removable ? 'tomato' : 'black'}
-                editable={!nonEditableUsers.includes(user.uid)}
+                editable={!nonEditableUsers || !nonEditableUsers.includes(user.uid)}
                 action={(uid: string) => {
                     removable
                         ? removeUser(uid)
