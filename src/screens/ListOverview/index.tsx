@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
-import InputModal from '../../components/InputModal';
+import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
 import {addFirestoreList, subscribeToFirestoreListUpdates, subscribeToFirestoreListUpdatesForGroups} from '../../firestore/listActions';
 

@@ -1,4 +1,4 @@
-import {ListItem} from '../../reducers/lists/types';
+import {ListItem} from '../../../reducers/lists/types';
 
 export type Props = {
     item: ListItem;

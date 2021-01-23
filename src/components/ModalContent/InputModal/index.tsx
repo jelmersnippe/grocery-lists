@@ -2,7 +2,7 @@ import {TextInput} from 'react-native';
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';
-import Button from '../Button';
+import Button from '../../Button';
 
 const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, onSubmit}) => {
     const inputRef = useRef<TextInput>(null);

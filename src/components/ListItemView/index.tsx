@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {addFirestoreListItem} from '../../firestore/listActions';
 import {ItemStatus} from '../../reducers/lists/types';
 import moment from 'moment';
-import ListItemRow from '../ListItemRow';
+import ListItemRow from './ListItemRow';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
-import AddItemModal from '../AddItemModal';
+import AddItemModal from '../ModalContent/AddItemModal';
 import styles from './styles';
 
 const ListItemView: FunctionComponent<Props> = ({listId, items}) => {

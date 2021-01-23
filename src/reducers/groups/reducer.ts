@@ -1,8 +1,8 @@
-import {ADD_GROUP, Group, REMOVE_GROUP, RESET_GROUPS} from './types';
+import {ADD_GROUP, GroupInfo, REMOVE_GROUP, RESET_GROUPS} from './types';
 import {GroupsActionTypes} from './actions';
 import update from 'immutability-helper';
 
-export type GroupsState = { [key: string]: Group };
+export type GroupsState = { [key: string]: GroupInfo };
 
 const initialState: GroupsState = {};
 

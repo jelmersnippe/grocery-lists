@@ -10,11 +10,12 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import firestoreUserActions from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
 import {
-    addFirestoreListUsers, removeFirestoreListGroup, removeFirestoreListUsers,
+    addFirestoreListUsers,
+    removeFirestoreListUsers,
     subscribeToFirestoreListItemUpdates,
     updateFirestoreList
 } from '../../firestore/listActions';
-import InputModal from '../../components/InputModal';
+import InputModal from '../../components/ModalContent/InputModal';
 import UserView from '../../components/UserView';
 import {User, UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
@@ -162,7 +163,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                             <GroupView
                                 groups={selectedList.groupData ?? []}
                                 editable={listCreatedByCurrentUser}
-                                removeAction={(groupUid) => removeFirestoreListGroup(id, groupUid)}
+                                listId={id}
                             />
                             <UserView
                                 users={users}

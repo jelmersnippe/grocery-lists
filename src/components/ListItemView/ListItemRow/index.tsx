@@ -1,14 +1,14 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {removeFirestoreListItem, updateFirestoreListItem} from '../../firestore/listActions';
-import {ItemStatus} from '../../reducers/lists/types';
+import {removeFirestoreListItem, updateFirestoreListItem} from '../../../firestore/listActions';
+import {ItemStatus} from '../../../reducers/lists/types';
 import {Props} from './props';
 import styles from './styles';
-import firestoreUserActions from '../../firestore/userActions';
-import {UserInfo} from '../../reducers/userCache/types';
-import {capitalize} from '../../utils/capitalize';
-import Checkbox from '../Checkbox';
+import firestoreUserActions from '../../../firestore/userActions';
+import {UserInfo} from '../../../reducers/userCache/types';
+import {capitalize} from '../../../utils/capitalize';
+import Checkbox from '../../Checkbox';
 
 const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     const [opened, setOpened] = useState(false);

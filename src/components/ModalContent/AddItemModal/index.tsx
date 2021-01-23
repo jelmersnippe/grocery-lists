@@ -1,8 +1,8 @@
 import React, {FunctionComponent, useState} from 'react';
-import styles from '../ListItemView/styles';
-import QtyInput from '../QtyInput';
+import styles from './styles';
+import QtyInput from '../../QtyInput';
 import {TextInput, View} from 'react-native';
-import Button from '../Button';
+import Button from '../../Button';
 import {useTranslation} from 'react-i18next';
 import {Props} from './props';
 
