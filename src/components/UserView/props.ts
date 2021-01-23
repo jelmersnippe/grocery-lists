@@ -1,8 +1,7 @@
-import {FirestoreUserUid} from '../../firestore/types';
+import {User} from '../../reducers/userCache/types';
 
 export interface Props {
-    saveAction: (usersToAdd: Array<FirestoreUserUid>, usersToRmove: Array<FirestoreUserUid>) => void;
-    initialUsers: Array<FirestoreUserUid>;
+    users: Array<User>;
     editable: boolean;
-    nonEditableUsers: Array<string>;
+    userRemoveAction: (userId: string) => void;
 }

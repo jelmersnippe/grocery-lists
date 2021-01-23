@@ -1,5 +1,5 @@
 import {ColorValue, ViewStyle} from 'react-native';
-import {User} from '../../reducers/userCache/types';
+import {User} from '../../../reducers/userCache/types';
 
 export interface Props {
     user: User;

@@ -43,6 +43,17 @@ const styles = StyleSheet.create({
     tabButtonText: {
         paddingVertical: 10,
         fontSize: 20
+    },
+    fab: {
+        backgroundColor: 'black',
+        borderRadius: 24,
+        width: 48,
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 8,
+        right: 8
     }
 });
 

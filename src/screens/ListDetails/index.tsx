@@ -9,12 +9,17 @@ import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-o
 import FullSizeLoader from '../../components/FullSizeLoader';
 import firestoreUserActions from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
-import {addUsersToFirestoreList, subscribeToFirestoreListItemUpdates, updateFirestoreList} from '../../firestore/listActions';
+import {
+    subscribeToFirestoreListItemUpdates,
+    updateFirestoreList,
+    updateFirestoreListUsers
+} from '../../firestore/listActions';
 import InputModal from '../../components/InputModal';
 import UserView from '../../components/UserView';
-import {UserInfo} from '../../reducers/userCache/types';
+import {User, UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
 import ListItemView from '../../components/ListItemView';
+import UserSearch from '../../components/UserSearch';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -28,6 +33,7 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
     const listCreatedByCurrentUser = selectedList?.creatorUid === currentUserId;
     const [creator, setCreator] = useState<UserInfo | undefined>(undefined);
+    const [users, setUsers] = useState<Array<User>>([]);
 
     const [currentTab, setCurrentTab] = useState<Tab>(Tab.TASKS);
 
@@ -51,6 +57,21 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     }, [selectedList?.creatorUid]);
 
     useEffect(() => {
+        (async () => {
+            if (selectedList?.users) {
+                const userList: Array<User> = [];
+                for (const user of selectedList?.users) {
+                    const userData = await firestoreUserActions.getByUid(user);
+                    if (userData) {
+                        userList.push({uid: user, ...userData});
+                    }
+                }
+                setUsers(userList);
+            }
+        })();
+    }, [selectedList?.users]);
+
+    useEffect(() => {
         return subscribeToFirestoreListItemUpdates(id);
     }, []);
 
@@ -72,6 +93,22 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                 </View>
             );
         });
+    };
+
+    const openUserSearch = () => {
+        dispatch(setOverlay({
+            wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
+            content: (<UserSearch
+                saveAction={async (usersToAdd, usersToRemove) => await updateFirestoreListUsers(id, usersToAdd, usersToRemove)}
+                initialUsers={users}
+                nonEditableUsers={selectedList?.groupData?.map((group) =>
+                    group.users).reduce<Array<string>>((acc, cur) => {
+                        return [...acc, ...cur];
+                    }, [])
+                ?? []}
+            />),
+            animationType: 'slide'
+        }));
     };
 
     return (
@@ -134,15 +171,19 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <>
                             {renderGroups()}
                             <UserView
-                                saveAction={async (usersToAdd, usersToRemove) => await addUsersToFirestoreList(id, usersToAdd, usersToRemove)}
-                                initialUsers={selectedList.users}
+                                users={users}
                                 editable={listCreatedByCurrentUser}
-                                nonEditableUsers={selectedList?.groupData?.map((group) =>
-                                    group.users).reduce<Array<string>>((acc, cur) => {
-                                        return [...acc, ...cur];
-                                    }, [])
-                                ?? []}
+                                userRemoveAction={(userId) => updateFirestoreListUsers(id, [], [userId])}
                             />
+                            {
+                                listCreatedByCurrentUser &&
+                                <TouchableOpacity
+                                    style={styles.fab}
+                                    onPress={() => openUserSearch()}
+                                >
+                                    <Icon name={'search'} size={32} color={'white'}/>
+                                </TouchableOpacity>
+                            }
                         </>
                 }
 

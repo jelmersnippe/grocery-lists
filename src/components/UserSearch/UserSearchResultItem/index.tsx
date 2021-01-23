@@ -4,11 +4,11 @@ import {Props} from './props';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../reducers';
+import {RootState} from '../../../reducers';
 import {useTranslation} from 'react-i18next';
-import {capitalize} from '../../utils/capitalize';
+import {capitalize} from '../../../utils/capitalize';
 
-const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle, editable}) => {
+const UserSearchResultItem: FunctionComponent<Props> = ({user, icon, iconColor, action, containerStyle, editable}) => {
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const {t} = useTranslation();
 
@@ -27,4 +27,4 @@ const UserItem: FunctionComponent<Props> = ({user, icon, iconColor, action, cont
     );
 };
 
-export default UserItem;
+export default UserSearchResultItem;

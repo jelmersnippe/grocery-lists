@@ -7,8 +7,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 'auto',
         borderWidth: 1,
-        borderColor: 'black',
-        marginBottom: 10
+        borderColor: 'black'
     },
     searchInputContainer: {
         flex: 1

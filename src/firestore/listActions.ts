@@ -126,7 +126,7 @@ export const addGroupsToFirestoreList = async (listId: string, groupsToAdd: Arra
     });
 };
 
-export const addUsersToFirestoreList = async (listId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
+export const updateFirestoreListUsers = async (listId: string, usersToAdd: Array<FirestoreUserUid>, usersToRemove: Array<FirestoreUserUid>) => {
     const listRef = firestore().doc(`lists/${listId}`);
 
     return firestore().runTransaction(async (transaction) => {
