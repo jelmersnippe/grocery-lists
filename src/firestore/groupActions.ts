@@ -65,7 +65,7 @@ export const addFirestoreGroup = async (name: string): Promise<string | undefine
 
     try {
         const newGroup: FirestoreGroup = {
-            name: name,
+            name: name.toLowerCase(),
             creator: userId,
             users: [userId]
         };

@@ -1,4 +1,4 @@
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Text} from 'react-native';
 import React, {FunctionComponent} from 'react';
 import {Props} from './props';
 import styles from './styles';
@@ -23,14 +23,17 @@ const UserView: FunctionComponent<Props> = ({users, editable, userRemoveAction})
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView
-                style={styles.userContainer}
-                alwaysBounceVertical={false}
-            >
-                {users.map((user) => renderUserItem(user))}
-            </ScrollView>
-        </View>
+        users.length > 0 ?
+            <View style={styles.container}>
+                <Text style={styles.title}>Users</Text>
+                <ScrollView
+                    style={styles.userContainer}
+                    alwaysBounceVertical={false}
+                >
+                    {users.map((user) => renderUserItem(user))}
+                </ScrollView>
+            </View>
+            : null
     );
 };
 

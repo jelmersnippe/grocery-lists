@@ -12,6 +12,7 @@ import firestoreUserActions from '../../firestore/userActions';
 import UserView from '../../components/UserView';
 import {setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import UserSearch from '../../components/UserSearch';
+import {capitalize} from '../../utils/capitalize';
 
 const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {id} = route.params;
@@ -54,7 +55,7 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
         selectedGroup ?
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{selectedGroup.name}</Text>
+                    <Text style={styles.title}>{capitalize(selectedGroup.name)}</Text>
                     <TouchableOpacity onPress={async () => {
                         await deleteFirestoreGroup(id);
                         navigation.popToTop();

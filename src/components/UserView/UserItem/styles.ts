@@ -3,8 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
-        marginVertical: 5,
-        marginHorizontal: 10
+        marginVertical: 5
     },
     container: {
         paddingVertical: 10,

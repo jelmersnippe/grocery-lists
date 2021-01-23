@@ -9,6 +9,7 @@ import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-o
 import InputModal from '../../components/InputModal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {capitalize} from '../../utils/capitalize';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -28,7 +29,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
                     key={key}
                     onPress={() => navigation.navigate('GroupDetails', {id: key})}
                 >
-                    <Text>{value.name}</Text>
+                    <Text>{capitalize(value.name)}</Text>
                 </TouchableOpacity>
             );
         }

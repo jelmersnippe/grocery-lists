@@ -20,6 +20,7 @@ import {User, UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
 import ListItemView from '../../components/ListItemView';
 import UserSearch from '../../components/UserSearch';
+import GroupView from '../../components/GroupView';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -83,16 +84,6 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
 
         updateFirestoreList(listId, updatedName);
         dispatch(resetOverlay());
-    };
-
-    const renderGroups = () => {
-        return selectedList?.groupData?.map((group, index) => {
-            return (
-                <View key={index}>
-                    <Text>{group.name}</Text>
-                </View>
-            );
-        });
     };
 
     const openUserSearch = () => {
@@ -168,7 +159,9 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
                         <ListItemView listId={id} items={selectedList?.items}/>
                         :
                         <>
-                            {renderGroups()}
+                            <GroupView
+                                groups={selectedList.groupData ?? []}
+                            />
                             <UserView
                                 users={users}
                                 editable={listCreatedByCurrentUser}
