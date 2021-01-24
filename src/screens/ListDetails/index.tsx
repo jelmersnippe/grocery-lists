@@ -104,7 +104,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         for (const key of Object.keys(lists)) {
             const list = lists[key];
             listPickerItems.push(
-                <Picker.Item label={list.name} value={key}/>
+                <Picker.Item key={key} label={list.name} value={key}/>
             );
         }
 
