@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreGroup, FirestoreUserUid} from './types';
+import {FirestoreGroup, FirestoreList, FirestoreUserUid} from './types';
 import {addGroup, removeGroup} from '../reducers/groups/actions';
 import {store} from '../config/store';
 import {Group, GroupInfo} from '../reducers/groups/types';
@@ -79,7 +79,27 @@ export const addFirestoreGroup = async (name: string): Promise<string | undefine
 };
 
 export const deleteFirestoreGroup = async (id: string): Promise<void> => {
-    return await firestore().collection('groups').doc(id).delete();
+    const lists = await firestore().collection('lists').where('groups', 'array-contains', id).get();
+
+    lists.forEach((listDocument) => {
+        firestore().runTransaction(async (transaction) => {
+            const listSnapshot = await transaction.get(listDocument.ref);
+
+            if (!listSnapshot.exists) {
+                throw 'List doesn\'t exists';
+            }
+
+            const listData = listSnapshot.data() as FirestoreList;
+            if (listData.groups) {
+                const filteredListGroups = listData.groups.filter((group) => group !== id);
+                await transaction.update(listDocument.ref, {
+                    groups: filteredListGroups
+                });
+            }
+        });
+    });
+
+    await firestore().collection('groups').doc(id).delete();
 };
 
 export const addFirestoreGroupUsers = async (groupId: string, usersToAdd: Array<FirestoreUserUid>) => {

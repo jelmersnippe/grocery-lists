@@ -29,7 +29,8 @@ export const subscribeToFirestoreListUpdates = (): () => void => {
                             name: documentData.name,
                             creatorUid: documentData.creator,
                             users: documentData.users,
-                            groups: documentData.groups
+                            groups: documentData.groups,
+                            groupData: store.getState().lists[listId].groupData?.filter((group) => documentData.groups?.includes(group.uid))
                         };
                         store.dispatch(addList({id: listId, list: listData}));
                         break;
