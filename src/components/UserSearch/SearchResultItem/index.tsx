@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../../Text';
 import {Props} from './props';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';

@@ -1,5 +1,6 @@
 import React, {FunctionComponent, useEffect} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';

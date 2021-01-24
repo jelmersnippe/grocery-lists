@@ -1,4 +1,5 @@
-import {Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import Text from '../Text';
 import React, {FunctionComponent} from 'react';
 import {Props} from './props';
 import theme from '../../config/theme';

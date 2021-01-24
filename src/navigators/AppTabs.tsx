@@ -4,7 +4,7 @@ import ListStack from './ListStack';
 import GroupStack from './GroupStack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
-import {Text} from 'react-native';
+import Text from '../components/Text';
 import theme from '../config/theme';
 
 export type AppTabsParamList = {

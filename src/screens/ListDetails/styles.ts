@@ -13,9 +13,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: theme.colors.black
+        paddingHorizontal: 20
     },
     headerTextContainer: {
         width: '80%'

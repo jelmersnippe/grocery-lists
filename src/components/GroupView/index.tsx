@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {Props} from './props';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
+import Text from '../Text';
 import styles from './styles';
 import GroupItem from './GroupItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';

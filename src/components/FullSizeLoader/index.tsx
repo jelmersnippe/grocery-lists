@@ -1,4 +1,5 @@
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
+import Text from '../Text';
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';

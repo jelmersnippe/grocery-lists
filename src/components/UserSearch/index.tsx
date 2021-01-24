@@ -1,4 +1,5 @@
-import {ScrollView, Text, TouchableOpacity} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
+import Text from '../Text';
 import styles from './styles';
 import SearchBar from './SearchBar';
 import Button from '../Button';

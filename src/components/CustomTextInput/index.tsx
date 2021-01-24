@@ -1,5 +1,6 @@
 import React, {forwardRef} from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {TextInput, View} from 'react-native';
+import Text from '../Text';
 import {Props} from './props';
 import styles from './styles';
 import theme from '../../config/theme';

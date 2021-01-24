@@ -1,8 +1,7 @@
 import {StyleSheet, TextStyle, ViewStyle} from 'react-native';
 
 const colors = {
-    background: '#ffefda',
-    header: 'transparent',
+    background: 'white',
     white: '#ffffff',
     black: '#011627',
     red: '#FF0022',
@@ -11,6 +10,11 @@ const colors = {
     grayDark: '#a1a1a1',
     primary: '#e6f2ff',
     primaryDark: '#2d4c74'
+};
+
+const defaultText: TextStyle = {
+    fontWeight: 'normal',
+    fontSize: 18
 };
 
 const rowContainer: ViewStyle = {
@@ -115,6 +119,7 @@ const buttons: MainButtonsStyle = {
 
 const theme = {
     colors,
+    defaultText,
     rowContainer,
     lightShadow,
     heavyShadow,

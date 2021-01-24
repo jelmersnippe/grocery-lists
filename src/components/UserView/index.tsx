@@ -1,4 +1,5 @@
-import {ScrollView, View, Text} from 'react-native';
+import {ScrollView, View} from 'react-native';
+import Text from '../Text';
 import React, {FunctionComponent} from 'react';
 import {Props} from './props';
 import styles from './styles';

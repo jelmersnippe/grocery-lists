@@ -1,5 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../../Text';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {removeFirestoreListItem, updateFirestoreListItem} from '../../../firestore/listActions';
 import {ItemStatus} from '../../../reducers/lists/types';
@@ -35,11 +36,11 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
     }, [opened]);
 
     return (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, item.status === ItemStatus.DONE && {opacity: 0.6}]}>
             <TouchableOpacity
                 style={[
                     theme.rowContainer,
-                    {backgroundColor: item.status === ItemStatus.DONE ? theme.colors.gray : theme.colors.primary},
+                    item.status === ItemStatus.DONE && {backgroundColor: theme.colors.gray},
                     item.status !== ItemStatus.DONE && theme.lightShadow
                 ]}
                 delayLongPress={500}

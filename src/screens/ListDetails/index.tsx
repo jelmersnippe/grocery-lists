@@ -1,5 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
 import {useSelector} from 'react-redux';
@@ -29,7 +30,7 @@ enum Tab {
     USERS = 'USERS'
 }
 
-const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
+const ListDetails: FunctionComponent<Props> = ({route}) => {
     const {dispatch} = useOverlayData();
     const {id} = route.params;
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
@@ -41,13 +42,6 @@ const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const [currentTab, setCurrentTab] = useState<Tab>(Tab.TASKS);
 
     const {t} = useTranslation('lists');
-
-    useEffect(() => {
-        const listName = selectedList?.name;
-        if (listName) {
-            navigation.setOptions({title: listName});
-        }
-    }, [selectedList?.name]);
 
     useEffect(() => {
         const creatorUid = selectedList?.creatorUid;
