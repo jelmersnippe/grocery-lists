@@ -20,6 +20,22 @@ const defaultText: TextStyle = {
     fontSize: 18
 };
 
+const mainContainer: ViewStyle = {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: colors.background
+};
+
+const pageHeader: ViewStyle = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.black
+};
+
 const rowContainer: ViewStyle = {
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -80,7 +96,24 @@ const pageTitle: TextStyle = {
     fontWeight: 'bold'
 };
 
-type ButtonStyling = {container: ViewStyle, text: TextStyle}
+const overviewItem: {container: ViewStyle, name: TextStyle, icon: ViewStyle} = {
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: colors.black
+    },
+    name: {
+
+    },
+    icon: {
+        marginLeft: 'auto'
+    }
+};
+
+type ButtonStyling = { container: ViewStyle, text: TextStyle }
 type MainButtonsStyle = {
     primary: ButtonStyling,
     secondary: ButtonStyling,
@@ -123,10 +156,13 @@ const buttons: MainButtonsStyle = {
 const theme = {
     colors,
     defaultText,
+    mainContainer,
+    pageHeader,
     rowContainer,
     lightShadow,
     heavyShadow,
     floatingActionButton,
+    overviewItem,
     iconButton,
     pageTitle,
     buttons

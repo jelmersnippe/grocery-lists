@@ -2,7 +2,6 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
-import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -58,10 +57,10 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 <TouchableOpacity
                     key={key}
                     onPress={() => navigation.navigate('ListDetails', {id: key})}
-                    style={styles.listItem}
+                    style={theme.overviewItem.container}
                 >
-                    <Text style={styles.listItemName}>{value.name}</Text>
-                    <Icon style={styles.listItemIcon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
+                    <Text>{value.name}</Text>
+                    <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
                 </TouchableOpacity>
             );
         }
@@ -83,13 +82,14 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.titleContainer}>
+        <View style={theme.mainContainer}>
+            <View style={theme.pageHeader}>
                 <Text style={theme.pageTitle}>
                     {t('title')}
                 </Text>
                 <TouchableOpacity
                     onPress={() => openInputModal()}
+                    style={theme.iconButton}
                 >
                     <Icon name={'add'} size={40} color={theme.colors.black}/>
                 </TouchableOpacity>
@@ -97,7 +97,6 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
             <ScrollView
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
-                style={styles.listContainer}
             >
                 {renderLists()}
             </ScrollView>

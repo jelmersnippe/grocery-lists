@@ -1,8 +1,7 @@
 import React, {FunctionComponent, useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
-import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {addFirestoreGroup, subscribeToFirestoreGroupUpdates} from '../../firestore/groupActions';
@@ -30,8 +29,10 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
                 <TouchableOpacity
                     key={key}
                     onPress={() => navigation.navigate('GroupDetails', {id: key})}
+                    style={theme.overviewItem.container}
                 >
                     <Text>{capitalize(value.name)}</Text>
+                    <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
                 </TouchableOpacity>
             );
         }
@@ -66,17 +67,24 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => openInputModal()}
-                style={theme.iconButton}
+        <View style={theme.mainContainer}>
+            <View style={theme.pageHeader}>
+                <Text style={theme.pageTitle}>
+                    GroupOverview
+                </Text>
+                <TouchableOpacity
+                    onPress={() => openInputModal()}
+                    style={theme.iconButton}
+                >
+                    <Icon name={'add'} size={40} color={theme.colors.black}/>
+                </TouchableOpacity>
+            </View>
+            <ScrollView
+                alwaysBounceVertical={false}
+                showsVerticalScrollIndicator={false}
             >
-                <Icon name={'add'} size={40} color={theme.colors.black}/>
-            </TouchableOpacity>
-            <Text style={theme.pageTitle}>
-                GroupOverview
-            </Text>
-            {renderGroups()}
+                {renderGroups()}
+            </ScrollView>
         </View>
     );
 };
