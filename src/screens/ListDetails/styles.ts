@@ -9,14 +9,9 @@ const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: 'column',
         paddingVertical: 10,
         paddingHorizontal: 20
-    },
-    headerTextContainer: {
-        width: '80%'
     },
     titleContainer: {
         flexDirection: 'row',

@@ -24,6 +24,7 @@ import ListItemView from '../../components/ListItemView';
 import UserSearch from '../../components/UserSearch';
 import GroupView from '../../components/GroupView';
 import theme from '../../config/theme';
+import {Picker} from '@react-native-picker/picker';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -32,8 +33,9 @@ enum Tab {
 
 const ListDetails: FunctionComponent<Props> = ({route}) => {
     const {dispatch} = useOverlayData();
-    const {id} = route.params;
+    const [id, setId] = useState(route.params.id);
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
+    const lists = useSelector((rootState: RootState) => rootState.lists);
     const selectedList = useSelector((rootState: RootState) => rootState.lists.hasOwnProperty(id) ? rootState.lists[id] : undefined);
     const listCreatedByCurrentUser = selectedList?.creatorUid === currentUserId;
     const [creator, setCreator] = useState<UserInfo | undefined>(undefined);
@@ -97,47 +99,58 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         }));
     };
 
+    const renderListPickerItems = (): Array<JSX.Element> => {
+        const listPickerItems: Array<JSX.Element> = [];
+        for (const key of Object.keys(lists)) {
+            const list = lists[key];
+            listPickerItems.push(
+                <Picker.Item label={list.name} value={key}/>
+            );
+        }
+
+        return listPickerItems;
+    };
+
     return (
         selectedList ?
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <View style={styles.headerTextContainer}>
-                        <View style={styles.titleContainer}>
-                            <Text
-                                style={theme.pageTitle}
-                                numberOfLines={2}
-                                ellipsizeMode={'tail'}
-                            >
-                                {selectedList.name}
-                            </Text>
-                            {listCreatedByCurrentUser &&
-                            <TouchableOpacity
-                                onPress={() => {
-                                    dispatch(setOverlay({
-                                        content: <InputModal
-                                            defaultValue={selectedList.name}
-                                            onSubmit={async (input: string) => updateList(id, input)}
-                                            buttonLabel={t('common:update')}
-                                        />,
-                                        wrapperStyle: {
-                                            width: '60%'
-                                        }
-                                    }));
-                                }}
-                                style={theme.iconButton}
-                            >
-                                <Icon name={'edit'} size={30} color={theme.colors.black}/>
-                            </TouchableOpacity>
-                            }
-                        </View>
-                        {creator &&
-                        <Text>
-                            {t('createdBy', {
-                                creator: capitalize(creator.name)
-                            })}
-                        </Text>
+                    <View style={styles.titleContainer}>
+                        <Picker
+                            selectedValue={id}
+                            onValueChange={(itemValue) => setId(itemValue.toString())}
+                            mode={'dropdown'}
+                            style={{flex: 1}}
+                        >
+                            {renderListPickerItems()}
+                        </Picker>
+                        {listCreatedByCurrentUser &&
+                        <TouchableOpacity
+                            onPress={() => {
+                                dispatch(setOverlay({
+                                    content: <InputModal
+                                        defaultValue={selectedList.name}
+                                        onSubmit={async (input: string) => updateList(id, input)}
+                                        buttonLabel={t('common:update')}
+                                    />,
+                                    wrapperStyle: {
+                                        width: '60%'
+                                    }
+                                }));
+                            }}
+                            style={theme.iconButton}
+                        >
+                            <Icon name={'edit'} size={30} color={theme.colors.black}/>
+                        </TouchableOpacity>
                         }
                     </View>
+                    {creator &&
+                    <Text>
+                        {t('createdBy', {
+                            creator: capitalize(creator.name)
+                        })}
+                    </Text>
+                    }
                 </View>
 
                 <View style={styles.tabContainer}>
