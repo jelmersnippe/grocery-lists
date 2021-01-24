@@ -132,6 +132,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                                         defaultValue={selectedList.name}
                                         onSubmit={async (input: string) => updateList(id, input)}
                                         buttonLabel={t('common:update')}
+                                        placeholder={t('newItem')}
                                     />,
                                     wrapperStyle: {
                                         width: '60%'
@@ -162,7 +163,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                         <Text style={[
                             styles.tabButtonText,
                             currentTab === Tab.TASKS && styles.activeTabButtonText
-                        ]}>Tasks</Text>
+                        ]}>{t('items')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setCurrentTab(Tab.USERS)}
@@ -172,7 +173,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                         <Text style={[
                             styles.tabButtonText,
                             currentTab === Tab.USERS && styles.activeTabButtonText
-                        ]}>Users</Text>
+                        ]}>{t('common:users')}</Text>
                     </TouchableOpacity>
                 </View>
 

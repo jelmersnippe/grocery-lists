@@ -72,6 +72,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
         dispatch(setOverlay({
             title: t('newList'),
             content: <InputModal
+                placeholder={t('newList')}
                 buttonLabel={t('common:create')}
                 onSubmit={async (input: string) => createNewList(input)}
             />,
@@ -85,7 +86,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
         <View style={theme.mainContainer}>
             <View style={theme.pageHeader}>
                 <Text style={theme.pageTitle}>
-                    {t('title')}
+                    {t('yourLists')}
                 </Text>
                 <TouchableOpacity
                     onPress={() => openInputModal()}

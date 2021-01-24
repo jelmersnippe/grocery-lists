@@ -32,7 +32,7 @@ const AddItemModal: FunctionComponent<Props> = ({addAction}) => {
                     blurOnSubmit={false}
                 />
                 <Button
-                    text={'Add'}
+                    text={t('common:add')}
                     onPress={() => addItem()}
                 />
             </View>

@@ -55,8 +55,8 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
 
     const openInputModal = () => {
         dispatch(setOverlay({
-            title: t('newGroup'),
             content: <InputModal
+                placeholder={t('newGroup')}
                 buttonLabel={t('common:create')}
                 onSubmit={async (input: string) => createNewGroup(input)}
             />,
@@ -70,7 +70,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
         <View style={theme.mainContainer}>
             <View style={theme.pageHeader}>
                 <Text style={theme.pageTitle}>
-                    GroupOverview
+                    {t('yourGroups')}
                 </Text>
                 <TouchableOpacity
                     onPress={() => openInputModal()}

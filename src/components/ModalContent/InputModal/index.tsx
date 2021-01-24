@@ -4,7 +4,7 @@ import {Props} from './props';
 import styles from './styles';
 import Button from '../../Button';
 
-const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, onSubmit}) => {
+const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, placeholder, onSubmit}) => {
     const inputRef = useRef<TextInput>(null);
     const [input, setInput] = useState(defaultValue ?? '');
 
@@ -22,7 +22,7 @@ const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, onSubm
                 style={styles.input}
                 returnKeyType={'done'}
                 onSubmitEditing={() => onSubmit(input)}
-                placeholder={'New list'}
+                placeholder={placeholder ?? ''}
                 ref={inputRef}
             />
             <Button

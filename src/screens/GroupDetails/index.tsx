@@ -2,7 +2,6 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
-import styles from './styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import FullSizeLoader from '../../components/FullSizeLoader';
@@ -55,18 +54,21 @@ const GroupDetails: FunctionComponent<Props> = ({navigation, route}) => {
 
     return (
         selectedGroup ?
-            <View style={styles.container}>
-                <View style={styles.header}>
+            <View style={theme.mainContainer}>
+                <View style={theme.pageHeader}>
                     <Text style={theme.pageTitle}>{capitalize(selectedGroup.name)}</Text>
-                    <TouchableOpacity
-                        onPress={async () => {
-                            await deleteFirestoreGroup(id);
-                            navigation.popToTop();
-                        }}
-                        style={theme.iconButton}
-                    >
-                        <Icon name={'delete'} color={theme.colors.red} size={24}/>
-                    </TouchableOpacity>
+                    {
+                        createdByUser &&
+                        <TouchableOpacity
+                            onPress={async () => {
+                                await deleteFirestoreGroup(id);
+                                navigation.popToTop();
+                            }}
+                            style={theme.iconButton}
+                        >
+                            <Icon name={'delete'} color={theme.colors.red} size={24}/>
+                        </TouchableOpacity>
+                    }
                 </View>
                 <UserView
                     users={users}

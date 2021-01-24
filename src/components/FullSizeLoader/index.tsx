@@ -14,9 +14,11 @@ const FullSizeLoader: FunctionComponent<Props> = ({size = 100, color = theme.col
     const navigation = useNavigation();
 
     useEffect(() => {
-        setTimeout(() => {
+        const goBackTimeout = setTimeout(() => {
             setShowButton(true);
         }, 5000);
+
+        return () => clearTimeout(goBackTimeout);
     }, []);
 
     const goBack = () => {

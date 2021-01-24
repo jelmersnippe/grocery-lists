@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
+import {store} from './store';
 
 const resources = {
     en: {
@@ -10,6 +11,8 @@ const resources = {
             create: 'Create',
             update: 'Update',
             delete: 'Delete',
+            add: 'Add',
+            users: 'Users',
             you: 'You'
         },
         auth: {
@@ -32,13 +35,18 @@ const resources = {
             Logout: 'Logout'
         },
         lists: {
-            title: 'Your lists',
+            yourLists: 'Your lists',
             newList: 'New list',
+            newItem: 'New item',
             createdBy: 'Created by: {{creator}}',
             itemName: 'Item',
             deleteListTitle: 'Delete \'{{listName}}\'',
             deleteListText: 'Are you sure you want to delete this list?',
-            users: 'Users'
+            items: 'Items'
+        },
+        groups: {
+            yourGroups: 'Your groups',
+            newGroup: 'New group'
         },
         profile: {
             title: 'Profile',
@@ -54,6 +62,8 @@ const resources = {
             create: 'Aanmaken',
             update: 'Wijzigen',
             delete: 'Verwijderen',
+            add: 'Toevoegen',
+            users: 'Gebruikers',
             you: 'Jij'
         },
         auth: {
@@ -76,20 +86,29 @@ const resources = {
             Logout: 'Uitloggen'
         },
         lists: {
-            title: 'Jouw lijsten',
+            yourLists: 'Jouw lijsten',
             newList: 'Nieuwe lijst',
             createdBy: 'Aangemaakt door: {{creator}}',
             itemName: 'Product',
             deleteListTitle: 'Verwijder \'{{listName}}\'',
             deleteListText: 'Weet je zeker dat je deze lijst wilt verwijderen?',
-            users: 'Gebruikers'
+            items: 'Producten'
+        },
+        groups: {
+            yourGroups: 'Jouw groepen',
+            newGroup: 'Nieuwe group'
+        },
+        profile: {
+            title: 'Profiel',
+            displayName: 'Weergave naam',
+            updateProfile: 'Profiel updaten'
         }
     }
 };
 
 i18n.use(initReactI18next).init({
     resources,
-    lng: 'en',
+    lng: store.getState().settings.language,
     fallbackLng: 'en',
 
     interpolation: {

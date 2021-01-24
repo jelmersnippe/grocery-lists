@@ -32,7 +32,8 @@ const GroupStack: FunctionComponent<Props> = ({navigation}) => {
                     >
                         <Icon name={'settings'} size={30}/>
                     </TouchableOpacity>
-                )
+                ),
+                title: ''
             }}
         >
             <Stack.Screen name='GroupOverview' component={GroupOverview}/>
