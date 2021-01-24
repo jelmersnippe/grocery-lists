@@ -1,4 +1,4 @@
-import {StyleSheet, TextStyle, ViewStyle} from 'react-native';
+import {Platform, StyleSheet, TextStyle, ViewStyle} from 'react-native';
 
 const colors = {
     background: 'white',
@@ -12,7 +12,10 @@ const colors = {
     primaryDark: '#2d4c74'
 };
 
+const defaultFontFamily = Platform.OS === 'android' ? 'raleway' : 'Raleway';
+
 const defaultText: TextStyle = {
+    fontFamily: defaultFontFamily,
     fontWeight: 'normal',
     fontSize: 18
 };

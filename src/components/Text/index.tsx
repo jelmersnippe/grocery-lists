@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TextProps} from 'react-native';
+import {TextProps, Text} from 'react-native';
 import {FunctionComponent} from 'react';
 import theme from '../../config/theme';
 
