@@ -11,10 +11,14 @@ import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
 import {updateFirestoreUser} from '../../firestore/userActions';
 import theme from '../../config/theme';
+import {Picker} from '@react-native-picker/picker';
+import {LANGUAGES} from '../../reducers/settings/types';
+import {setLanguage} from '../../reducers/settings/actions';
 
 const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
     const user = useSelector((rootState: RootState) => rootState.user);
+    const settings = useSelector((rootState: RootState) => rootState.settings);
     const [nameInput, setNameInput] = useState(user.name);
     const {t} = useTranslation('profile');
 
@@ -33,6 +37,14 @@ const Profile: FunctionComponent<Props> = ({}) => {
         }
     };
 
+    const renderPickerItems = () => {
+        return LANGUAGES.map((language) => {
+            return (
+                <Picker.Item key={language.key} label={language.label} value={language.key}/>
+            );
+        });
+    };
+
     return (
         <View style={styles.container}>
             <Text style={theme.pageTitle}>{t('title')}</Text>
@@ -44,7 +56,6 @@ const Profile: FunctionComponent<Props> = ({}) => {
                 placeholder={t('displayName')}
                 onSubmitEditing={() => updateProfile()}
                 returnKeyType={'go'}
-                // ref={passwordRef}
                 autoCapitalize={'words'}
             />
             <Button
@@ -52,6 +63,14 @@ const Profile: FunctionComponent<Props> = ({}) => {
                 text={t('updateProfile')}
                 containerStyle={styles.input}
             />
+            <Picker
+                selectedValue={settings.language}
+                onValueChange={(itemValue) => dispatch(setLanguage(itemValue.toString()))}
+                mode={'dropdown'}
+                style={{width: '60%'}}
+            >
+                {renderPickerItems()}
+            </Picker>
         </View>
     );
 };
