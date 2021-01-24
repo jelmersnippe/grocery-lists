@@ -72,7 +72,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
 
     useEffect(() => {
         return subscribeToFirestoreListItemUpdates(id);
-    }, []);
+    }, [id]);
 
     const updateList = (listId: string, updatedName: string) => {
         if (updatedName === '' || updatedName === selectedList?.name) {
