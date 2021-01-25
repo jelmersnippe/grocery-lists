@@ -1,5 +1,4 @@
 import {FirestoreUserUid} from '../../firestore/types';
-import {Group} from '../groups/types';
 
 export const ADD_LIST = 'ADD_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
@@ -17,8 +16,6 @@ export interface List {
     creatorUid: FirestoreUserUid;
     items?: { [key: string]: ListItem };
     users: Array<FirestoreUserUid>;
-    groups?: Array<string>;
-    groupData?: Array<Group>;
 }
 
 // Probably add a 'completedAt' timestamp

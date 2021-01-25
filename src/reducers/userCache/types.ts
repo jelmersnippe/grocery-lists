@@ -18,7 +18,7 @@ export interface UserInfo {
 
 export interface AddCachedUserAction {
     type: typeof ADD_CACHED_USER
-    payload: CachedUser
+    payload: { uid: string, user: UserInfo }
 }
 
 export interface RemoveCachedUser {

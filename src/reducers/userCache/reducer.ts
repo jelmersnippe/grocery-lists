@@ -12,7 +12,8 @@ const reducer = (state = initialState, action: UserActionTypes): UserCacheState 
             return update(state, {
                 $merge: {
                     [action.payload.uid]: {
-                        ...action.payload
+                        ...action.payload.user,
+                        timestamp: new Date()
                     }
                 }
             });

@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, {firebase} from '@react-native-firebase/firestore';
 import {FirestoreUser, FirestoreSearchResult} from './types';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
 import {store} from '../config/store';
@@ -13,6 +13,35 @@ export const getUser = async (uid: string): Promise<UserInfo | undefined> => {
     }
 
     return getFirestoreUserByUid(uid);
+};
+
+export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<UserInfo>> => {
+    const foundUsers: Array<UserInfo> = [];
+    const uidsToFetch: Array<string> = [];
+
+    for (const userUid of userUids) {
+        const cachedUser = getUserFromCache(userUid);
+        if (cachedUser) {
+            foundUsers.push(cachedUser);
+        } else {
+            uidsToFetch.push(userUid);
+        }
+    }
+    if (uidsToFetch.length > 0) {
+        await firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', uidsToFetch).get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data() as FirestoreUser;
+                    const foundUser: UserInfo = {
+                        name: data.name
+                    };
+                    store.dispatch(addCachedUser({uid: doc.id, user: foundUser}));
+                    foundUsers.push(foundUser);
+                });
+            });
+    }
+
+    return foundUsers;
 };
 
 const getUserFromCache = (uid: string): CachedUser | undefined => {
@@ -36,12 +65,7 @@ const getFirestoreUserByUid = async (uid: string): Promise<UserInfo | undefined>
         .then(documentSnapshot => {
             if (documentSnapshot.exists) {
                 const user = documentSnapshot.data() as FirestoreUser;
-                const newCachedUser: CachedUser = {
-                    uid: uid,
-                    name: user.name,
-                    timestamp: new Date()
-                };
-                store.dispatch(addCachedUser(newCachedUser));
+                store.dispatch(addCachedUser({uid, user}));
                 return user;
             } else {
                 return undefined;

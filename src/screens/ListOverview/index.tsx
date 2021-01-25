@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
@@ -8,35 +8,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
-import {addFirestoreList, subscribeToFirestoreListUpdates, subscribeToFirestoreListUpdatesForGroups} from '../../firestore/listActions';
+import {addFirestoreList, subscribeToFirestoreListUpdates} from '../../firestore/listActions';
 import theme from '../../config/theme';
 import {ListItem} from 'react-native-elements';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
-    const groups = useSelector((rootState: RootState) => rootState.groups);
     const lists = useSelector((rootState: RootState) => rootState.lists);
-    const [groupUids, setGroupUids] = useState<Array<string>>([]);
     const {dispatch} = useOverlayData();
     const {t} = useTranslation('lists');
 
     useEffect(() => {
         return subscribeToFirestoreListUpdates();
     }, []);
-
-    useEffect(() => {
-        const newGroupUids: Array<string> = [];
-        for (const key of Object.keys(groups)) {
-            newGroupUids.push(key);
-        }
-        setGroupUids(newGroupUids);
-    }, [groups]);
-
-    useEffect(() => {
-        if (groupUids.length <= 0) {
-            return;
-        }
-        return subscribeToFirestoreListUpdatesForGroups(groupUids);
-    }, [groupUids]);
 
     const createNewList = async (name: string) => {
         if (name === '') {

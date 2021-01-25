@@ -7,7 +7,6 @@ export type FirestoreList = {
     creator: FirestoreUserUid;
     items?: { [key: string]: FirestoreListItem }
     users: Array<FirestoreUserUid>;
-    groups?: Array<string>;
 }
 
 export type FirestoreListItem = {

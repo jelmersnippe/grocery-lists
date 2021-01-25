@@ -1,4 +1,4 @@
 export type Props = {
-    initialGroups: Array<string>
+    initialUsers: Array<string>
     listId: string;
 }

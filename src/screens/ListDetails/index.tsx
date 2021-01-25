@@ -22,9 +22,9 @@ import {User, UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
 import ListItemView from '../../components/ListItemView';
 import UserSearch from '../../components/UserSearch';
-import GroupView from '../../components/GroupView';
 import theme from '../../config/theme';
 import {Picker} from '@react-native-picker/picker';
+import AddGroupModal from '../../components/ModalContent/AddGroupModal';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -90,10 +90,6 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
             content: (<UserSearch
                 saveAction={async (usersToAdd) => await addFirestoreListUsers(id, usersToAdd)}
                 initialUsers={users.map((user) => user.uid)}
-                nonEditableUsers={selectedList?.groupData?.map((group) =>
-                    group.users).reduce<Array<string>>((acc, cur) => {
-                        return [...acc, ...cur];
-                    }, [])}
             />),
             animationType: 'slide'
         }));
@@ -109,6 +105,18 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         }
 
         return listPickerItems;
+    };
+
+    const openAddGroupModal = () => {
+        dispatch(setOverlay({
+            wrapperStyle: {
+                maxHeight: '60%'
+            },
+            content: <AddGroupModal
+                initialUsers={selectedList?.users ?? []}
+                listId={id}
+            />
+        }));
     };
 
     return (
@@ -182,11 +190,12 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                         <ListItemView listId={id} items={selectedList?.items}/>
                         :
                         <>
-                            <GroupView
-                                groups={selectedList.groupData ?? []}
-                                editable={listCreatedByCurrentUser}
-                                listId={id}
-                            />
+                            <TouchableOpacity
+                                onPress={() => openAddGroupModal()}
+                                style={theme.iconButton}
+                            >
+                                <Icon name={'add'} size={32} color={theme.colors.black}/>
+                            </TouchableOpacity>
                             <UserView
                                 users={users}
                                 editable={listCreatedByCurrentUser}

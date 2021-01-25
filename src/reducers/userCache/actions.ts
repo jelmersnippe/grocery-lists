@@ -1,15 +1,15 @@
 import {
     ADD_CACHED_USER,
-    AddCachedUserAction, CachedUser,
+    AddCachedUserAction,
     REMOVE_CACHED_USER,
     RemoveCachedUser,
     RESET_USER_CACHE,
-    ResetUserCacheAction
+    ResetUserCacheAction, UserInfo
 } from './types';
 
 export type UserActionTypes = AddCachedUserAction | RemoveCachedUser | ResetUserCacheAction
 
-export const addCachedUser = (payload: CachedUser): UserActionTypes => {
+export const addCachedUser = (payload: { uid: string, user: UserInfo }): UserActionTypes => {
     return {
         type: ADD_CACHED_USER,
         payload: payload

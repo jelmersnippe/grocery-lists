@@ -10,7 +10,7 @@ import SearchResultItem from './SearchResultItem';
 import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import {Props} from './props';
 
-const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEditableUsers}) => {
+const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
     const [userResults, setUserResults] = useState<Array<FirestoreSearchResult>>([]);
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
     const {dispatch} = useOverlayData();
@@ -34,7 +34,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction, nonEdit
                 key={user.uid}
                 user={user}
                 icon={usersToAdd.includes(user.uid) ? 'undo' : 'add'}
-                editable={!nonEditableUsers?.includes(user.uid) && !initialUsers.includes(user.uid)}
+                editable={!initialUsers.includes(user.uid)}
                 action={(uid: string) => updateUsersToAdd(uid)}
                 containerStyle={{
                     backgroundColor: toBeAdded ? 'lime' : 'lightgray'

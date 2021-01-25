@@ -1,10 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
-import {FirestoreGroup, FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
+import {FirestoreList, FirestoreListItem, FirestoreUserUid} from './types';
 import {store} from '../config/store';
 import {ItemStatus, List, ListItem} from '../reducers/lists/types';
 import moment from 'moment';
 import {addList, addListItem, removeList, removeListItem} from '../reducers/lists/actions';
-import {Group} from '../reducers/groups/types';
 
 export const subscribeToFirestoreListUpdates = (): () => void => {
     const currentUserUid = store.getState().user.uid;
@@ -19,64 +18,13 @@ export const subscribeToFirestoreListUpdates = (): () => void => {
 
                 switch (documentChange.type) {
                     case 'removed':
-                        const usersGroups = Object.keys(store.getState().groups);
-                        if (usersGroups && !documentData.groups?.some((group) => usersGroups.includes(group))) {
-                            store.dispatch(removeList(listId));
-                        }
+                        store.dispatch(removeList(listId));
                         break;
                     default:
                         const listData: List = {
                             name: documentData.name,
                             creatorUid: documentData.creator,
-                            users: documentData.users,
-                            groups: documentData.groups,
-                            groupData: store.getState().lists[listId].groupData?.filter((group) => documentData.groups?.includes(group.uid))
-                        };
-                        store.dispatch(addList({id: listId, list: listData}));
-                        break;
-                }
-            });
-        });
-};
-
-export const subscribeToFirestoreListUpdatesForGroups = (groups: Array<string>): () => void => {
-    return firestore()
-        .collection('lists')
-        .where('groups', 'array-contains-any', groups)
-        .onSnapshot((querySnapshot) => {
-            querySnapshot.docChanges().forEach(async (documentChange) => {
-                const listId = documentChange.doc.id;
-                const documentData = documentChange.doc.data() as FirestoreList;
-
-                switch (documentChange.type) {
-                    case 'removed':
-                        const currentUserUid = store.getState().user.uid;
-                        if (currentUserUid && !documentData.users.includes(currentUserUid)) {
-                            store.dispatch(removeList(listId));
-                        }
-                        break;
-                    default:
-                        const groupData: Array<Group> = [];
-                        if (documentData?.groups) {
-                            for (const group of documentData.groups) {
-                                const groupDocument = await firestore().collection('groups').doc(group).get();
-                                const groupDocumentData = groupDocument.data() as FirestoreGroup;
-
-                                const groupDataObject: Group = {
-                                    uid: groupDocument.id,
-                                    name: groupDocumentData.name,
-                                    users: groupDocumentData.users,
-                                    creatorUid: groupDocumentData.creator
-                                };
-                                groupData.push(groupDataObject);
-                            }
-                        }
-                        const listData: List = {
-                            name: documentData.name,
-                            creatorUid: documentData.creator,
-                            users: documentData.users,
-                            groups: documentData.groups,
-                            groupData: groupData
+                            users: documentData.users
                         };
                         store.dispatch(addList({id: listId, list: listData}));
                         break;
@@ -113,30 +61,6 @@ export const subscribeToFirestoreListItemUpdates = (listId: string): () => void 
                     break;
             }
         });
-    });
-};
-
-export const setFirestoreListGroups = async (listId: string, groups: Array<string>): Promise<void> => {
-    return await firestore().collection('lists').doc(listId).update({groups: groups});
-};
-
-export const removeFirestoreListGroup = async (listId: string, groupToRemove: string): Promise<void> => {
-    const listRef = firestore().collection('lists').doc(listId);
-
-    return await firestore().runTransaction(async (transaction) => {
-        const listSnapshot = await transaction.get(listRef);
-
-        if (!listSnapshot.exists) {
-            throw 'List users don\'t exists';
-        }
-
-        const listData = listSnapshot.data() as FirestoreList;
-        if (listData.groups) {
-            const filteredListGroups = listData.groups?.filter((group) => group !== groupToRemove);
-            await transaction.update(listRef, {
-                groups: filteredListGroups
-            });
-        }
     });
 };
 
