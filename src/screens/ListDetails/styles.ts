@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    listPicker: {
+        flex: 1
+    },
     tabContainer: {
         flexDirection: 'row'
     },

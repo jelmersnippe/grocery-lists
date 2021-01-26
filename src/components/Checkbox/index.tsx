@@ -11,7 +11,7 @@ const Checkbox: FunctionComponent<Props> = ({checked, onPress, label}) => {
     return (
         <TouchableOpacity
             style={styles.wrapper}
-            onPress={() => onPress()}
+            onPress={onPress}
         >
             <View style={[styles.checkbox, {backgroundColor: checked ? theme.colors.primary : theme.colors.white}]}>
                 {checked && <Icon name={'check'} size={18} color={theme.colors.primaryDark}/>}

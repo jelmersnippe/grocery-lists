@@ -20,6 +20,7 @@ import {getMultipleUsers} from '../../firestore/userActions';
 import {Button, Card} from 'react-native-elements';
 import UserSearch from '../../components/UserSearch';
 import {User} from '../../reducers/userCache/types';
+import styles from './styles';
 
 const GroupOverview: FunctionComponent<Props> = ({}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -64,13 +65,13 @@ const GroupOverview: FunctionComponent<Props> = ({}) => {
                     <TouchableOpacity
                         key={key}
                         onPress={ () => setExpandedGroup(expandedGroup !== key ? key : undefined)}
-                        style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
+                        style={styles.groupCard}
                     >
-                        <Text style={{fontWeight: 'bold'}}>{capitalize(value.name)}</Text>
+                        <Text style={styles.groupName}>{capitalize(value.name)}</Text>
                         {
                             createdByUser &&
                             <TouchableOpacity
-                                style={{...theme.iconButton, flexDirection: 'row', alignItems: 'center'}}
+                                style={styles.addUserButton}
                                 onPress={() => openUserSearch(key)}
                             >
                                 <Icon name={'people'} size={32} color={theme.colors.black}/>
@@ -83,7 +84,7 @@ const GroupOverview: FunctionComponent<Props> = ({}) => {
                         <>
                             {groupUsers[key]?.map((user) => {
                                 return (
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <View style={styles.userItem}>
                                         <Text>{capitalize(user.name)}</Text>
                                         {(createdByUser && user.uid !== currentUserId) &&
                                         <TouchableOpacity
@@ -102,9 +103,9 @@ const GroupOverview: FunctionComponent<Props> = ({}) => {
                                     icon={<Icon name={'delete'} color={theme.colors.red} size={24}/>}
                                     type={'outline'}
                                     iconRight={true}
-                                    containerStyle={{marginLeft: 'auto', marginTop: 15}}
-                                    buttonStyle={{borderColor: theme.colors.red, paddingHorizontal: 10}}
-                                    titleStyle={{color: theme.colors.red}}
+                                    containerStyle={styles.deleteButtonContainer}
+                                    buttonStyle={styles.deleteButtonButton}
+                                    titleStyle={styles.deleteButtonTitle}
                                 />
                             }
                         </>

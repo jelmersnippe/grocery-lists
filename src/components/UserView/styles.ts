@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import theme from '../../config/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -6,6 +7,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 5
     },
+    header: {flexDirection: 'row', alignItems: 'center', marginBottom: 10},
+    addUsersButton: {...theme.iconButton, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, marginLeft: 'auto'},
     title: {
         fontWeight: 'bold',
         fontSize: 24,

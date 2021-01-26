@@ -102,7 +102,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                             selectedValue={id}
                             onValueChange={(itemValue) => setId(itemValue.toString())}
                             mode={'dropdown'}
-                            style={{flex: 1}}
+                            style={styles.listPicker}
                         >
                             {renderListPickerItems()}
                         </Picker>

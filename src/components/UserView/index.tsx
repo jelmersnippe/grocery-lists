@@ -45,11 +45,11 @@ const UserView: FunctionComponent<Props> = ({listId, users, editable, removeActi
     return (
         users.length > 0 ?
             <View style={styles.container}>
-                <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+                <View style={styles.header}>
                     <Text style={styles.title}>{t('common:users')}</Text>
                     <TouchableOpacity
                         onPress={() => openUserSearch()}
-                        style={{...theme.iconButton, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, marginLeft: 'auto'}}
+                        style={styles.addUsersButton}
                     >
                         <Icon name={'people'} size={32} color={theme.colors.black}/>
                         <Icon name={'add'} size={26} color={theme.colors.black}/>
