@@ -1,19 +1,19 @@
 import React, {useState, useRef} from 'react';
-import {ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
 import auth from '@react-native-firebase/auth';
-import CustomTextInput from '../../components/CustomTextInput';
 import Button from '../../components/Button';
 import {setUser} from '../../reducers/user/actions';
 import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import theme from '../../config/theme';
+import {Input} from 'react-native-elements';
 
 const Login = ({navigation}: Props): JSX.Element => {
     const dispatch = useDispatch();
-    const passwordRef = useRef<TextInput>(null);
+    const passwordRef = useRef<Input>(null);
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -43,7 +43,7 @@ const Login = ({navigation}: Props): JSX.Element => {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <CustomTextInput
+            <Input
                 label={t('email')}
                 containerStyle={styles.input}
                 value={emailInput}
@@ -55,7 +55,7 @@ const Login = ({navigation}: Props): JSX.Element => {
                 keyboardType={'email-address'}
                 autoCapitalize={'none'}
             />
-            <CustomTextInput
+            <Input
                 label={t('password')}
                 containerStyle={styles.input}
                 value={passwordInput}

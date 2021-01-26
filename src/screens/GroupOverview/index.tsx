@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {capitalize} from '../../utils/capitalize';
 import theme from '../../config/theme';
+import {Card} from 'react-native-elements';
 
 const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -26,14 +27,18 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
 
         for (const [key, value] of Object.entries(groups)) {
             groupItems.push(
-                <TouchableOpacity
-                    key={key}
-                    onPress={() => navigation.navigate('GroupDetails', {id: key})}
-                    style={theme.overviewItem.container}
-                >
-                    <Text>{capitalize(value.name)}</Text>
-                    <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
-                </TouchableOpacity>
+                <Card key={key}>
+                    <Card.Title>{capitalize(value.name)}</Card.Title>
+                    {/*<Card.Divider/>*/}
+                </Card>
+                // <TouchableOpacity
+                //     key={key}
+                //     onPress={() => navigation.navigate('GroupDetails', {id: key})}
+                //     style={theme.overviewItem.container}
+                // >
+                //     <Text>{capitalize(value.name)}</Text>
+                //     <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
+                // </TouchableOpacity>
             );
         }
 

@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useRef, useState} from 'react';
-import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
@@ -8,13 +8,13 @@ import Button from '../../components/Button';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../reducers/user/actions';
 import {useTranslation} from 'react-i18next';
-import CustomTextInput from '../../components/CustomTextInput';
 import {createFirestoreUser} from '../../firestore/userActions';
 import theme from '../../config/theme';
+import {Input} from 'react-native-elements';
 
 const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
-    const emailRef = useRef<TextInput>(null);
-    const passwordRef = useRef<TextInput>(null);
+    const emailRef = useRef<Input>(null);
+    const passwordRef = useRef<Input>(null);
     const [nameInput, setNameInput] = useState('');
     const [nameError, setNameError] = useState('');
 
@@ -69,7 +69,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.input}>
-                <CustomTextInput
+                <Input
                     label={t('displayName')}
                     value={nameInput}
                     onChangeText={setNameInput}
@@ -79,11 +79,12 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     blurOnSubmit={false}
                     keyboardType={'default'}
                     autoCapitalize={'words'}
+                    renderErrorMessage={!!nameError}
+                    errorMessage={nameError}
                 />
-                {!!nameError && <Text style={styles.error}>{nameError}</Text>}
             </View>
             <View style={styles.input}>
-                <CustomTextInput
+                <Input
                     label={t('email')}
                     value={emailInput}
                     onChangeText={setEmailInput}
@@ -94,11 +95,12 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     keyboardType={'email-address'}
                     autoCapitalize={'none'}
                     ref={emailRef}
+                    renderErrorMessage={!!emailError}
+                    errorMessage={emailError}
                 />
-                {!!emailError && <Text style={styles.error}>{emailError}</Text>}
             </View>
             <View style={styles.input}>
-                <CustomTextInput
+                <Input
                     label={t('password')}
                     value={passwordInput}
                     onChangeText={setPasswordInput}
@@ -109,8 +111,9 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
                     keyboardType={'default'}
                     autoCapitalize={'none'}
                     ref={passwordRef}
+                    renderErrorMessage={!!passwordError}
+                    errorMessage={passwordError}
                 />
-                {!!passwordError && <Text style={styles.error}>{passwordError}</Text>}
             </View>
             {!!error && <Text style={styles.error}>{error}</Text>}
             <Button

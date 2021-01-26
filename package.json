@@ -6,8 +6,7 @@
         "android": "react-native run-android",
         "ios": "react-native run-ios",
         "start": "react-native start",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
-        "postinstall": "cd ios && pod install && cd .."
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src"
     },
     "dependencies": {
         "@jelmersnippe/flexible-overlays": "^1.0.4",
@@ -27,6 +26,7 @@
         "react": "16.13.1",
         "react-i18next": "^11.8.5",
         "react-native": "0.63.4",
+        "react-native-elements": "^3.1.0",
         "react-native-gesture-handler": "^1.9.0",
         "react-native-reanimated": "^1.13.2",
         "react-native-safe-area-context": "^3.1.9",

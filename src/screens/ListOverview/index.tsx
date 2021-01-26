@@ -10,6 +10,7 @@ import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
 import {addFirestoreList, subscribeToFirestoreListUpdates, subscribeToFirestoreListUpdatesForGroups} from '../../firestore/listActions';
 import theme from '../../config/theme';
+import {ListItem} from 'react-native-elements';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
@@ -54,14 +55,16 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
         const listItems: Array<JSX.Element> = [];
         for (const [key, value] of Object.entries(lists)) {
             listItems.push(
-                <TouchableOpacity
+                <ListItem
                     key={key}
                     onPress={() => navigation.navigate('ListDetails', {id: key})}
-                    style={theme.overviewItem.container}
+                    bottomDivider
                 >
-                    <Text>{value.name}</Text>
-                    <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
-                </TouchableOpacity>
+                    <ListItem.Content>
+                        <ListItem.Title style={theme.defaultText}>{value.name}</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                </ListItem>
             );
         }
 
