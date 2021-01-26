@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 24,
+        marginBottom: 10
     },
     userContainer: {
         flex: 1

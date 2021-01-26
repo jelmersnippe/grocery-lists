@@ -1,5 +1,5 @@
 export type Props = {
     checked: boolean;
-    onPress: () => void;
+    onPress?: () => void;
     label?: string;
 }

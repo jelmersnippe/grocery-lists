@@ -45,11 +45,9 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                 ]}
                 delayLongPress={500}
                 onLongPress={() => setOpened(true)}
+                onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
             >
-                <Checkbox
-                    checked={item.status !== ItemStatus.TODO}
-                    onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
-                />
+                <Checkbox checked={item.status !== ItemStatus.TODO}/>
                 <View style={styles.quantity}>
                     <Text style={[styles.quantityText, item.status === ItemStatus.DONE && {color: theme.colors.grayDark}]}>{item.quantity}</Text>
                     <Icon name={'close'} size={18} color={item.status === ItemStatus.DONE ? theme.colors.grayDark : theme.colors.black}/>

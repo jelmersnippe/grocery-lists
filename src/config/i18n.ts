@@ -25,11 +25,10 @@ const resources = {
             toLogin: 'Login instead'
         },
         navigation: {
-            Groups: 'Groups',
             Lists: 'Lists',
             Search: 'Search',
             ListOverview: 'Your lists',
-            GroupOverview: 'Your groups',
+            GroupOverview: 'Groups',
             App: 'Back to app',
             Profile: 'Profile',
             Logout: 'Logout'
@@ -46,7 +45,8 @@ const resources = {
         },
         groups: {
             yourGroups: 'Your groups',
-            newGroup: 'New group'
+            newGroup: 'New group',
+            deleteGroup: 'Delete group'
         },
         profile: {
             title: 'Profile',
@@ -96,7 +96,8 @@ const resources = {
         },
         groups: {
             yourGroups: 'Jouw groepen',
-            newGroup: 'Nieuwe group'
+            newGroup: 'Nieuwe group',
+            deleteGroup: 'Groep verwijderen'
         },
         profile: {
             title: 'Profiel',

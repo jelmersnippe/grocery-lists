@@ -11,7 +11,6 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import {getUser} from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
 import {
-    addFirestoreListUsers,
     removeFirestoreListUsers,
     subscribeToFirestoreListItemUpdates,
     updateFirestoreList
@@ -21,10 +20,8 @@ import UserView from '../../components/UserView';
 import {User, UserInfo} from '../../reducers/userCache/types';
 import {capitalize} from '../../utils/capitalize';
 import ListItemView from '../../components/ListItemView';
-import UserSearch from '../../components/UserSearch';
 import theme from '../../config/theme';
 import {Picker} from '@react-native-picker/picker';
-import AddGroupModal from '../../components/ModalContent/AddGroupModal';
 
 enum Tab {
     TASKS = 'Tasks',
@@ -84,17 +81,6 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         dispatch(resetOverlay());
     };
 
-    const openUserSearch = () => {
-        dispatch(setOverlay({
-            wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
-            content: (<UserSearch
-                saveAction={async (usersToAdd) => await addFirestoreListUsers(id, usersToAdd)}
-                initialUsers={users.map((user) => user.uid)}
-            />),
-            animationType: 'slide'
-        }));
-    };
-
     const renderListPickerItems = (): Array<JSX.Element> => {
         const listPickerItems: Array<JSX.Element> = [];
         for (const key of Object.keys(lists)) {
@@ -105,18 +91,6 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         }
 
         return listPickerItems;
-    };
-
-    const openAddGroupModal = () => {
-        dispatch(setOverlay({
-            wrapperStyle: {
-                maxHeight: '60%'
-            },
-            content: <AddGroupModal
-                initialUsers={selectedList?.users ?? []}
-                listId={id}
-            />
-        }));
     };
 
     return (
@@ -161,7 +135,6 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                     </Text>
                     }
                 </View>
-
                 <View style={styles.tabContainer}>
                     <TouchableOpacity
                         onPress={() => setCurrentTab(Tab.TASKS)}
@@ -184,35 +157,17 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                         ]}>{t('common:users')}</Text>
                     </TouchableOpacity>
                 </View>
-
                 {
                     currentTab === Tab.TASKS ?
                         <ListItemView listId={id} items={selectedList?.items}/>
                         :
-                        <>
-                            <TouchableOpacity
-                                onPress={() => openAddGroupModal()}
-                                style={theme.iconButton}
-                            >
-                                <Icon name={'add'} size={32} color={theme.colors.black}/>
-                            </TouchableOpacity>
-                            <UserView
-                                users={users}
-                                editable={listCreatedByCurrentUser}
-                                removeAction={(userId) => removeFirestoreListUsers(id, [userId])}
-                            />
-                            {
-                                listCreatedByCurrentUser &&
-                                <TouchableOpacity
-                                    style={theme.floatingActionButton}
-                                    onPress={() => openUserSearch()}
-                                >
-                                    <Icon name={'search'} size={32} color={theme.colors.white}/>
-                                </TouchableOpacity>
-                            }
-                        </>
+                        <UserView
+                            listId={id}
+                            users={users}
+                            editable={listCreatedByCurrentUser}
+                            removeAction={(userId) => removeFirestoreListUsers(id, [userId])}
+                        />
                 }
-
             </View>
             : <FullSizeLoader size={100} color={theme.colors.black}/>
     );

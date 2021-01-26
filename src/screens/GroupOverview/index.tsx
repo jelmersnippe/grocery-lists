@@ -1,20 +1,31 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {addFirestoreGroup, subscribeToFirestoreGroupUpdates} from '../../firestore/groupActions';
+import {
+    addFirestoreGroup,
+    addFirestoreGroupUsers, deleteFirestoreGroup,
+    removeFirestoreGroupUsers,
+    subscribeToFirestoreGroupUpdates
+} from '../../firestore/groupActions';
 import {resetOverlay, setOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import InputModal from '../../components/ModalContent/InputModal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {capitalize} from '../../utils/capitalize';
 import theme from '../../config/theme';
-import {Card} from 'react-native-elements';
+import {getMultipleUsers} from '../../firestore/userActions';
+import {Button, Card} from 'react-native-elements';
+import UserSearch from '../../components/UserSearch';
+import {User} from '../../reducers/userCache/types';
 
-const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
+const GroupOverview: FunctionComponent<Props> = ({}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
+    const [groupUsers, setGroupUsers] = useState<{ [key: string]: Array<User> }>({});
+    const [expandedGroup, setExpandedGroup] = useState<string | undefined>(undefined);
+    const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
     const {dispatch} = useOverlayData();
     const {t} = useTranslation('groups');
 
@@ -22,23 +33,83 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
         return subscribeToFirestoreGroupUpdates();
     }, []);
 
+    useEffect(() => {
+        (async () => {
+            const newGroupUsers: { [key: string]: Array<User> } = {};
+            for (const group in groups) {
+                newGroupUsers[group] = await getMultipleUsers(groups[group].users);
+            }
+            setGroupUsers(newGroupUsers);
+        })();
+    }, [groups]);
+
+    const openUserSearch = (groupId: string) => {
+        dispatch(setOverlay({
+            wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
+            content: (<UserSearch
+                saveAction={async (usersToAdd) => await addFirestoreGroupUsers(groupId, usersToAdd)}
+                initialUsers={groups[groupId]?.users ?? []}
+            />),
+            animationType: 'slide'
+        }));
+    };
+
     const renderGroups = (): Array<JSX.Element> => {
         const groupItems: Array<JSX.Element> = [];
 
         for (const [key, value] of Object.entries(groups)) {
+            const createdByUser = currentUserId === groups[key].creatorUid;
             groupItems.push(
-                <Card key={key}>
-                    <Card.Title>{capitalize(value.name)}</Card.Title>
-                    {/*<Card.Divider/>*/}
+                <Card>
+                    <TouchableOpacity
+                        key={key}
+                        onPress={ () => setExpandedGroup(expandedGroup !== key ? key : undefined)}
+                        style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
+                    >
+                        <Text style={{fontWeight: 'bold'}}>{capitalize(value.name)}</Text>
+                        {
+                            createdByUser &&
+                            <TouchableOpacity
+                                style={{...theme.iconButton, flexDirection: 'row', alignItems: 'center'}}
+                                onPress={() => openUserSearch(key)}
+                            >
+                                <Icon name={'people'} size={32} color={theme.colors.black}/>
+                                <Icon name={'add'} size={26} color={theme.colors.black}/>
+                            </TouchableOpacity>
+                        }
+                    </TouchableOpacity>
+                    {
+                        (expandedGroup === key) &&
+                        <>
+                            {groupUsers[key]?.map((user) => {
+                                return (
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <Text>{capitalize(user.name)}</Text>
+                                        {(createdByUser && user.uid !== currentUserId) &&
+                                        <TouchableOpacity
+                                            onPress={() => removeFirestoreGroupUsers(key, [user.uid])}
+                                            style={theme.iconButton}
+                                        >
+                                            <Icon name={'delete'} color={theme.colors.red} size={24}/>
+                                        </TouchableOpacity>}
+                                    </View>
+                                );
+                            })}
+                            {createdByUser &&
+                                <Button
+                                    title={t('deleteGroup')}
+                                    onPress={() => deleteFirestoreGroup(key)}
+                                    icon={<Icon name={'delete'} color={theme.colors.red} size={24}/>}
+                                    type={'outline'}
+                                    iconRight={true}
+                                    containerStyle={{marginLeft: 'auto', marginTop: 15}}
+                                    buttonStyle={{borderColor: theme.colors.red, paddingHorizontal: 10}}
+                                    titleStyle={{color: theme.colors.red}}
+                                />
+                            }
+                        </>
+                    }
                 </Card>
-                // <TouchableOpacity
-                //     key={key}
-                //     onPress={() => navigation.navigate('GroupDetails', {id: key})}
-                //     style={theme.overviewItem.container}
-                // >
-                //     <Text>{capitalize(value.name)}</Text>
-                //     <Icon style={theme.overviewItem.icon} name={'keyboard-arrow-right'} size={24} color={theme.colors.black}/>
-                // </TouchableOpacity>
             );
         }
 
@@ -54,7 +125,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
         const groupId = await addFirestoreGroup(name);
         dispatch(resetOverlay());
         if (groupId) {
-            navigation.navigate('GroupDetails', {id: groupId});
+            setExpandedGroup(groupId);
         }
     };
 

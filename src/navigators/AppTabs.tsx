@@ -1,15 +1,15 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ListStack from './ListStack';
-import GroupStack from './GroupStack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
 import Text from '../components/Text';
 import theme from '../config/theme';
+import GroupOverview from '../screens/GroupOverview';
 
 export type AppTabsParamList = {
     Lists: undefined;
-    Groups: undefined;
+    GroupOverview: undefined;
 }
 
 const Tabs = createBottomTabNavigator<AppTabsParamList>();
@@ -24,7 +24,7 @@ const AppTabs = () => {
                 tabBarIcon: ({focused}) => {
                     const color = focused ? theme.colors.blue : theme.colors.grayDark;
                     switch (route.name) {
-                        case 'Groups':
+                        case 'GroupOverview':
                             return <Icon name={'people'} size={30} color={color}/>;
                         case 'Lists':
                             return <Icon name={'list'} size={30} color={color}/>;
@@ -36,7 +36,7 @@ const AppTabs = () => {
                 }
             })}
         >
-            <Tabs.Screen name='Groups' component={GroupStack}/>
+            <Tabs.Screen name='GroupOverview' component={GroupOverview}/>
             <Tabs.Screen name='Lists' component={ListStack}/>
         </Tabs.Navigator>
     );

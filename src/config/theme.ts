@@ -37,7 +37,7 @@ const pageHeader: ViewStyle = {
 };
 
 const rowContainer: ViewStyle = {
-    paddingVertical: 5,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.primaryDark,

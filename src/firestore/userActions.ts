@@ -15,14 +15,17 @@ export const getUser = async (uid: string): Promise<UserInfo | undefined> => {
     return getFirestoreUserByUid(uid);
 };
 
-export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<UserInfo>> => {
-    const foundUsers: Array<UserInfo> = [];
+export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<User>> => {
+    const foundUsers: Array<User> = [];
     const uidsToFetch: Array<string> = [];
 
     for (const userUid of userUids) {
         const cachedUser = getUserFromCache(userUid);
         if (cachedUser) {
-            foundUsers.push(cachedUser);
+            foundUsers.push({
+                ...cachedUser,
+                uid: userUid
+            });
         } else {
             uidsToFetch.push(userUid);
         }
@@ -32,7 +35,8 @@ export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<U
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as FirestoreUser;
-                    const foundUser: UserInfo = {
+                    const foundUser: User = {
+                        uid: doc.id,
                         name: data.name
                     };
                     store.dispatch(addCachedUser({uid: doc.id, user: foundUser}));
