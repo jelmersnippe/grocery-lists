@@ -3,7 +3,6 @@ import {View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
-import CustomTextInput from '../../components/CustomTextInput';
 import Button from '../../components/Button';
 import {setUser} from '../../reducers/user/actions';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,6 +13,7 @@ import theme from '../../config/theme';
 import {Picker} from '@react-native-picker/picker';
 import {LANGUAGES} from '../../reducers/settings/types';
 import {setLanguage} from '../../reducers/settings/actions';
+import {Input} from 'react-native-elements';
 
 const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Profile: FunctionComponent<Props> = ({}) => {
     const {t} = useTranslation('profile');
 
     const updateProfile = async () => {
-        if (!user?.uid) {
+        if (!user?.uid || nameInput === '') {
             return;
         }
 
@@ -48,7 +48,7 @@ const Profile: FunctionComponent<Props> = ({}) => {
     return (
         <View style={styles.container}>
             <Text style={theme.pageTitle}>{t('title')}</Text>
-            <CustomTextInput
+            <Input
                 label={t('displayName')}
                 containerStyle={styles.input}
                 value={nameInput}
