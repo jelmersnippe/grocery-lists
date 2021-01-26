@@ -22,7 +22,7 @@ const resources = {
             toCreateAccount: 'Create an account instead',
             displayName: 'Display name',
             createAccount: 'Create account',
-            toLogin: 'Login instead'
+            toLogin: 'Sign in instead'
         },
         navigation: {
             Lists: 'Lists',
@@ -31,7 +31,9 @@ const resources = {
             GroupOverview: 'Groups',
             App: 'Back to app',
             Profile: 'Profile',
-            Logout: 'Logout'
+            Logout: 'Sign out',
+            Login: 'Sign in',
+            CreateAccount: 'Create account'
         },
         lists: {
             yourLists: 'Your lists',
@@ -83,7 +85,9 @@ const resources = {
             GroupOverview: 'Jouw groepen',
             App: 'Terug naar de app',
             Profile: 'Profiel',
-            Logout: 'Uitloggen'
+            Logout: 'Uitloggen',
+            Login: 'Inloggen',
+            CreateAccount: 'Account aanmaken'
         },
         lists: {
             yourLists: 'Jouw lijsten',

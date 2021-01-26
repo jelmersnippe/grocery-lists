@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.background
     },
     input: {
+        width: '80%',
+        marginVertical: 10
+    },
+    button: {
         width: '60%',
         marginVertical: 10
     },

@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Text from '../../components/Text';
 import {Props} from './props';
 import styles from './styles';
@@ -13,9 +13,10 @@ import theme from '../../config/theme';
 import {Picker} from '@react-native-picker/picker';
 import {LANGUAGES} from '../../reducers/settings/types';
 import {setLanguage} from '../../reducers/settings/actions';
-import {Input} from 'react-native-elements';
+import {Header, Input} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const Profile: FunctionComponent<Props> = ({}) => {
+const Profile: FunctionComponent<Props> = ({navigation}) => {
     const dispatch = useDispatch();
     const user = useSelector((rootState: RootState) => rootState.user);
     const settings = useSelector((rootState: RootState) => rootState.settings);
@@ -46,32 +47,46 @@ const Profile: FunctionComponent<Props> = ({}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={theme.pageTitle}>{t('title')}</Text>
-            <Input
-                label={t('displayName')}
-                containerStyle={styles.input}
-                value={nameInput}
-                onChangeText={setNameInput}
-                placeholder={t('displayName')}
-                onSubmitEditing={() => updateProfile()}
-                returnKeyType={'go'}
-                autoCapitalize={'words'}
+        <>
+            <Header
+                leftComponent={
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Icon name={'arrow-back'} color={theme.colors.white} size={26} />
+                    </TouchableOpacity>
+                }
+                centerComponent={<Text style={theme.headerText}>{t('title')}</Text>}
+                rightComponent={
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                        <Icon name={'settings'} color={theme.colors.white} size={26} />
+                    </TouchableOpacity>
+                }
             />
-            <Button
-                onPress={() => updateProfile()}
-                text={t('updateProfile')}
-                containerStyle={styles.input}
-            />
-            <Picker
-                selectedValue={settings.language}
-                onValueChange={(itemValue) => dispatch(setLanguage(itemValue.toString()))}
-                mode={'dropdown'}
-                style={{width: '60%'}}
-            >
-                {renderPickerItems()}
-            </Picker>
-        </View>
+            <View style={styles.container}>
+                <Input
+                    label={t('displayName')}
+                    containerStyle={styles.input}
+                    value={nameInput}
+                    onChangeText={setNameInput}
+                    placeholder={t('displayName')}
+                    onSubmitEditing={() => updateProfile()}
+                    returnKeyType={'go'}
+                    autoCapitalize={'words'}
+                />
+                <Button
+                    onPress={() => updateProfile()}
+                    text={t('updateProfile')}
+                    containerStyle={styles.input}
+                />
+                <Picker
+                    selectedValue={settings.language}
+                    onValueChange={(itemValue) => dispatch(setLanguage(itemValue.toString()))}
+                    mode={'dropdown'}
+                    style={styles.input}
+                >
+                    {renderPickerItems()}
+                </Picker>
+            </View>
+        </>
     );
 };
 

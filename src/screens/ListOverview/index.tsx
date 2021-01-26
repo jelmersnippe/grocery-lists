@@ -1,6 +1,5 @@
 import React, {FunctionComponent, useEffect} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
-import Text from '../../components/Text';
 import {Props} from './props';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -70,17 +69,12 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <View style={theme.mainContainer}>
-            <View style={theme.pageHeader}>
-                <Text style={theme.pageTitle}>
-                    {t('yourLists')}
-                </Text>
-                <TouchableOpacity
-                    onPress={() => openInputModal()}
-                    style={theme.iconButton}
-                >
-                    <Icon name={'add'} size={40} color={theme.colors.black}/>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+                onPress={() => openInputModal()}
+                style={theme.iconButton}
+            >
+                <Icon name={'add'} size={40} color={theme.colors.black}/>
+            </TouchableOpacity>
             <ScrollView
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}

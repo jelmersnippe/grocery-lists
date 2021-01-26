@@ -42,6 +42,7 @@ const Login = ({navigation}: Props): JSX.Element => {
             style={{width: '100%'}}
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={'handled'}
         >
             <Input
                 label={t('email')}
@@ -71,7 +72,7 @@ const Login = ({navigation}: Props): JSX.Element => {
             <Button
                 onPress={() => login(emailInput, passwordInput)}
                 text={t('login')}
-                containerStyle={styles.input}
+                containerStyle={styles.button}
             />
             <TouchableOpacity
                 style={theme.buttons.tertiary.container}

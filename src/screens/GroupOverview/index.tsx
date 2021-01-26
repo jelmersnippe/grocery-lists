@@ -17,12 +17,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {capitalize} from '../../utils/capitalize';
 import theme from '../../config/theme';
 import {getMultipleUsers} from '../../firestore/userActions';
-import {Button, Card} from 'react-native-elements';
+import {Button, Card, Header} from 'react-native-elements';
 import UserSearch from '../../components/UserSearch';
 import {User} from '../../reducers/userCache/types';
 import styles from './styles';
 
-const GroupOverview: FunctionComponent<Props> = ({}) => {
+const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
     const [groupUsers, setGroupUsers] = useState<{ [key: string]: Array<User> }>({});
     const [expandedGroup, setExpandedGroup] = useState<string | undefined>(undefined);
@@ -61,9 +61,8 @@ const GroupOverview: FunctionComponent<Props> = ({}) => {
         for (const [key, value] of Object.entries(groups)) {
             const createdByUser = currentUserId === groups[key].creatorUid;
             groupItems.push(
-                <Card>
+                <Card key={key}>
                     <TouchableOpacity
-                        key={key}
                         onPress={ () => setExpandedGroup(expandedGroup !== key ? key : undefined)}
                         style={styles.groupCard}
                     >
@@ -144,25 +143,30 @@ const GroupOverview: FunctionComponent<Props> = ({}) => {
     };
 
     return (
-        <View style={theme.mainContainer}>
-            <View style={theme.pageHeader}>
-                <Text style={theme.pageTitle}>
-                    {t('yourGroups')}
-                </Text>
+        <>
+            <Header
+                centerComponent={<Text style={theme.headerText}>{t('yourGroups')}</Text>}
+                rightComponent={
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                        <Icon name={'settings'} color={theme.colors.white} size={26} />
+                    </TouchableOpacity>
+                }
+            />
+            <View style={theme.mainContainer}>
                 <TouchableOpacity
                     onPress={() => openInputModal()}
                     style={theme.iconButton}
                 >
                     <Icon name={'add'} size={40} color={theme.colors.black}/>
                 </TouchableOpacity>
+                <ScrollView
+                    alwaysBounceVertical={false}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {renderGroups()}
+                </ScrollView>
             </View>
-            <ScrollView
-                alwaysBounceVertical={false}
-                showsVerticalScrollIndicator={false}
-            >
-                {renderGroups()}
-            </ScrollView>
-        </View>
+        </>
     );
 };
 

@@ -17,7 +17,15 @@ const defaultFontFamily = Platform.OS === 'android' ? 'raleway' : 'Raleway';
 const defaultText: TextStyle = {
     fontFamily: defaultFontFamily,
     fontWeight: 'normal',
-    fontSize: 18
+    fontSize: 18,
+    color: colors.black
+};
+
+const headerText: TextStyle = {
+    ...defaultText,
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: colors.white
 };
 
 const mainContainer: ViewStyle = {
@@ -156,6 +164,7 @@ const buttons: MainButtonsStyle = {
 const theme = {
     colors,
     defaultText,
+    headerText,
     mainContainer,
     pageHeader,
     rowContainer,

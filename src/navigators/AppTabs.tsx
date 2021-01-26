@@ -36,7 +36,10 @@ const AppTabs = () => {
                 }
             })}
         >
-            <Tabs.Screen name='GroupOverview' component={GroupOverview}/>
+            <Tabs.Screen
+                name='GroupOverview'
+                component={GroupOverview}
+            />
             <Tabs.Screen name='Lists' component={ListStack}/>
         </Tabs.Navigator>
     );

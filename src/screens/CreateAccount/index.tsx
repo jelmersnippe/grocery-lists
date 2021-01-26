@@ -67,6 +67,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%'}}
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={'handled'}
         >
             <View style={styles.input}>
                 <Input
@@ -119,7 +120,7 @@ const CreateAccount: FunctionComponent<Props> = ({navigation}) => {
             <Button
                 onPress={() => createAccount(emailInput, passwordInput)}
                 text={t('createAccount')}
-                containerStyle={styles.input}
+                containerStyle={styles.button}
             />
             <TouchableOpacity
                 style={theme.buttons.tertiary.container}
