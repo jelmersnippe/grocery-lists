@@ -17,12 +17,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {capitalize} from '../../utils/capitalize';
 import theme from '../../config/theme';
 import {getMultipleUsers} from '../../firestore/userActions';
-import {Button, Card, Header} from 'react-native-elements';
+import {Button, Card} from 'react-native-elements';
 import UserSearch from '../../components/UserSearch';
 import {User} from '../../reducers/userCache/types';
 import styles from './styles';
+import CustomHeader from '../../components/Header';
 
-const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
+const GroupOverview: FunctionComponent<Props> = ({}) => {
     const groups = useSelector((rootState: RootState) => rootState.groups);
     const [groupUsers, setGroupUsers] = useState<{ [key: string]: Array<User> }>({});
     const [expandedGroup, setExpandedGroup] = useState<string | undefined>(undefined);
@@ -144,14 +145,7 @@ const GroupOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <>
-            <Header
-                centerComponent={<Text style={theme.headerText}>{t('yourGroups')}</Text>}
-                rightComponent={
-                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                        <Icon name={'settings'} color={theme.colors.white} size={26} />
-                    </TouchableOpacity>
-                }
-            />
+            <CustomHeader title={t('yourGroups')}/>
             <View style={theme.mainContainer}>
                 <ScrollView
                     alwaysBounceVertical={false}

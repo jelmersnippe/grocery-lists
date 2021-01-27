@@ -1,6 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import Text from '../../components/Text';
+import {View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import Button from '../../components/Button';
@@ -9,14 +8,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {useTranslation} from 'react-i18next';
 import {updateFirestoreUser} from '../../firestore/userActions';
-import theme from '../../config/theme';
 import {Picker} from '@react-native-picker/picker';
 import {LANGUAGES} from '../../reducers/settings/types';
 import {setLanguage} from '../../reducers/settings/actions';
-import {Header, Input} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Input} from 'react-native-elements';
+import CustomHeader from '../../components/Header';
 
-const Profile: FunctionComponent<Props> = ({navigation}) => {
+const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
     const user = useSelector((rootState: RootState) => rootState.user);
     const settings = useSelector((rootState: RootState) => rootState.settings);
@@ -48,19 +46,7 @@ const Profile: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <>
-            <Header
-                leftComponent={
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Icon name={'arrow-back'} color={theme.colors.white} size={26} />
-                    </TouchableOpacity>
-                }
-                centerComponent={<Text style={theme.headerText}>{t('title')}</Text>}
-                rightComponent={
-                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                        <Icon name={'settings'} color={theme.colors.white} size={26} />
-                    </TouchableOpacity>
-                }
-            />
+            <CustomHeader title={t('title')} showBackButton={true}/>
             <View style={styles.container}>
                 <Input
                     label={t('displayName')}

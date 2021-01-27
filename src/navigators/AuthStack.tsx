@@ -2,12 +2,8 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login';
 import CreateAccount from '../screens/CreateAccount';
-import {Header} from 'react-native-elements';
-import {TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import theme from '../config/theme';
-import Text from '../components/Text';
 import {useTranslation} from 'react-i18next';
+import CustomHeader from '../components/Header';
 
 export type AuthStackParamList = {
     Login: undefined;
@@ -22,16 +18,9 @@ const AuthStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{
-                header: ({scene, previous, navigation}) => {
+                header: ({scene, previous}) => {
                     return (
-                        <Header
-                            leftComponent={previous && (
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <Icon name={'arrow-back'} color={theme.colors.white} size={26}/>
-                                </TouchableOpacity>
-                            )}
-                            centerComponent={<Text style={theme.headerText}>{t(scene.route.name)}</Text>}
-                        />
+                        <CustomHeader title={t(scene.route.name)} showBackButton={!!previous}/>
                     );
                 }
             }}
