@@ -1,5 +1,4 @@
 import {ScrollView, TouchableOpacity} from 'react-native';
-import Text from '../Text';
 import styles from './styles';
 import SearchBar from './SearchBar';
 import Button from '../Button';
@@ -22,6 +21,10 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
     };
 
     const searchForUsers = async (searchString: string) => {
+        if (searchString === '') {
+            setUserResults([]);
+            return;
+        }
         const foundUsers = await searchFirestoreUsers(searchString);
         setUserResults(foundUsers);
     };
@@ -53,23 +56,17 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
 
     return (
         <>
-            {
-                userResults.length > 0 &&
-                <>
-                    <Text>Found users</Text>
-                    <ScrollView
-                        style={styles.searchResultContainer}
-                        alwaysBounceVertical={false}
-                    >
-                        <TouchableOpacity activeOpacity={1}>
-                            {
-                                userResults.map((user) => renderUserItem(user))
-                            }
-                        </TouchableOpacity>
-                    </ScrollView>
-                </>
-            }
             <SearchBar searchAction={(searchInput) => searchForUsers(searchInput)}/>
+            <ScrollView
+                style={styles.searchResultContainer}
+                alwaysBounceVertical={false}
+            >
+                <TouchableOpacity activeOpacity={1}>
+                    {
+                        userResults.map((user) => renderUserItem(user))
+                    }
+                </TouchableOpacity>
+            </ScrollView>
             <Button
                 text={'Save'}
                 onPress={saveUserChanges}

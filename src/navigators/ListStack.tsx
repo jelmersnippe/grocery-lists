@@ -28,7 +28,7 @@ const ListStack: FunctionComponent<Props> = ({}) => {
             screenOptions={{
                 header: ({scene, previous}) => {
                     return (
-                        <CustomHeader title={t(scene.route.name)} showBackButton={!!previous}/>
+                        <CustomHeader title={scene.route.name === 'ListOverview' ? t(scene.route.name) : ''} showBackButton={!!previous}/>
                     );
                 }
             }}
