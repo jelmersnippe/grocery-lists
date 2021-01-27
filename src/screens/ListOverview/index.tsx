@@ -69,18 +69,17 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <View style={theme.mainContainer}>
-            <TouchableOpacity
-                onPress={() => openInputModal()}
-                style={theme.iconButton}
-            >
-                <Icon name={'add'} size={40} color={theme.colors.black}/>
-            </TouchableOpacity>
             <ScrollView
                 alwaysBounceVertical={false}
-                showsVerticalScrollIndicator={false}
             >
                 {renderLists()}
             </ScrollView>
+            <TouchableOpacity
+                onPress={() => openInputModal()}
+                style={theme.floatingActionButton}
+            >
+                <Icon name={'add'} size={40} color={theme.colors.black}/>
+            </TouchableOpacity>
         </View>
     );
 };
