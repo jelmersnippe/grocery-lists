@@ -126,7 +126,7 @@ export const updateFirestoreList = (listId: string, updatedName: string): void =
         .catch((error) => console.log('error', error));
 };
 
-export const removeFirestoreList = async (listId: string): Promise<void> => {
+export const deleteFirestoreList = async (listId: string): Promise<void> => {
     const listDocument = await firestore().collection('lists').doc(listId).get();
     const listItemsQuerySnapshot = await firestore().collection(`lists/${listId}/items`).get();
 

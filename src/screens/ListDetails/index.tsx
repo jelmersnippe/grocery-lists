@@ -11,6 +11,7 @@ import FullSizeLoader from '../../components/FullSizeLoader';
 import {getUser} from '../../firestore/userActions';
 import {useTranslation} from 'react-i18next';
 import {
+    deleteFirestoreList,
     removeFirestoreListUsers,
     subscribeToFirestoreListItemUpdates,
     updateFirestoreList
@@ -28,7 +29,7 @@ enum Tab {
     USERS = 'USERS'
 }
 
-const ListDetails: FunctionComponent<Props> = ({route}) => {
+const ListDetails: FunctionComponent<Props> = ({navigation, route}) => {
     const {dispatch} = useOverlayData();
     const [id, setId] = useState(route.params.id);
     const currentUserId = useSelector((rootState: RootState) => rootState.user.uid);
@@ -39,7 +40,6 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
     const [users, setUsers] = useState<Array<User>>([]);
 
     const [currentTab, setCurrentTab] = useState<Tab>(Tab.TASKS);
-
     const {t} = useTranslation('lists');
 
     useEffect(() => {
@@ -81,6 +81,28 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
         dispatch(resetOverlay());
     };
 
+    const deleteList = () => {
+        dispatch(setOverlay({
+            title: t('deleteListTitle', {listName: selectedList?.name}),
+            text: t('deleteListText'),
+            buttonStyle: {marginHorizontal: 10},
+            buttons: [
+                {
+                    text: t('common:cancel')
+                },
+                {
+                    text: t('common:delete'),
+                    style: {borderColor: theme.colors.red},
+                    textStyle: {color: theme.colors.red},
+                    onPress: async () => {
+                        await deleteFirestoreList(id);
+                        navigation.goBack();
+                    }
+                }
+            ]
+        }));
+    };
+
     const renderListPickerItems = (): Array<JSX.Element> => {
         const listPickerItems: Array<JSX.Element> = [];
         for (const key of Object.keys(lists)) {
@@ -115,6 +137,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                                         onSubmit={async (input: string) => updateList(id, input)}
                                         buttonLabel={t('common:update')}
                                         placeholder={t('newItem')}
+                                        deleteAction={deleteList}
                                     />
                                 }));
                             }}
@@ -125,11 +148,11 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                         }
                     </View>
                     {creator &&
-                    <Text>
-                        {t('createdBy', {
-                            creator: capitalize(creator.name)
-                        })}
-                    </Text>
+                        <Text>
+                            {t('createdBy', {
+                                creator: capitalize(creator.name)
+                            })}
+                        </Text>
                     }
                 </View>
                 <View style={styles.tabContainer}>

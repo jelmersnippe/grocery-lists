@@ -8,7 +8,10 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 10,
         paddingHorizontal: 10
-    }
+    },
+    deleteButtonContainer: {marginLeft: 'auto', marginBottom: 10},
+    deleteButtonButton: {borderColor: theme.colors.red, paddingHorizontal: 10},
+    deleteButtonTitle: {color: theme.colors.red}
 });
 
 export default styles;

@@ -8,11 +8,14 @@ import {FirestoreSearchResult, FirestoreUserUid} from '../../firestore/types';
 import SearchResultItem from './SearchResultItem';
 import {resetOverlay, useOverlayData} from '@jelmersnippe/flexible-overlays';
 import {Props} from './props';
+import theme from '../../config/theme';
+import {useTranslation} from 'react-i18next';
 
 const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
     const [userResults, setUserResults] = useState<Array<FirestoreSearchResult>>([]);
     const [usersToAdd, setUsersToAdd] = useState<Array<FirestoreUserUid>>([]);
     const {dispatch} = useOverlayData();
+    const {t} = useTranslation();
 
     const saveUserChanges = async () => {
         await saveAction(usersToAdd);
@@ -40,7 +43,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
                 editable={!initialUsers.includes(user.uid)}
                 action={(uid: string) => updateUsersToAdd(uid)}
                 containerStyle={{
-                    backgroundColor: toBeAdded ? 'lime' : 'lightgray'
+                    backgroundColor: toBeAdded ? theme.colors.green : theme.colors.gray
                 }}
             />
         );
@@ -68,7 +71,7 @@ const UserSearch: FunctionComponent<Props> = ({initialUsers, saveAction}) => {
                 </TouchableOpacity>
             </ScrollView>
             <Button
-                text={'Save'}
+                text={t('common:save')}
                 onPress={saveUserChanges}
             />
         </>

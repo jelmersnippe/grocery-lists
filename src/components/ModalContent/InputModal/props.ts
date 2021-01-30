@@ -3,4 +3,5 @@ export interface Props {
     buttonLabel: string;
     placeholder?: string;
     onSubmit: (input: string) => void;
+    deleteAction?: () => void;
 }

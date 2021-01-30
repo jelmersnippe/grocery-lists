@@ -10,6 +10,8 @@ import {useTranslation} from 'react-i18next';
 import {addFirestoreList, subscribeToFirestoreListUpdates} from '../../firestore/listActions';
 import theme from '../../config/theme';
 import {ListItem} from 'react-native-elements';
+import Text from '../../components/Text';
+import styles from './styles';
 
 const ListOverview: FunctionComponent<Props> = ({navigation}) => {
     const lists = useSelector((rootState: RootState) => rootState.lists);
@@ -66,11 +68,18 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
 
     return (
         <View style={theme.mainContainer}>
-            <ScrollView
-                alwaysBounceVertical={false}
-            >
-                {renderLists()}
-            </ScrollView>
+            {
+                Object.entries(lists).length > 0 ?
+                    <ScrollView
+                        alwaysBounceVertical={false}
+                    >
+                        {renderLists()}
+                    </ScrollView>
+                    :
+                    <Text style={styles.noListsText}>
+                        {t('noLists')}
+                    </Text>
+            }
             <TouchableOpacity
                 onPress={() => openInputModal()}
                 style={theme.floatingActionButton}

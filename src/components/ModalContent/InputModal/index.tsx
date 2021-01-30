@@ -2,11 +2,16 @@ import {TextInput} from 'react-native';
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {Props} from './props';
 import styles from './styles';
-import Button from '../../Button';
+import CustomButton from '../../Button';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../../config/theme';
+import {Button} from 'react-native-elements';
+import {useTranslation} from 'react-i18next';
 
-const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, placeholder, onSubmit}) => {
+const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, placeholder, onSubmit, deleteAction}) => {
     const inputRef = useRef<TextInput>(null);
     const [input, setInput] = useState(defaultValue ?? '');
+    const {t} = useTranslation('lists');
 
     useEffect(() => {
         setTimeout(() => {
@@ -16,6 +21,19 @@ const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, placeh
 
     return (
         <>
+            {
+                deleteAction &&
+                <Button
+                    title={t('common:delete')}
+                    onPress={() => deleteAction()}
+                    icon={<Icon name={'delete'} color={theme.colors.red} size={24}/>}
+                    type={'outline'}
+                    iconRight={true}
+                    containerStyle={styles.deleteButtonContainer}
+                    buttonStyle={styles.deleteButtonButton}
+                    titleStyle={styles.deleteButtonTitle}
+                />
+            }
             <TextInput
                 value={input}
                 onChangeText={(value) => setInput(value)}
@@ -25,7 +43,7 @@ const InputModal: FunctionComponent<Props> = ({defaultValue, buttonLabel, placeh
                 placeholder={placeholder ?? ''}
                 ref={inputRef}
             />
-            <Button
+            <CustomButton
                 text={buttonLabel}
                 onPress={() => onSubmit(input)}
             />

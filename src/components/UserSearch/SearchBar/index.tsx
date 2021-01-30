@@ -5,15 +5,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, {FunctionComponent, useState} from 'react';
 import {Props} from './props';
 import theme from '../../../config/theme';
+import {useTranslation} from 'react-i18next';
 
 const SearchBar: FunctionComponent<Props> = ({searchAction}) => {
     const [searchInput, setSearchInput] = useState('');
+    const {t} = useTranslation();
 
     return (
         <View style={styles.searchContainer}>
             <CustomTextInput
                 containerStyle={styles.searchInputContainer}
-                placeholder={'Username'}
+                placeholder={t('common:username')}
                 value={searchInput}
                 onChangeText={(input) => setSearchInput(input)}
                 onSubmitEditing={() => searchAction(searchInput)}

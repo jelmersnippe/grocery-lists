@@ -13,7 +13,8 @@ const resources = {
             delete: 'Delete',
             add: 'Add',
             users: 'Users',
-            you: 'You'
+            you: 'You',
+            username: 'Username'
         },
         auth: {
             email: 'Email',
@@ -43,7 +44,10 @@ const resources = {
             itemName: 'Item',
             deleteListTitle: 'Delete \'{{listName}}\'',
             deleteListText: 'Are you sure you want to delete this list?',
-            items: 'Items'
+            items: 'Items',
+            emptyFields: 'You missed a field or two..',
+            successfullyAdded: 'Added {{item}} x{{qty}}',
+            noLists: 'No lists yet.\nStart by adding one!'
         },
         groups: {
             yourGroups: 'Your groups',
@@ -67,7 +71,8 @@ const resources = {
             delete: 'Verwijderen',
             add: 'Toevoegen',
             users: 'Gebruikers',
-            you: 'Jij'
+            you: 'Jij',
+            username: 'Naam'
         },
         auth: {
             email: 'Email',
@@ -97,7 +102,10 @@ const resources = {
             itemName: 'Product',
             deleteListTitle: 'Verwijder \'{{listName}}\'',
             deleteListText: 'Weet je zeker dat je deze lijst wilt verwijderen?',
-            items: 'Producten'
+            items: 'Producten',
+            emptyFields: 'Je bent velden vergeten..',
+            successfullyAdded: '{{item}} x{{qty}} toegevoegd',
+            noLists: 'Je hebt nog geen lijsten.\nBegin door er eentje toe te voegen!'
         },
         groups: {
             yourGroups: 'Jouw groepen',

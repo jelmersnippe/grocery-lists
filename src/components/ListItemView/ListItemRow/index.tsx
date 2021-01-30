@@ -37,7 +37,7 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
 
     const toggleTodo = async () => {
         await updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO});
-    }
+    };
 
     return (
         <View style={[styles.wrapper, item.status === ItemStatus.DONE && {opacity: 0.6}]}>

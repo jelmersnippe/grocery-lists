@@ -5,7 +5,7 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../config/theme';
 
-const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
+const QtyInput: FunctionComponent<Props> = ({onChangeValue, borderColor}) => {
     const [qty, setQty] = useState('0');
 
     const decrementQty = () => {
@@ -29,7 +29,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, !!borderColor && {borderColor: borderColor}]}>
             <TouchableOpacity
                 style={[theme.iconButton, styles.button]}
                 onPress={() => incrementQty()}
@@ -40,7 +40,7 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
             <TextInput
                 keyboardType={'numeric'}
                 placeholder={'Qty'}
-                style={styles.input}
+                style={[styles.input, !!borderColor && {borderColor: borderColor}]}
                 value={qty}
                 onChangeText={(value) => {
                     setQty(value);
