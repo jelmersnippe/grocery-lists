@@ -33,7 +33,7 @@ const UserView: FunctionComponent<Props> = ({listId, users, editable, removeActi
 
     const openUserSearch = () => {
         dispatch(setOverlay({
-            wrapperStyle: {height: '80%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
+            wrapperStyle: {height: '80%', width: '100%', marginTop: 'auto', borderBottomLeftRadius: 0, borderBottomRightRadius: 0},
             content: (<UserSearch
                 saveAction={async (usersToAdd) => await addFirestoreListUsers(listId, usersToAdd)}
                 initialUsers={users.map((user) => user.uid)}

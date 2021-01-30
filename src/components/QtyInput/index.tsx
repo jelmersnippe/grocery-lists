@@ -32,10 +32,10 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
         <View style={styles.container}>
             <TouchableOpacity
                 style={[theme.iconButton, styles.button]}
-                onPress={() => decrementQty()}
-                disabled={isNaN(Number(qty)) || Number(qty) <= 0}
+                onPress={() => incrementQty()}
+                disabled={isNaN(Number(qty))}
             >
-                <Icon name={'remove'} size={32} color={theme.colors.black}/>
+                <Icon name={'add'} size={32} color={theme.colors.black}/>
             </TouchableOpacity>
             <TextInput
                 keyboardType={'numeric'}
@@ -52,10 +52,10 @@ const QtyInput: FunctionComponent<Props> = ({onChangeValue}) => {
             />
             <TouchableOpacity
                 style={[theme.iconButton, styles.button]}
-                onPress={() => incrementQty()}
-                disabled={isNaN(Number(qty))}
+                onPress={() => decrementQty()}
+                disabled={isNaN(Number(qty)) || Number(qty) <= 0}
             >
-                <Icon name={'add'} size={32} color={theme.colors.black}/>
+                <Icon name={'remove'} size={32} color={theme.colors.black}/>
             </TouchableOpacity>
         </View>
     );

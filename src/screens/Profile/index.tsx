@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import {Props} from './props';
 import styles from './styles';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import {setUser} from '../../reducers/user/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -11,8 +12,8 @@ import {updateFirestoreUser} from '../../firestore/userActions';
 import {Picker} from '@react-native-picker/picker';
 import {LANGUAGES} from '../../reducers/settings/types';
 import {setLanguage} from '../../reducers/settings/actions';
-import {Input} from 'react-native-elements';
 import CustomHeader from '../../components/Header';
+import CustomTextInput from '../../components/CustomTextInput';
 
 const Profile: FunctionComponent<Props> = ({}) => {
     const dispatch = useDispatch();
@@ -48,7 +49,17 @@ const Profile: FunctionComponent<Props> = ({}) => {
         <>
             <CustomHeader title={t('title')} showBackButton={true}/>
             <View style={styles.container}>
-                <Input
+                <View style={styles.input}>
+                    <Text>{t('language')}</Text>
+                    <Picker
+                        selectedValue={settings.language}
+                        onValueChange={(itemValue) => dispatch(setLanguage(itemValue.toString()))}
+                        mode={'dropdown'}
+                    >
+                        {renderPickerItems()}
+                    </Picker>
+                </View>
+                <CustomTextInput
                     label={t('displayName')}
                     containerStyle={styles.input}
                     value={nameInput}
@@ -63,14 +74,6 @@ const Profile: FunctionComponent<Props> = ({}) => {
                     text={t('updateProfile')}
                     containerStyle={styles.input}
                 />
-                <Picker
-                    selectedValue={settings.language}
-                    onValueChange={(itemValue) => dispatch(setLanguage(itemValue.toString()))}
-                    mode={'dropdown'}
-                    style={styles.input}
-                >
-                    {renderPickerItems()}
-                </Picker>
             </View>
         </>
     );

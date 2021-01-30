@@ -115,10 +115,7 @@ const ListDetails: FunctionComponent<Props> = ({route}) => {
                                         onSubmit={async (input: string) => updateList(id, input)}
                                         buttonLabel={t('common:update')}
                                         placeholder={t('newItem')}
-                                    />,
-                                    wrapperStyle: {
-                                        width: '60%'
-                                    }
+                                    />
                                 }));
                             }}
                             style={theme.iconButton}

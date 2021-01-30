@@ -53,7 +53,8 @@ const resources = {
         profile: {
             title: 'Profile',
             displayName: 'Display name',
-            updateProfile: 'Update profile'
+            updateProfile: 'Update profile',
+            language: 'Language'
         }
     },
     nl: {
@@ -106,7 +107,8 @@ const resources = {
         profile: {
             title: 'Profiel',
             displayName: 'Weergave naam',
-            updateProfile: 'Profiel updaten'
+            updateProfile: 'Profiel updaten',
+            language: 'Taal'
         }
     }
 };

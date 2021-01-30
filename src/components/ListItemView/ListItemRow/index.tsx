@@ -35,6 +35,10 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
         return;
     }, [opened]);
 
+    const toggleTodo = async () => {
+        await updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO});
+    }
+
     return (
         <View style={[styles.wrapper, item.status === ItemStatus.DONE && {opacity: 0.6}]}>
             <TouchableOpacity
@@ -45,9 +49,12 @@ const ListItemRow: FunctionComponent<Props> = ({item, listId, listItemId}) => {
                 ]}
                 delayLongPress={500}
                 onLongPress={() => setOpened(true)}
-                onPress={() => updateFirestoreListItem(listId, listItemId, {status: item.status === ItemStatus.TODO ? ItemStatus.DONE : ItemStatus.TODO})}
+                onPress={() => toggleTodo()}
             >
-                <Checkbox checked={item.status !== ItemStatus.TODO}/>
+                <Checkbox
+                    onPress={() => toggleTodo()}
+                    checked={item.status !== ItemStatus.TODO}
+                />
                 <View style={styles.quantity}>
                     <Text style={[styles.quantityText, item.status === ItemStatus.DONE && {color: theme.colors.grayDark}]}>{item.quantity}</Text>
                     <Icon name={'close'} size={18} color={item.status === ItemStatus.DONE ? theme.colors.grayDark : theme.colors.black}/>

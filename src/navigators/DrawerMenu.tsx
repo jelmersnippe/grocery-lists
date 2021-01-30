@@ -6,7 +6,6 @@ import {
     DrawerItem,
     DrawerItemList
 } from '@react-navigation/drawer';
-import AppTabs from './AppTabs';
 import Profile from '../screens/Profile';
 import auth from '@react-native-firebase/auth';
 import {resetUser} from '../reducers/user/actions';
@@ -14,6 +13,7 @@ import {store} from '../config/store';
 import {useTranslation} from 'react-i18next';
 import {resetGroups} from '../reducers/groups/actions';
 import {resetLists} from '../reducers/lists/actions';
+import ListStack from './ListStack';
 
 export type DrawerMenuParamList = {
     App: undefined;
@@ -53,7 +53,7 @@ const DrawerMenu = () => {
         >
             <Drawer.Screen
                 name='App'
-                component={AppTabs}
+                component={ListStack}
                 options={{drawerLabel: t('App')}}
             />
             <Drawer.Screen

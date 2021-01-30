@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-    addItemContainer: {},
     addItemInput: {
         borderWidth: 1,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginRight: 10,
+        flex: 1
     }
 });
 

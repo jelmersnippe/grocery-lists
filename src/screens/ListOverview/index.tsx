@@ -60,10 +60,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 placeholder={t('newList')}
                 buttonLabel={t('common:create')}
                 onSubmit={async (input: string) => createNewList(input)}
-            />,
-            wrapperStyle: {
-                width: '60%'
-            }
+            />
         }));
     };
 
@@ -78,7 +75,7 @@ const ListOverview: FunctionComponent<Props> = ({navigation}) => {
                 onPress={() => openInputModal()}
                 style={theme.floatingActionButton}
             >
-                <Icon name={'add'} size={40} color={theme.colors.black}/>
+                <Icon name={'add'} size={40} color={theme.colors.white}/>
             </TouchableOpacity>
         </View>
     );

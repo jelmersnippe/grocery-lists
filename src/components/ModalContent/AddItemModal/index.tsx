@@ -21,8 +21,7 @@ const AddItemModal: FunctionComponent<Props> = ({addAction}) => {
 
     return (
         <>
-            <View style={styles.addItemContainer}>
-                <QtyInput onChangeValue={(value) => setInputQty(value)}/>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
                 <TextInput
                     placeholder={t('itemName')}
                     style={styles.addItemInput}
@@ -31,11 +30,12 @@ const AddItemModal: FunctionComponent<Props> = ({addAction}) => {
                     onSubmitEditing={() => addItem()}
                     blurOnSubmit={false}
                 />
-                <Button
-                    text={t('common:add')}
-                    onPress={() => addItem()}
-                />
+                <QtyInput onChangeValue={(value) => setInputQty(value)}/>
             </View>
+            <Button
+                text={t('common:add')}
+                onPress={() => addItem()}
+            />
         </>
     );
 };

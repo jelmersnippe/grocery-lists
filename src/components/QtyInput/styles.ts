@@ -3,20 +3,19 @@ import theme from '../../config/theme';
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: theme.colors.black
+        alignItems: 'center'
     },
     button: {
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
+        width: 50,
+        height: 50,
+        borderWidth: 1,
         borderColor: theme.colors.black
     },
     input: {
-        height: 40,
-        width: 40,
+        width: 50,
+        height: 50,
+        borderWidth: 1,
+        borderColor: theme.colors.black,
         textAlign: 'center'
     }
 });

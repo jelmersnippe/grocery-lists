@@ -18,7 +18,9 @@ const App = () => {
                         <NavigationContainer>
                             <AppContainer/>
                         </NavigationContainer>
-                        <Overlay/>
+                        <Overlay
+                            wrapperStyle={{width: '80%'}}
+                        />
                     </OverlayContextProvider>
                 </PersistGate>
             </Provider>
