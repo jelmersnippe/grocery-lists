@@ -20,7 +20,11 @@ const AuthStack = () => {
             screenOptions={{
                 header: ({scene, previous}) => {
                     return (
-                        <CustomHeader title={t(scene.route.name)} showBackButton={!!previous}/>
+                        <CustomHeader
+                            title={t(scene.route.name)}
+                            showBackButton={!!previous}
+                            showDrawerButton={false}
+                        />
                     );
                 }
             }}

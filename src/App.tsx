@@ -14,14 +14,14 @@ const App = () => {
         <I18nextProvider i18n={i18n}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <OverlayContextProvider>
-                        <NavigationContainer>
+                    <NavigationContainer>
+                        <OverlayContextProvider>
                             <AppContainer/>
-                        </NavigationContainer>
-                        <Overlay
-                            wrapperStyle={{width: '80%'}}
-                        />
-                    </OverlayContextProvider>
+                            <Overlay
+                                wrapperStyle={{width: '80%'}}
+                            />
+                        </OverlayContextProvider>
+                    </NavigationContainer>
                 </PersistGate>
             </Provider>
         </I18nextProvider>

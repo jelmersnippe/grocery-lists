@@ -7,7 +7,7 @@ import React, {FunctionComponent} from 'react';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {Props} from './props';
 
-const CustomHeader: FunctionComponent<Props> = ({title, showBackButton}) => {
+const CustomHeader: FunctionComponent<Props> = ({title, showBackButton, showDrawerButton = true}) => {
     const navigation = useNavigation();
 
     return (
@@ -19,10 +19,11 @@ const CustomHeader: FunctionComponent<Props> = ({title, showBackButton}) => {
                 : <></>
             }
             centerComponent={<Text style={theme.headerText}>{title}</Text>}
-            rightComponent={
+            rightComponent={showDrawerButton ?
                 <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
                     <Icon name={'settings'} color={theme.colors.white} size={26} />
                 </TouchableOpacity>
+                : <></>
             }
         />
     );
