@@ -1,11 +1,7 @@
 # Grocery Lists
 
-<img src="./screenshots/login.png" width="240px" height="520px"/>  
-<img src="./screenshots/create-account.png" width="240px" height="520px"/>  
-<img src="./screenshots/list-overview.png" width="240px" height="520px"/>  
-<img src="./screenshots/list-items.png" width="240px" height="520px"/>  
-<img src="./screenshots/list-users.png" width="240px" height="520px"/>  
-<img src="./screenshots/add-item2.png" width="240px" height="520px"/>
+<img src="./screenshots/login.png" width="240px" height="520px"/>  <img src="./screenshots/create-account.png" width="240px" height="520px"/>  <img src="./screenshots/list-overview.png" width="240px" height="520px"/>  
+<img src="./screenshots/list-items.png" width="240px" height="520px"/>  <img src="./screenshots/list-users.png" width="240px" height="520px"/>  <img src="./screenshots/add-item2.png" width="240px" height="520px"/>
 
 
 An application built in React Native to keep your grocery lists (or any list for that matter) and share them with other people!
