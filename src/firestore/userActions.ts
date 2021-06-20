@@ -1,37 +1,17 @@
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import {FirestoreUser, FirestoreSearchResult} from './types';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
-import {store} from '../config/store';
-import {addCachedUser, removeCachedUser} from '../reducers/userCache/actions';
-import {CachedUser, User, UserInfo} from '../reducers/userCache/types';
-import moment from 'moment';
+import {User, UserInfo} from '../reducers/user/types';
 
 export const getUser = async (uid: string): Promise<UserInfo | undefined> => {
-    const cachedUser = getUserFromCache(uid);
-    if (cachedUser) {
-        return cachedUser;
-    }
-
     return getFirestoreUserByUid(uid);
 };
 
 export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<User>> => {
     const foundUsers: Array<User> = [];
-    const uidsToFetch: Array<string> = [];
 
-    for (const userUid of userUids) {
-        const cachedUser = getUserFromCache(userUid);
-        if (cachedUser) {
-            foundUsers.push({
-                ...cachedUser,
-                uid: userUid
-            });
-        } else {
-            uidsToFetch.push(userUid);
-        }
-    }
-    if (uidsToFetch.length > 0) {
-        await firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', uidsToFetch).get()
+    if (userUids.length > 0) {
+        await firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', userUids).get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as FirestoreUser;
@@ -39,7 +19,6 @@ export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<U
                         uid: doc.id,
                         name: data.name
                     };
-                    store.dispatch(addCachedUser({uid: doc.id, user: foundUser}));
                     foundUsers.push(foundUser);
                 });
             });
@@ -48,29 +27,13 @@ export const getMultipleUsers = async (userUids: Array<string>): Promise<Array<U
     return foundUsers;
 };
 
-const getUserFromCache = (uid: string): CachedUser | undefined => {
-    const userCache = store.getState().userCache;
-    const cachedUser = userCache.hasOwnProperty(uid) ? userCache[uid] : undefined;
-
-    if (cachedUser) {
-        if (moment(cachedUser.timestamp).valueOf() < moment().subtract(1, 'day').valueOf()) {
-            store.dispatch(removeCachedUser(cachedUser.uid));
-        } else {
-            return cachedUser;
-        }
-    }
-    return undefined;
-};
-
 const getFirestoreUserByUid = async (uid: string): Promise<UserInfo | undefined> => {
     return await firestore().collection('users')
         .doc(uid)
         .get()
         .then(documentSnapshot => {
             if (documentSnapshot.exists) {
-                const user = documentSnapshot.data() as FirestoreUser;
-                store.dispatch(addCachedUser({uid, user}));
-                return user;
+                return documentSnapshot.data() as FirestoreUser;
             } else {
                 return undefined;
             }
